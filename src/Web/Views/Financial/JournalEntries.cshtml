@@ -1,0 +1,133 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Core.Domain.Financials.JournalEntryLine>
+@*@model Web.Models.ViewModels.Financials.JournalEntries*@
+@{
+    ViewBag.Title = "JournalEntries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    @using (Html.BeginForm())
+    {
+        <div class="panel panel-default panel-body">
+
+            <h3>Journal Entry Search</h3>
+            <p>
+                Search by Keywords :
+                <input type="text" name="keyword" value="@ViewBag.Keyword" placeholder="Date, Account Code, Category, DrCr" />
+                <input type="submit" value="Search" />
+
+            </p>
+
+        </div>
+    }
+<h2>Journal Entries</h2>
+@Html.ActionLink("Add Journal Entry", "AddJournalEntry")
+<table class="table">
+    <th>
+        @Html.ActionLink("Account Code", "JournalEntries", new
+   {
+       sortOn
+           = "AccountCode",
+       orderBy = ViewBag.OrderBy,
+       pSortOn = ViewBag.SortOn,
+       keyword =
+           ViewBag.Keyword
+   })
+    </th>
+    <th>
+        @Html.ActionLink("Account Category", "JournalEntries", new
+           {
+               sortOn
+                   = "Category",
+               orderBy = ViewBag.OrderBy,
+               pSortOn = ViewBag.SortOn,
+               keyword =
+                   ViewBag.Keyword
+           })
+    </th>
+    <th>
+        @Html.ActionLink("Date", "JournalEntries", new
+           {
+               sortOn =
+                   "Date",
+               orderBy = ViewBag.OrderBy,
+               pSortOn = ViewBag.SortOn,
+               keyword =
+                   ViewBag.Keyword
+           })
+    </th>
+    <th>
+        @Html.ActionLink("DrCr", "JournalEntries", new
+           {
+               sortOn =
+                   "DrCr",
+               orderBy = ViewBag.OrderBy,
+               pSortOn = ViewBag.SortOn,
+               keyword =
+                   ViewBag.Keyword
+           })
+    </th>
+    <th>Amount</th>
+
+    <tbody>
+        @foreach (var journal in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelitem => journal.Account.AccountCode)
+                </td>
+                <td>@Html.DisplayFor(modelitem => journal.Account.AccountName)</td>
+                <td>@Html.DisplayFor(modelItem=> journal.SubCategory.AccountSubCategoryName)</td>
+                <td>@Html.DisplayFor(modelitem => journal.Date)</td>
+                <td>@Html.DisplayFor(modelitem => journal.DrCr)</td>
+                <td>@Html.DisplayFor(modelitem => journal.Amount)</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+<div class="pagedList">
+    @Html.PagedListPager(Model, page => Url.Action("JournalEntries", new
+            {
+                page,
+                sortOn = ViewBag.SortOn,
+                orderBy = ViewBag.OrderBy,
+                pSortOn =
+                    ViewBag.SortOn,
+                keyword = ViewBag.Keyword
+            }),
+        PagedListRenderOptions.ClassicPlusFirstAndLast)
+</div>
+
+    @*<h2>Journal Entries</h2>
+    @Html.ActionLink("Add Journal Entry", "AddJournalEntry", "Financial")
+    <table class="table">
+        <thead>
+            <tr>
+               
+                <th>Account Code</th>
+                
+                <th>Account Category</th>
+                
+                <th>DrCr</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var je in Model.JournalEntriesListLines)
+            {
+                <tr>
+                   
+                    <td>@je.AccountCode</td>
+            
+                    <td>@je.AccountName</td>
+                    
+                    <td>@je.DrCr</td>
+                    <td>@je.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

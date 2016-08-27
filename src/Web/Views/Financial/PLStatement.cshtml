@@ -1,0 +1,107 @@
+﻿@model ICollection<Services.Financial.ProfitAndLoss>
+@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   var netIncome = Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) - Model.Where(a => a.IsExpense == true).Sum(a => a.Amount);
+   var grossProfit = Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) - Model.Where(a => a.IsExpense == true && (a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost")).Sum(a => a.Amount); 
+   //var grossMargin= ( (Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) -Model.Where(a => a.IsExpense == true && (a.AccountSubCategory == "Cost of Sales" || a.AccountSubCategory == "Cost of Goods Sold" || a.AccountSubCategory == "Cost")).Sum(a => a.Amount))
+          //  /(Model.Where(a => a.IsExpense == false).Sum(a => a.Amount))) * 100;
+   //var grossMargin = (grossProfit / netIncome) / 100;
+   var costTotal = Model.Where(a => a.IsExpense == true && (a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost")).Sum(a => a.Amount);
+    ViewBag.Title = "P $ L Statement";
+}
+
+
+<div style="text-align: center">
+    <h3>P and L Statement</h3>
+</div>
+<div>
+    <table class="table">
+        <tr style="font-weight: bold;">
+           
+            <td>Income</td>
+            <td style="text-align: right">Amount</td>
+        </tr>
+        @foreach (var asset in Model.Where(a => a.IsExpense == false))
+        {
+            <tr>
+                @*<td>@Html.ActionLink((string)string.Format("{0}", asset.AccountCode), "EditAccount", new { id = asset.AccountId })</td>*@
+                <td>@asset.AccountName</td>
+                <td style="text-align: right">@asset.Amount</td>
+            </tr>
+        }
+        <tr style="font-weight: bold;">
+            <td >Total Income</td>
+            <td style="text-align: right">@Model.Where(a => a.IsExpense == false).Sum(a => a.Amount)</td>
+        </tr>
+       
+    </table>
+</div>
+  
+        <div>
+            <table class="table">
+                <tr style="font-weight: bold;">
+                    
+                    <td>Cost of Sales</td>
+                    <td style="text-align: right">Amount</td>
+                </tr>
+                @foreach (var cost in Model.Where(a => a.IsExpense == true && (a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost")))
+                {
+                    <tr>
+                        <td>@cost.AccountSubCategory</td>
+
+                        <td style="text-align: right">@cost.Amount</td>
+                    </tr>
+                }
+                <tr style="font-weight: bold;">
+                    <td>Cost of Sales Total</td>
+                    <td style="text-align: right">@costTotal</td>
+                </tr>
+
+                <tr style="font-weight: bold;">
+                    <td>Gross Profit</td>
+                    <td style="text-align:right">
+                        @grossProfit
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr style="font-weight: bold;">
+                    <td>Gross Margin</td>
+                    <td style="text-align: right">
+                        @*@grossMargin*@
+                    </td>
+                   
+                </tr>
+            </table>
+        </div>
+
+      <div>
+        <table class="table">
+            <tr style="font-weight: bold;">
+               
+                <td>Expenses</td>
+                <td style="text-align: right">Amount</td>
+            </tr>
+            @foreach (var asset in Model.Where(a => a.IsExpense == true && !(a.AccountName== "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName =="Cost")))
+            {
+                <tr>
+                    @*<td>@Html.ActionLink((string)string.Format("{0}", asset.AccountCode), "EditAccount", new { id = asset.AccountId })</td>*@
+                    <td>@asset.AccountName</td>
+                    <td style="text-align: right">@asset.Amount</td>
+                </tr>
+            }
+            <tr style="font-weight: bold;">
+                <td>Total Expenses</td>
+                <td style="text-align: right">@Model.Where(a => a.IsExpense == true).Sum(a => a.Amount)</td>
+            </tr>
+        </table>
+    </div>
+
+   
+    <div style="text-align: right; font-weight: bold; font-size: large">
+        Net Profit: @netIncome
+    </div>
+    @*</div>*@
