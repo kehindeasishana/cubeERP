@@ -1,0 +1,1111 @@
+﻿@{
+    Layout = null;
+}
+
+@model Web.Models.RegisterViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CubebarnERP| Home</title>
+    <link href="~/Scripts/theme/assets/global/css/css/boots.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/Scripts/theme/assets/global/css/css/bootstrapmedia.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/Scripts/theme/assets/global/css/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Planet Hosting Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script src="~/Scripts/theme/assets/global/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Scripts/theme/assets/global/js/bootstrap.js"></script>
+    <!--fonts-->
+    <link href='//fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <!--fonts-->
+    <!--script-->
+
+    <script src="~/Scripts/theme/assets/global/js/modernizr.custom.97074.js"></script>
+    <script src="~/Scripts/theme/assets/global/js/jquery.chocolat.js"></script>
+    <link rel="stylesheet" href="~/Scripts/theme/assets/global/css/css/chocolat.css" type="text/css" media="screen">
+    <!--lightboxfiles-->
+    <script type="text/javascript">
+	$(function() {
+	$('.team a').Chocolat();
+	});
+    </script>
+    <script type="text/javascript" src="~/Scripts/theme/assets/global/js/jquery.hoverdir.js"></script>
+    <script type="text/javascript">
+	$(function() {
+
+		$(' #da-thumbs > li ').each( function() { $(this).hoverdir(); } );
+
+	});
+    </script>
+    <style>
+        body {
+            background-color: rgb(251, 251, 251);
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        a {
+            font-family: inherit;
+            cursor: pointer !important;
+        }
+
+            a:hover {
+                text-decoration: none;
+                cursor: pointer !important;
+            }
+    </style>
+    <!--script-->
+</head>
+<body>
+    <!--brilliantly -->
+    <div class="content">
+        <div class="brilliant-section" id="features">
+            <div class="container">
+                <h2>Choose An App</h2>
+                <div class="brilliant-grids">
+                    <div class="col-md-4 brilliant-grid">
+                        <div class="brilliant-left">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                        </div>
+                        <div class="brilliant-right">
+                            <h4>Boost sales</h4>
+                            <ul>
+                                <li><a data-toggle="modal" data-target="#crm"><i class="fa fa-dashboard" aria-hidden="true"></i>&nbsp;CRM</a></li>
+                                <li><a data-toggle="modal" data-target="#pointofsale"><i class="fa fa-suitcase" aria-hidden="true"></i>&nbsp;Point of sale</a></li>
+                                <li><a data-toggle="modal" data-target="#subscriptions"><i class="fa fa-rss" aria-hidden="true"></i>&nbsp;Subscriptions</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-4 brilliant-grid">
+                        <div class="brilliant-left">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </div>
+                        <div class="brilliant-right">
+                            <h4>Streamline operations </h4>
+                            <ul>
+
+                                <li><a data-toggle="modal" data-target="#project"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>&nbsp;Project management</a></li>
+                                <li><a data-toggle="modal" data-target="#inventory"><i class="fa fa-tasks" aria-hidden="true"></i>&nbsp;Inventory</a></li>
+                                <li><a data-toggle="modal" data-target="#manufacturing"><i class="fa fa-gavel" aria-hidden="true"></i>&nbsp;Manufacturing</a></li>
+                                <li><a data-toggle="modal" data-target="#fleet"><i class="fa fa-send" aria-hidden="true"></i>&nbsp;Fleet management</a></li>
+                                <li><a data-toggle="modal" data-target="#supply"><i class="fa fa-glass" aria-hidden="true"></i>&nbsp;Supply chain</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-4 brilliant-grid">
+                        <div class="brilliant-left">
+                            <i class="fa fa-globe fa-1g" aria-hidden="true"></i>
+                        </div>
+                        <div class="brilliant-right">
+                            <h4>Building stunning websites</h4>
+                            <ul>
+                                <li><a data-toggle="modal" data-target="#e-commerce"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>&nbsp;e-Commerce</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="brilliant-grids">
+                    <div class="col-md-4 brilliant-grid">
+                        <div class="brilliant-left">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                        </div>
+                        <div class="brilliant-right">
+                            <h4>Finance</h4>
+                            <ul>
+                                <li><a data-toggle="modal" data-target="#accounting"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Accounting</a></li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-4 brilliant-grid">
+                        <div class="brilliant-left">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                        </div>
+                        <div class="brilliant-right">
+                            <h4>Grow Marketing</h4>
+                            <ul>
+                                <li><a data-toggle="modal" data-target="#mass-mailing"><i class="fa fa-send" aria-hidden="true"></i>&nbsp;Mass Mailing</a></li>
+                                <li><a data-toggle="modal" data-target="#hrm"><i class="fa fa-glass" aria-hidden="true"></i>&nbsp;HRM</a></li>
+                                <li><a data-toggle="modal" data-target="#business"><i class="fa fa-send" aria-hidden="true"></i>&nbsp;Business Intelligence Data mining</a></li>
+                                <li><a data-toggle="modal" data-target="#mobile"><i class="fa fa-glass" aria-hidden="true"></i>&nbsp;Mobile intelligence business suite</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--brilliantly-->
+    </div>
+    <!-- CRM -->
+    <div class="modal fade" id="crm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">CRM</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Point of Sale -->
+    <div class="modal fade" id="pointofsale" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Point of Sale</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscriptions -->
+    <div class="modal fade" id="subscriptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Subscriptions</h4></center>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control flat" name="password" id="password" required>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-left">
+                        <ul>
+                            <li><a href="sign-up.html">Register Now</a></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="flat flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat flat btn btn-success">Login</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Management -->
+    <div class="modal fade" id="project" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Project Management</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory -->
+    <div class="modal fade" id="inventory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Inventory</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manufacturing -->
+    <div class="modal fade" id="manufacturing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Manufacturing</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fleet Management -->
+    <div class="modal fade" id="fleet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Fleet Management</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supply Chain -->
+    <div class="modal fade" id="supply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Supply Chain</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- e-Commerce -->
+    <div class="modal fade" id="e-commerce" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">e-Commerce</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="company_name">Company Name</label>
+                                <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone">Phone Number</label>
+                                <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" required class="form-control flat">
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Togo">Niger</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Togo">Benin</option>
+                                    <option value="Togo">Cameroon</option>
+                                    <option value="Togo">Tunisia</option>
+                                    <option value="Togo">Congo</option>
+                                    <option value="Togo">South Africa</option>
+                                    <option value="Togo">Kenya</option>
+                                    <option value="Togo">Libya</option>
+                                    <option value="Togo">Zimbabue</option>
+                                    <option value="Togo">Egypt</option>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Start Now</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounting -->
+    <div class="modal fade" id="accounting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Accounting</h4></center>
+                </div>
+                <div class="modal-body">
+                    <center><p>30 days free trial</p></center>
+                    
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <h4>Create a new account.</h4>
+                        <hr />
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                         <div class="form-group">
+                            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            </div>
+                        </div>
+                       
+                        @*<div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" class="btn btn-default" value="Register" />
+                            </div>
+                        </div>*@
+                        <div class="modal-footer">
+                        <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="flat btn btn-success">Start Now</button>
+                    </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Mass Mailing -->
+        <div class="modal fade" id="mass-mailing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content flat">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <center><h4 class="modal-title" id="myModalLabel">Mass Mailing</h4></center>
+                    </div>
+                    <div class="modal-body">
+                        <center><p>30 days free trial</p></center>
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="first_name">First Name</label>
+                                    <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="last_name">Last Name</label>
+                                    <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="company_name">Company Name</label>
+                                    <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control flat" name="email" id="email" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="country">Country</label>
+                                    <select name="country" id="country" required class="form-control flat">
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Togo">Niger</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Togo">Benin</option>
+                                        <option value="Togo">Cameroon</option>
+                                        <option value="Togo">Tunisia</option>
+                                        <option value="Togo">Congo</option>
+                                        <option value="Togo">South Africa</option>
+                                        <option value="Togo">Kenya</option>
+                                        <option value="Togo">Libya</option>
+                                        <option value="Togo">Zimbabue</option>
+                                        <option value="Togo">Egypt</option>
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="flat btn btn-success">Start Now</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- HRM -->
+        <div class="modal fade" id="hrm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content flat">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <center><h4 class="modal-title" id="myModalLabel">HRM</h4></center>
+                    </div>
+                    <div class="modal-body">
+                        <center><p>30 days free trial</p></center>
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="first_name">First Name</label>
+                                    <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="last_name">Last Name</label>
+                                    <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="company_name">Company Name</label>
+                                    <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control flat" name="email" id="email" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="country">Country</label>
+                                    <select name="country" id="country" required class="form-control flat">
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Togo">Niger</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Togo">Benin</option>
+                                        <option value="Togo">Cameroon</option>
+                                        <option value="Togo">Tunisia</option>
+                                        <option value="Togo">Congo</option>
+                                        <option value="Togo">South Africa</option>
+                                        <option value="Togo">Kenya</option>
+                                        <option value="Togo">Libya</option>
+                                        <option value="Togo">Zimbabue</option>
+                                        <option value="Togo">Egypt</option>
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="flat btn btn-success">Start Now</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Intelligence Data Mining -->
+        <div class="modal fade" id="business" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content flat">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <center><h4 class="modal-title" id="myModalLabel">Business Intelligence Data Mining</h4></center>
+                    </div>
+                    <div class="modal-body">
+                        <center><p>30 days free trial</p></center>
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="first_name">First Name</label>
+                                    <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="last_name">Last Name</label>
+                                    <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="company_name">Company Name</label>
+                                    <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control flat" name="email" id="email" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="country">Country</label>
+                                    <select name="country" id="country" required class="form-control flat">
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Togo">Niger</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Togo">Benin</option>
+                                        <option value="Togo">Cameroon</option>
+                                        <option value="Togo">Tunisia</option>
+                                        <option value="Togo">Congo</option>
+                                        <option value="Togo">South Africa</option>
+                                        <option value="Togo">Kenya</option>
+                                        <option value="Togo">Libya</option>
+                                        <option value="Togo">Zimbabue</option>
+                                        <option value="Togo">Egypt</option>
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="flat btn btn-success">Start Now</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Intelligence Business Suite -->
+        <div class="modal fade" id="mobile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content flat">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <center><h4 class="modal-title" id="myModalLabel">Mobile Intelligence Business Suite</h4></center>
+                    </div>
+                    <div class="modal-body">
+                        <center><p>30 days free trial</p></center>
+                        <form action="">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="first_name">First Name</label>
+                                    <input type="text" class="form-control flat" name="first_name" id="first_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="last_name">Last Name</label>
+                                    <input type="text" class="form-control flat" name="last_name" id="last_name" required>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="company_name">Company Name</label>
+                                    <input type="text" class="form-control flat" name="company_name" id="company_name" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="mobile" class="form-control flat" name="phone" id="phone" required>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control flat" name="email" id="email" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="country">Country</label>
+                                    <select name="country" id="country" required class="form-control flat">
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Togo">Niger</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Togo">Benin</option>
+                                        <option value="Togo">Cameroon</option>
+                                        <option value="Togo">Tunisia</option>
+                                        <option value="Togo">Congo</option>
+                                        <option value="Togo">South Africa</option>
+                                        <option value="Togo">Kenya</option>
+                                        <option value="Togo">Libya</option>
+                                        <option value="Togo">Zimbabue</option>
+                                        <option value="Togo">Egypt</option>
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="flat btn btn-success">Start Now</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>
