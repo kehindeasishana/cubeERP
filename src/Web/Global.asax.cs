@@ -3,7 +3,7 @@ using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using Core.Data;
 using Data;
-using Logging;
+//using Logging;
 using Newtonsoft.Json.Serialization;
 using Services.Financial;
 using Services.Inventory;
@@ -78,7 +78,7 @@ namespace Web
             //builder.RegisterType<AdministrationService>().As<IAdministrationService>().InstancePerLifetimeScope();
             builder.RegisterType<SecurityService>().As<ISecurityService>().InstancePerLifetimeScope();
             builder.RegisterType<TaxService>().As<ITaxService>().InstancePerLifetimeScope();
-            builder.RegisterType<NLoggingService>().As<ILoggingService>().InstancePerLifetimeScope();
+            //builder.RegisterType<NLoggingService>().As<ILoggingService>().InstancePerLifetimeScope();
 
             container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

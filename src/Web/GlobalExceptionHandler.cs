@@ -1,4 +1,4 @@
-﻿using Logging;
+﻿//using Logging;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -25,7 +25,7 @@ namespace Web
         public ErrorInformation()
         {
             ErrorDate = DateTime.UtcNow;
-            Level = LogLevel.Fatal.ToString();
+            //Level = LogLevel.Fatal.ToString();
         }
 
         public string Message { get; set; }
