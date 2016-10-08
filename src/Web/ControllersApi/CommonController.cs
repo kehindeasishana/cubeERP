@@ -40,7 +40,7 @@ namespace Web.ControllersApi
             ICollection<VendorDto> vendorsDto = new HashSet<VendorDto>();
 
             foreach (var vendor in vendors)
-                vendorsDto.Add(new VendorDto() { Id = vendor.Id, Name = vendor.Party.Name });
+                vendorsDto.Add(new VendorDto() { Id = vendor.Id, Name = vendor.VendorName });
 
             return Ok(vendorsDto.AsEnumerable());
         }
@@ -53,7 +53,7 @@ namespace Web.ControllersApi
             ICollection<CustomerDto> customersDto = new HashSet<CustomerDto>();
             
             foreach (var customer in customers)
-                customersDto.Add(new CustomerDto() { Id = customer.Id, Name = customer.Party.Name });
+                customersDto.Add(new CustomerDto() { Id = customer.Id, Name = customer.Username});
 
             return Ok(customersDto.AsEnumerable());
         }

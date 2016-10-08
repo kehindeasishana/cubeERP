@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain
 {
-//    [Table("SequenceNumber")]
     public partial class SequenceNumber : BaseEntity
     {
         public SequenceNumberTypes SequenceNumberType { get; set; }

@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Sales
 {
-//    [Table("SalesReceiptHeader")]
     public partial class SalesReceiptHeader : BaseEntity
     {
         public SalesReceiptHeader()
@@ -16,10 +15,10 @@ namespace Core.Domain.Sales
         }
 
         public int CustomerId { get; set; }
-        public int? GeneralLedgerHeaderId { get; set; }
+       // public int? GeneralLedgerHeaderId { get; set; }
         public int? AccountToDebitId { get; set; }
         //public int? SalesInvoiceHeaderId { get; set; }
-        public string No { get; set; }
+        public string ReceiptNo { get; set; }
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
         public virtual Customer Customer { get; set; }

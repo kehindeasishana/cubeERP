@@ -110,7 +110,7 @@ namespace Services.Security
         {
             var itemToDelete = _securityUserRoleRepo.Table.ToList().Where(i => i.SecurityRoleId == roleId && i.UserId == userId).FirstOrDefault();
 
-            _securityUserRoleRepo.Delete(itemToDelete);
+            //_securityUserRoleRepo.Delete(itemToDelete);
         }
 
         public void AddPermissionToRole(int roleId, int permissionId)
@@ -197,7 +197,7 @@ namespace Services.Security
             //RemoveRolePermission(roleId);
             var entity = _securityRoleRepo.GetById(roleId);
 
-            _securityRoleRepo.Delete(entity);
+            //_securityRoleRepo.Delete(entity);
         }
 
         public void AddUser(string username, string email, string firstname, string lastname) //, string roleName)

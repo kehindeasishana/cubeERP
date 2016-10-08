@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Core.Domain.SalesTax>
+
+@{
+    ViewBag.Title = "ListSalesTax";
+    
+}
+
+<link href="~/Scripts/jquery-ui-themes-1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+
+    $.ajaxSetup({ cache: false });
+
+    $(document).ready(function () {
+        $(".openPopup").live("click", function (e) {
+            e.preventDefault();
+
+            $("<div></div>")
+                .addClass("dialog")
+                .attr("id", $(this)
+                .attr("data-dialog-id"))
+                .appendTo("body")
+                .dialog({
+                    title: $(this).attr("data-dialog-title"),
+                    close: function () { $(this).remove(); },
+                    modal: true,
+                    height: 550,
+                    width: 700,
+                    left: 0
+
+                })
+                .load(this.href);
+        });
+
+        $(".close").live("click", function (e) {
+            e.preventDefault();
+            $(this).closest(".dialog").dialog("close");
+        });
+    });
+</script>
+
+<h2>List Sales Tax</h2>
+
+<p>
+    @Html.ActionLink("Create New", "AddSalesTax", "Sales", null, new { @class = "openPopup", data_dialog_id = "popupDialog", data_dialog_title = "Add Sales Tax" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesTaxId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SalesTaxName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalTaxRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NoofAgency)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SalesTaxId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SalesTaxName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalTaxRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NoofAgency)
+        </td>
+       
+        <td>
+            @Html.ActionLink("Edit", "EditSalesTax", new { id = item.Id }, new { @class = "openPopup", data_dialog_id = "popupDialog", data_dialog_title = "Edit Sales Tax" }) |
+            @Html.ActionLink("Details", "GetSalesTax", new { id = item.Id }, new { @class = "openPopup", data_dialog_id = "popupDialog", data_dialog_title = "Sales Tax Detail" }) |
+            @Html.ActionLink("Delete", "DeleteSalesTax", new { id = item.Id }, new { @class = "openPopup", data_dialog_id = "popupDialog", data_dialog_title = "Delete Sales Tax" })
+        </td>
+    </tr>
+}
+
+</table>

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Sales
 {
-//    [Table("SalesInvoiceHeader")]
+
     public partial class SalesInvoiceHeader : BaseEntity
     {
         public SalesInvoiceHeader()
@@ -19,8 +19,21 @@ namespace Core.Domain.Sales
         public int CustomerId { get; set; }
         public int? GeneralLedgerHeaderId { get; set; }
         public int? SalesDeliveryHeaderId { get; set; }
-        public string No { get; set; }
-        public DateTime Date { get; set; }
+        public string InvoiceNo { get; set; }
+        public string ShippingAddress{ get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public DateTime? DueDate { get; set; }
+        public ShipVia ShipVia { get; set; }
+        public DateTime? ShippingDate { get; set; }
+        public string SalesRep { get; set; }
+        public string Quantity { get; set; }
+        public string Item { get; set; }
+        public int AccountId { get; set; }
+        public virtual Account Account { get; set; }
+        public string Description { get; set; }
+        public int? TaxId { get; set; }
+        public decimal Amount { get; set; }
+        public virtual SalesTax SalesTax { get; set; }
         public decimal ShippingHandlingCharge{ get; set; }
         public SalesInvoiceStatus Status { get; set; }
         public virtual Customer Customer { get; set; }

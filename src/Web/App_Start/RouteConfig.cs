@@ -12,10 +12,15 @@ namespace Web
 
             UserManagementController.RegisterMe();
 
+            //routes.MapRoute(
+            //    name: "DefaultAction",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+
             routes.MapRoute(
                 name: "DefaultAction",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}",
+                defaults: new { controller = "Home", action = "HomePage"}
             );
 
             //routes.MapRoute(

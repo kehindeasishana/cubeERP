@@ -7,7 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
     @using (Html.BeginForm())
     {
         <div class="panel panel-default panel-body">
@@ -22,14 +21,15 @@
 
         </div>
     }
-<h2>Journal Entries</h2>
-@Html.ActionLink("Add Journal Entry", "AddJournalEntry")
+<h2>@Html.ActionLink("Add Journal Entry", "AddJournalEntry") </h2>
+<h3>Journal Entries</h3>
+
 <table class="table">
     <th>
-        @Html.ActionLink("Account Code", "JournalEntries", new
+        @Html.ActionLink("Account Name", "JournalEntries", new
    {
        sortOn
-           = "AccountCode",
+           = "AccountName",
        orderBy = ViewBag.OrderBy,
        pSortOn = ViewBag.SortOn,
        keyword =
@@ -38,9 +38,20 @@
     </th>
     <th>
         @Html.ActionLink("Account Category", "JournalEntries", new
+   {
+       sortOn
+           = "Category",
+       orderBy = ViewBag.OrderBy,
+       pSortOn = ViewBag.SortOn,
+       keyword =
+           ViewBag.Keyword
+   })
+    </th>
+    <th>
+        @Html.ActionLink("Account SubCategory", "JournalEntries", new
            {
                sortOn
-                   = "Category",
+                   = "SubCategory",
                orderBy = ViewBag.OrderBy,
                pSortOn = ViewBag.SortOn,
                keyword =
@@ -76,7 +87,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelitem => journal.Account.AccountCode)
+                    @Html.DisplayFor(modelitem => journal.Account.AccountClass.Name)
                 </td>
                 <td>@Html.DisplayFor(modelitem => journal.Account.AccountName)</td>
                 <td>@Html.DisplayFor(modelItem=> journal.SubCategory.AccountSubCategoryName)</td>

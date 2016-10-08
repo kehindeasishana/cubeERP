@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain
 {
-//    [Table("Party")]
+
     public partial class Party : BaseEntity
     {
         public Party()

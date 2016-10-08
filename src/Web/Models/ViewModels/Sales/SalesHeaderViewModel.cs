@@ -31,7 +31,7 @@ namespace Web.Models.ViewModels.Sales
         public DocumentTypes DocumentType { get; set; }
         public int Id { get; set; }
         public int? CustomerId { get; set; }
-        public int? PaymentTermId { get; set; }
+        //public int? PaymentTermId { get; set; }
         public string Reference { get; set; }
         public string No { get; set; }
         public DateTime Date { get; set; }

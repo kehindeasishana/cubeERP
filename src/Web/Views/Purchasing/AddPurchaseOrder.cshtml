@@ -1,74 +1,129 @@
-﻿@model Web.Models.ViewModels.Purchases.AddPurchaseOrder
+﻿
+@model Web.Models.ViewModels.Purchases.AddPurchaseOrder
 @{
-    ViewBag.Title = "AddPurhaseOrder";
+    ViewBag.Title = "Add Purchase Order";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add Purhase Order</h2>
+<h2>Add Purchase Order</h2>
+
+
 
 @using (Html.BeginForm())
 {
+    @*@Html.AntiForgeryToken()*@
+
     <div class="panel panel-default panel-body">
         <div class="form-group">
-            <label class="col-md-2 control-label">Vendor</label>
-            @Html.DropDownListFor(m => m.VendorId, Model.Vendors)
+            <label class="col-md-2 control-label">Vendor Id</label>
+            @Html.DropDownListFor(m => m.VendorId, Web.Models.ListHelper.GetVendorsList())
+            @*@Html.ActionLink("AddVendor", "Purchasing", new { @class = "dialog" })*@
+            @Html.ActionLink("Add Vendor", "AddVendor", null, new { id = "lnkCreate" })
         </div>
+
+        
         <div class="form-group">
             <label class="col-md-2 control-label">Date</label>
             @Html.EditorFor(m => m.Date)
         </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Shipping Address</label>
+            @Html.EditorFor(m => m.ShippingAddress)
+        </div>
     </div>
+    
+    <div class="panel panel-default panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-md-3">Customer SO</th>
+                    <th class="col-md-3">Customer Invoice No</th>
+                    <th class="col-md-3">Discount Amount</th>
+                    <th class="col-md-3">Terms</th>
+                    <th class="col-md-3">Ship Via</th>
+                    <th class="col-md-3">A/P Account</th>
+                   
+                </tr>
+                <tr>
+                    <td>@Html.TextBoxFor(m => m.CustSalesOrder)</td>
+                    <td>@Html.TextBoxFor(m => m.CustInvoiceNo)</td>
+                    <td>@Html.TextBoxFor(m => m.DiscountAmount)</td>
+                    <td>@Html.TextBoxFor(m=>m.Terms)</td>
+                    <td>@Html.EnumDropDownListFor(m => m.ShipVia)</td>
+                    <td>@Html.DropDownList("AccountPayableAcc", Web.Models.ListHelper.GetCategoryList())</td>
+                    @*<td>@Html.TextBoxFor(m=>m.AccountPayableAcc)</td>*@
+                    
+                </tr>
+            </thead> 
+        </table>
+      </div>
     <h3>Items</h3>
     <div class="panel panel-default panel-body">
         <table class="table">
             <thead>
                 <tr>
-                    <th class="col-md-3">Item</th>
-                    <th class="col-md-3">Unit</th>
-                    <th class="col-md-3">Cost</th>
-                    <th class="col-md-3">Quantity</th>
+                    <th class="col-md-3">Item </th>
+                    <th class="col-md-3">Unit Price</th>
+                    @*<th class="col-md-3">Amount</th>*@
+                    <th class="col-md-3">GL Account</th>
+                    @*<th class="col-md-3">Description</th>*@
+                    <th class="col-md-3">Quantity Received</th>
                     <th class="col-md-3"></th>
                 </tr>
                 <tr>
-                    <td>@Html.DropDownListFor(m => m.ItemId, Model.Items)</td>
-                    <td>@Html.DropDownListFor(m => m.UnitOfMeasurementId, Model.UnitOfMeasurements)</td>
-                    <td></td>
+                    @*<td>@Html.DropDownListFor(m => m.Item, Web.Models.ListHelper.GetInventoryList())</td>*@
+                    <td>@Html.TextBoxFor(m => m.Item)</td>
+                    @*<td>@Html.TextBoxFor(m => m.UnitPrice)</td>*@
+                    <td>@Html.TextBoxFor(m => m.UnitPrice)</td>
+                   <td>@Html.DropDownList("GLAccount", Web.Models.ListHelper.GetCategoryList())</td>
+                   
+                    @*<td>@Html.TextAreaFor(m=>m.Description)</td>*@
                     <td>@Html.TextBoxFor(m => m.Quantity)</td>
                     <td>
                         <input type="submit" value="Add Item" name="AddPurchaseOrderLine" />
                     </td>
                 </tr>
             </thead>
+
             <tbody>
                 @for (int i = 0; i < Model.PurchaseOrderLines.Count; i++)
                 {
-                    @Html.HiddenFor(x => Model.PurchaseOrderLines[i].TotalLineCost)
+                    @Html.HiddenFor(x => Model.PurchaseOrderLines[i].TotalLineAmount)
                     <tr>
                         <td>
+                            @Html.DisplayFor(x => Model.PurchaseOrderLines[i].Item)
+                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].Item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(x => Model.PurchaseOrderLines[i].UnitPrice)
+                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].UnitPrice)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(x => Model.PurchaseOrderLines[i].Amount)
+                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].Amount)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(x => Model.PurchaseOrderLines[i].GLAccount)
+                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].GLAccount)
+                        </td>
+                        @*<td>
                             @Html.DisplayFor(x => Model.PurchaseOrderLines[i].Description)
-                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].ItemId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => Model.PurchaseOrderLines[i].UnitOfMeasurementId)
-                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].UnitOfMeasurementId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(x => Model.PurchaseOrderLines[i].Cost)
-                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].Cost)
-                        </td>
+                            @Html.HiddenFor(x => Model.PurchaseOrderLines[i].Description)
+                        </td>*@
                         <td>
                             @Html.DisplayFor(x => Model.PurchaseOrderLines[i].Quantity)
                             @Html.HiddenFor(x => Model.PurchaseOrderLines[i].Quantity)
                         </td>
                         <td>
-                            <input type="submit" value="Delete" name="DeleteInvoiceLineItem" id="@Model.PurchaseOrderLines[i].ItemId" onclick="return DeleteLineItem($(this).attr('id'));" />
+                            <input type="submit" value="Delete" name="DeleteInvoiceLineItem" id="@Model.PurchaseOrderLines[i].Item" onclick="return DeleteLineItem($(this).attr('id'));" />
                         </td>
                     </tr>
                 }
             </tbody>
+
             <tfoot>
                 <tr>
-                    <td colspan="5" style="text-align: right;">Total Amount: @Model.PurchaseOrderLines.Sum(m => m.TotalLineCost)</td>
+                    <td colspan="5" style="text-align: right;">Total Amount: @Model.PurchaseOrderLines.Sum(m => m.TotalLineAmount)</td>
                     <td></td>
                 </tr>
             </tfoot>
@@ -78,9 +133,188 @@
             <input type="submit" value="Save" name="SavePurchaseOrder" />
         </div>
     </div>
+
+    <div id="dialog-alert" style="display: none">
+        <p>
+            @TempData["msg"]!
+        </p>
+    </div>
+    <div>
+        @Html.ActionLink("Back to List", "ViewPurchaseOrder")
+    </div>
+    @*<input type="hidden" id="dialogAddVendorReturnValue" value="" />
+    <div id="addVendor" style="display: none; clear: both;" />*@
 }
 <script type="text/javascript">
     function DeleteLineItem(id) {
         $('input[name="DeletedLineItem"]').val(id);
     }
 </script>
+<script src="~/Scripts/jquery-ui-1.11.4/jquery-ui.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js" type="text/javascript"></script>
+<link href="~/Scripts/jquery-ui-1.11.4/jquery-ui.theme.css" rel="stylesheet" type="text/css" />
+<link href="~/Scripts/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" type="text/css" />
+@*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+
+@*<script>
+    $(document).ready(function () {
+        $(".openDialog").live("click", function (e) {
+            e.preventDefault();
+
+            $("<div></div>")
+                .addClass("dialog")
+                .attr("id", $(this)
+                .attr("data-dialog-id"))
+                .appendTo("body")
+                .dialog({
+                    title: $(this).attr("data-dialog-title"),
+                    close: function () { $(this).remove(); },
+                    modal: true,
+                    height: 250,
+                    width: 400,
+                    left: 0
+
+                })
+            .load(this.href);
+        });
+
+        $(".close").live("click", function (e) {
+            e.preventDefault();
+            $(this).closest(".dialog").dialog("close");
+        });
+    });
+</script>*@
+
+<script>
+    $(document).ready(function () {
+        var url = "";
+        $("#dialog-alert").dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 170,
+            width: 350,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+            },
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        if ('@TempData["msg"]' != "") {
+            $("#dialog-alert").dialog('open');
+        }
+
+        $("#lnkCreate").live("click", function (e) {
+            //e.preventDefault(); //use this or return false
+            url = $(this).attr('href');
+            $("#dialog-edit").dialog('open');
+
+            return false;
+        });
+
+        $("#btncancel").live("click", function (e) {
+            $("#dialog-edit").dialog("close");
+            return false;
+        });
+    });
+</script>
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        var url = "";
+        $("#addVendor").dialog({
+            title: 'Modal',
+            autoOpen: false,
+            resizable: false,
+            width: 700,
+            height: 400,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+                $(this).load(url);
+            },
+            buttons: {
+
+                'Save': function () {
+
+                    var createVendorForm = $('#AddVendor');
+
+                    if (createVendorForm.valid()) {
+
+                        $.post(createVendorForm.attr('action'), createVendorForm.serialize(), function (data) {
+
+                            if (data.Error != '') {
+
+                                alert(data.Error);
+
+                            }
+
+                            else {
+
+                                // Add the new genre to the dropdown list and select it
+
+                                $('#VendorId').append(
+
+                                        $('<option></option>')
+
+                                            .val(data.Vendor.VendorId)
+
+                                            .html(data.Vendor.VendorUserName)
+
+                                            .prop('selected', true)  // Selects the new Genre in the DropDown LB
+
+                                    );
+
+                                $('#addVendor').dialog('close');
+
+                            }
+
+                        });
+
+                    }
+
+
+                },
+
+                'Cancel': function () {
+
+                    $(this).dialog('close');
+
+                }
+            }
+
+            //close: function () {
+            //    var newOption = "<option value='" + result.Id + "'>" + result.VendorUserName + "</option>";
+            //    $("#VendorId").append(newOption);
+            //    HandlePopupResult($("#dialogReturnValue").val());
+            //}
+        });
+        $("#AddVendor").on("click", function (e) {
+            e.preventDefault();
+            url = $(this).attr('href');
+            $(".ui-dialog-title").html("Vendor");
+            $("#addVendor").dialog('open');
+            return false;
+        });
+    });
+
+    function HandlePopupResult(result) {
+        //var txtName = document.getElementById("txtName");
+        //txtName.value = result;
+    }
+</script>*@

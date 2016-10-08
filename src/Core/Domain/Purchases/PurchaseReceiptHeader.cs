@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Purchases
 {
-//    [Table("PurchaseReceiptHeader")]
     public partial class PurchaseReceiptHeader : BaseEntity
     {
         public PurchaseReceiptHeader()
@@ -15,7 +14,7 @@ namespace Core.Domain.Purchases
 
         public int VendorId { get; set; }
         public int PurchaseOrderHeaderId { get; set; }
-        public int? GeneralLedgerHeaderId { get; set; }
+        //public int? GeneralLedgerHeaderId { get; set; }
         public DateTime Date { get; set; }
         public string No { get; set; }
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
@@ -29,7 +28,7 @@ namespace Core.Domain.Purchases
             decimal totalTaxAmount = 0;
             //foreach (var detail in PurchaseReceiptLines)
             //{
-            //    totalTaxAmount += detail.LineTaxAmount;
+                //totalTaxAmount += detail.LineTaxAmount;
             //}
             return totalTaxAmount;
         }

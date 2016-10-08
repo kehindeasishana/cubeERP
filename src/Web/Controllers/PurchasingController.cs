@@ -31,6 +31,7 @@ namespace Web.Controllers
         public ActionResult PurchaseOrders()
         {
             var purchaseOrders = _purchasingService.GetPurchaseOrders();
+          
             var model = new Models.ViewModels.Purchases.PurchaseOrders();
             foreach (var po in purchaseOrders)
             {
@@ -52,28 +53,33 @@ namespace Web.Controllers
         public ActionResult AddPurchaseOrder()
         {
             var model = new Models.ViewModels.Purchases.AddPurchaseOrder();
-            var items = _inventoryService.GetAllItems();
+            var items = _inventoryService.GetAllInventories();
+            //var items = _inventoryService.GetAllItems();
             var accounts = _financialService.GetAccounts();
-            var measurements = _inventoryService.GetMeasurements();
-            //var taxes = _financialService.GetTaxes();
+            
+            //var measurements = _inventoryService.GetMeasurements();
+           // var taxes = _financialService.GetTaxes();
+            var categories = _inventoryService.GetAllCategories();
             var itemCategories = _inventoryService.GetItemCategories();
             var vendors = _purchasingService.GetVendors();
             model.Items = Models.ModelViewHelper.Items();
             model.Vendors = Models.ModelViewHelper.Vendors();
-            model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
+            //model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
             return View(model);
         }
-        [Audit]
+
         [HttpPost, ActionName("AddPurchaseOrder")]
         [FormValueRequiredAttribute("AddPurchaseOrderLine")]
         public ActionResult AddPurchaseOrderLine(Models.ViewModels.Purchases.AddPurchaseOrder model)
         {
-            var items = _inventoryService.GetAllItems();
+            
+            var items = _inventoryService.GetAllInventories();
             var accounts = _financialService.GetAccounts();
             var measurements = _inventoryService.GetMeasurements();
             //var taxes = _financialService.GetTaxes();
             var itemCategories = _inventoryService.GetItemCategories();
             var vendors = _purchasingService.GetVendors();
+           // model.Items = Models.ListHelper.GetInventoryList();
             model.Items = Models.ModelViewHelper.Items();
             model.Vendors = Models.ModelViewHelper.Vendors();
             model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
@@ -81,15 +87,20 @@ namespace Web.Controllers
             {
                 if (model.Quantity > 0)
                 {
-                    var item = _inventoryService.GetItemById(model.ItemId);
+                    //var item = _inventoryService.GetInventoryById(model.ItemId);
+                   // var item = _inventoryService.GetItemById(model.ItemId);
                     model.PurchaseOrderLines.Add(new Models.ViewModels.Purchases.AddPurchaseOrderLine()
                     {
-                        ItemId = model.ItemId,
-                        Description = item.PurchaseDescription,
-                        Cost = item.Cost,
-                        UnitOfMeasurementId = model.UnitOfMeasurementId,
+                        Item = model.Item,
+                        Description = model.Description,
+                        UnitPrice = model.UnitPrice,
+                        Amount = model.Amount,
+                        TotalLineAmount = model.UnitPrice * model.Quantity,
+                        GLAccount = model.GLAccount,
+                        //Cost = item.Cost,
+                        //UnitOfMeasurementId = model.UnitOfMeasurementId,
                         Quantity = model.Quantity,
-                        TotalLineCost = item.Cost.Value * model.Quantity
+                       // TotalLineCost = item.Cost.Value * model.Quantity
                     });
                 }
 
@@ -100,12 +111,13 @@ namespace Web.Controllers
                 return View(model);
             }
         }
-        [Audit]
+
         [HttpPost, ActionName("AddPurchaseOrder")]
         [FormValueRequiredAttribute("SavePurchaseOrder")]
         public ActionResult SavePurchaseOrder(Models.ViewModels.Purchases.AddPurchaseOrder model)
         {
-            var items = _inventoryService.GetAllItems();
+            //var items = _inventoryService.GetAllItems();
+            var items = _inventoryService.GetAllInventories();
             var accounts = _financialService.GetAccounts();
             var measurements = _inventoryService.GetMeasurements();
             //var taxes = _financialService.GetTaxes();
@@ -120,22 +132,31 @@ namespace Web.Controllers
                 {
                     VendorId = model.VendorId,
                     Date = model.Date,
-                    //No = _settingService.GetNextNumber(Core.Module.Common.Data.SequenceNumberTypes.PurchaseOrder).ToString(),
-                    //DocumentTypeId = (int)DocumentTypes.PurchaseOrder
+                    ShippingAddress = model.ShippingAddress,
+                    CustInvoiceNo = model.CustInvoiceNo,
+                    CustSalesOrder = model.CustInvoiceNo,
+                    Discount = model .DiscountAmount,
+                    ShipVia  = model .ShipVia ,
+                    PayableAccountId = model.AccountPayableAcc,
+                    Terms = model .Terms ,
                 };
                 foreach (var item in model.PurchaseOrderLines)
                 {
-                    var persistedItem = _inventoryService.GetItemById(item.ItemId);
+                    //var persistedItem = _inventoryService.GetItemById(item.ItemId);
                     po.PurchaseOrderLines.Add(new PurchaseOrderLine()
                     {
-                        Amount = item.TotalLineCost,
-                        ItemId = item.ItemId,
+                        Amount = item.TotalLineAmount,
+                        Item = item.Item,
                         Quantity = item.Quantity,
-                        MeasurementId = item.UnitOfMeasurementId,
-                        Cost = persistedItem.Cost.Value,
+                        UnitPrice = item.UnitPrice,
+                        GLAccountId = item.GLAccount,
+                        //GlAccountId = item.GLAccount,
+                       Description = item.Description
+                       // MeasurementId = item.UnitOfMeasurementId,
+                        //Cost = persistedItem.Cost.Value,
                     });
                 }
-                _purchasingService.AddPurchaseOrder(po, true);
+                _purchasingService.AddPurchaseOrder(po);
                 return RedirectToAction("PurchaseOrders");
             }
             catch
@@ -143,26 +164,189 @@ namespace Web.Controllers
                 return View(model);
             }
         }
-        [Audit]
+
         [HttpPost, ActionName("AddPurchaseOrder")]
         [FormValueRequiredAttribute("DeletePurchaseOrderLine")]
         public ActionResult DeletePurchaseOrderLine(Web.Models.ViewModels.Purchases.AddPurchaseOrder model)
         {
-            var items = _inventoryService.GetAllItems();
+            var items = _inventoryService.GetAllInventories();
             var accounts = _financialService.GetAccounts();
-            var measurements = _inventoryService.GetMeasurements();
+            //var measurements = _inventoryService.GetMeasurements();
             //var taxes = _financialService.GetTaxes();
+            var categories = _inventoryService.GetAllCategories();
             var itemCategories = _inventoryService.GetItemCategories();
             var vendors = _purchasingService.GetVendors();
             model.Items = Models.ModelViewHelper.Items();
             model.Vendors = Models.ModelViewHelper.Vendors();
-            model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
+            //model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
 
             var request = HttpContext.Request;
             var deletedItem = request.Form["DeletedLineItem"];
-            model.PurchaseOrderLines.Remove(model.PurchaseOrderLines.Where(i => i.ItemId == int.Parse(deletedItem.ToString())).FirstOrDefault());
+            model.PurchaseOrderLines.Remove(model.PurchaseOrderLines.Where(i => i.Item == deletedItem.ToString()).FirstOrDefault());
             return View(model);
         }
+
+        //public ActionResult AddPurchaseOrder()
+        //{
+           
+        //    return View();
+        //}
+        //[Audit]
+        //[HttpPost, ActionName("AddPurchaseOrder")]
+        ////[FormValueRequiredAttribute("AddPurchaseOrderLine")]
+        //public ActionResult AddPurchaseOrder(PurchaseOrderHeader model)
+        //{
+        //    _purchasingService.AddPurchaseOrder(new PurchaseOrderHeader()
+        //    {
+        //        VendorId = model.VendorId,
+        //        Amount = model.Amount,
+        //        Date = model.Date,
+        //        PurchaseOrderNo = model.PurchaseOrderNo,
+        //        QuantityReceived = model.QuantityReceived,
+        //        CustInvoiceNo = model.CustInvoiceNo,
+        //        UnitPrice = model.UnitPrice,
+        //        CustSalesOrder = model.CustSalesOrder,
+        //        Discount = model.Discount,
+        //        GLAccountId = model .GLAccountId ,
+        //        ShippingAddress = model.ShippingAddress,
+        //        Item = model.Item,
+        //        ShipVia = model .ShipVia,
+        //        Terms = model.Terms,
+        //        Description = model.Description,
+                
+        //        AccountPayableCategory = model.AccountPayableCategory
+                
+        //    });
+
+        //    return RedirectToAction("ViewPurchaseOrder");
+        //}
+
+        [Audit]
+        [Authorize]
+        public ViewResult GetPurchaseOrder(int id)
+        {
+            PurchaseOrderHeader purchaseOrder = _purchasingService.GetPurchaseOrderById(id);
+            
+            return View(purchaseOrder);
+
+        }
+        [Audit]
+        public ActionResult ViewPurchaseOrder()
+        {
+            var purchaseOrder = _purchasingService.GetPurchaseOrders();
+            
+            return View(purchaseOrder);
+
+        }
+
+        public ActionResult EditPurchaseOrder(int id)
+        {
+            return View(this ._purchasingService.GetPurchaseOrderById(id));
+            
+        }
+        [Audit]
+        [HttpPost]
+        public ActionResult EditPurchaseOrder(PurchaseOrderHeader model)
+        {
+            var purchaseOrder = _purchasingService.GetPurchaseOrderById(model.Id);
+            purchaseOrder.PurchaseOrderNo = model.PurchaseOrderNo;
+            purchaseOrder.QuantityReceived = model.QuantityReceived;
+            purchaseOrder.Item = model.Item;
+            purchaseOrder.ShippingAddress = model.ShippingAddress;
+            purchaseOrder.ShipVia = model.ShipVia;
+            purchaseOrder.Terms = model.Terms;
+            purchaseOrder.UnitPrice = model.UnitPrice;
+            purchaseOrder.VendorId = model.VendorId;
+            purchaseOrder.AccountPayableCategory = model.AccountPayableCategory;
+            purchaseOrder.Amount = model.Amount;
+            purchaseOrder.CustInvoiceNo = model.CustInvoiceNo;
+            purchaseOrder.CustSalesOrder = model.CustSalesOrder;
+            purchaseOrder.Date = model.Date;
+            purchaseOrder.Description = model.Description;
+            purchaseOrder.Discount = model.Discount;
+            _purchasingService.UpdatePurchaseOrder(purchaseOrder);
+            
+            return RedirectToAction("ViewPurchaseOrder");
+        }
+
+        [Audit]
+        public ActionResult DeletePurchaseOrder(int id)
+        {
+            var purchaseOrder = _purchasingService.GetPurchaseOrderById(id);
+            return View(purchaseOrder);
+        }
+
+        [HttpPost]
+        public ActionResult DeletePurchaseOrder(int id, PurchaseOrderHeader purchaseOrder)
+        {
+            var purchaseOrders = _purchasingService.GetPurchaseOrderById(id);
+            _purchasingService.DeletePurchaseOrder(purchaseOrders);
+            return RedirectToAction("ViewPurchaseOrder");
+
+        }
+        //[Audit]
+        //[HttpPost, ActionName("AddPurchaseOrder")]
+        //[FormValueRequiredAttribute("SavePurchaseOrder")]
+        //public ActionResult SavePurchaseOrder(Models.ViewModels.Purchases.AddPurchaseOrder model)
+        //{
+        //    var items = _inventoryService.GetAllItems();
+        //    var accounts = _financialService.GetAccounts();
+        //    var measurements = _inventoryService.GetMeasurements();
+        //    //var taxes = _financialService.GetTaxes();
+        //    var itemCategories = _inventoryService.GetItemCategories();
+        //    var vendors = _purchasingService.GetVendors();
+        //    model.Items = Models.ModelViewHelper.Items();
+        //    model.Vendors = Models.ModelViewHelper.Vendors();
+        //    model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
+        //    try
+        //    {
+        //        var po = new PurchaseOrderHeader()
+        //        {
+        //            VendorId = model.VendorId,
+        //            Date = model.Date,
+        //            //No = _settingService.GetNextNumber(Core.Module.Common.Data.SequenceNumberTypes.PurchaseOrder).ToString(),
+        //            //DocumentTypeId = (int)DocumentTypes.PurchaseOrder
+        //        };
+        //        foreach (var item in model.PurchaseOrderLines)
+        //        {
+        //            var persistedItem = _inventoryService.GetItemById(item.ItemId);
+        //            po.PurchaseOrderLines.Add(new PurchaseOrderLine()
+        //            {
+        //                Amount = item.TotalLineCost,
+        //                ItemId = item.ItemId,
+        //                Quantity = item.Quantity,
+        //                MeasurementId = item.UnitOfMeasurementId,
+        //                Cost = persistedItem.Cost.Value,
+        //            });
+        //        }
+        //        _purchasingService.AddPurchaseOrder(po, true);
+        //        return RedirectToAction("PurchaseOrders");
+        //    }
+        //    catch
+        //    {
+        //        return View(model);
+        //    }
+        //}
+        //[Audit]
+        //[HttpPost, ActionName("AddPurchaseOrder")]
+        //[FormValueRequiredAttribute("DeletePurchaseOrderLine")]
+        //public ActionResult DeletePurchaseOrderLine(Web.Models.ViewModels.Purchases.AddPurchaseOrder model)
+        //{
+        //    var items = _inventoryService.GetAllItems();
+        //    var accounts = _financialService.GetAccounts();
+        //    var measurements = _inventoryService.GetMeasurements();
+        //    //var taxes = _financialService.GetTaxes();
+        //    var itemCategories = _inventoryService.GetItemCategories();
+        //    var vendors = _purchasingService.GetVendors();
+        //    model.Items = Models.ModelViewHelper.Items();
+        //    model.Vendors = Models.ModelViewHelper.Vendors();
+        //    model.UnitOfMeasurements = Models.ModelViewHelper.Measurements();
+
+        //    var request = HttpContext.Request;
+        //    var deletedItem = request.Form["DeletedLineItem"];
+        //    model.PurchaseOrderLines.Remove(model.PurchaseOrderLines.Where(i => i.ItemId == int.Parse(deletedItem.ToString())).FirstOrDefault());
+        //    return View(model);
+        //}
 
         public ActionResult AddPurchaseReceipt(int id)
         {
@@ -207,8 +391,8 @@ namespace Web.Controllers
                 poReceipt.PurchaseReceiptLines.Add(new PurchaseReceiptLine()
                 {
                     PurchaseOrderLineId = receipt.PurchaseOrderLineId,
-                    ItemId = receipt.ItemId,
-                    MeasurementId = receipt.UnitOfMeasurementId,
+                    Item = receipt.Item,
+                    //MeasurementId = receipt.UnitOfMeasurementId,
                     Quantity = receipt.Quantity,
                     ReceivedQuantity = (receipt.InQty.HasValue ? receipt.InQty.Value : 0),
                     Cost = receipt.Cost.Value,
@@ -236,12 +420,12 @@ namespace Web.Controllers
                     model.PurchaseInvoiceLines.Add(new Models.ViewModels.Purchases.AddPurchaseInvoiceLine()
                     {
                         Id = line.Id,
-                        ItemId = line.ItemId,
-                        UnitOfMeasurementId = line.MeasurementId,
-                        Description = line.Item.Description,
+                        Item = line.Item,
+                        //UnitOfMeasurementId = line.MeasurementId,
+                        Description = line.Description,
                         Quantity = line.Quantity,
-                        Cost = line.Cost,
-                        TotalLineCost = line.Cost * line.Quantity,
+                        Cost = line.UnitPrice,
+                        TotalLineCost = line.UnitPrice * line.Quantity,
                         ReceivedQuantity = line.GetReceivedQuantity().Value
                     });
                 }
@@ -261,7 +445,7 @@ namespace Web.Controllers
 
             var purchInvoice = new PurchaseInvoiceHeader()
             {
-                Date = model.Date,
+                InvoiceDate = model.Date,
                 VendorInvoiceNo = model.VendorInvoiceNo,
                 Vendor = vendor,
                 VendorId = vendor.Id,
@@ -269,42 +453,155 @@ namespace Web.Controllers
 
             foreach (var line in model.PurchaseInvoiceLines)
             {
-                var item = _inventoryService.GetItemById(line.ItemId);
-                var measurement = _inventoryService.GetMeasurementById(line.UnitOfMeasurementId);
+                //var item = _inventoryService.GetItemById(line.ItemId);
+                //var measurement = _inventoryService.GetMeasurementById(line.UnitOfMeasurementId);
                 purchInvoice.PurchaseInvoiceLines.Add(new PurchaseInvoiceLine()
                 {
-                    ItemId = item.Id,
-                    MeasurementId = measurement.Id,
+                    Item = line.Item,
+                    //MeasurementId = measurement.Id,
                     Quantity = line.Quantity,
                     ReceivedQuantity = line.ReceivedQuantity,
-                    Cost = item.Cost.Value,
+                    Cost = line.Cost,
+                    //Cost = item.Cost.Value,
                     Discount = 0,
-                    Amount = item.Cost.Value * line.ReceivedQuantity,
+                    Amount = line.Cost.Value * line.ReceivedQuantity,
                 });
             }
             _purchasingService.AddPurchaseInvoice(purchInvoice, existingPO.Id);
             return RedirectToAction("PurchaseOrders");
         }
+        //[Audit]
+        //public ActionResult Vendors()
+        //{
+        //    var vendors = _purchasingService.GetVendors();
+        //    var model = new Web.Models.ViewModels.Purchases.Vendors();
+        //    if (vendors != null)
+        //    {
+        //        foreach (var vendor in vendors)
+        //        {
+        //            model.VendorsList.Add(new Models.ViewModels.Purchases.VendorsListLine()
+        //            {
+        //                Id = vendor.Id,
+        //                Name = vendor.VendorName == null ? "Name" : vendor.VendorName,
+        //                //Name = vendor.Party.Name == null ? "Name" : vendor.Party.Name,
+        //                Balance = vendor.GetBalance()
+        //            });
+        //        }
+        //    }
+        //    return View(model);
+        //}
+
         [Audit]
         public ActionResult Vendors()
         {
             var vendors = _purchasingService.GetVendors();
-            var model = new Web.Models.ViewModels.Purchases.Vendors();
-            if (vendors != null)
-            {
-                foreach (var vendor in vendors)
-                {
-                    model.VendorsList.Add(new Models.ViewModels.Purchases.VendorsListLine()
-                    {
-                        Id = vendor.Id,
-                        Name = vendor.Party.Name == null ? "Name" : vendor.Party.Name,
-                        Balance = vendor.GetBalance()
-                    });
-                }
-            }
-            return View(model);
+            return View(vendors);
+
         }
 
+        public ActionResult AddVendor()
+        {
+            return View();
+        }
+        [Audit]
+        [HttpPost]
+
+        public ActionResult AddVendor(Vendor model)
+        {
+            _purchasingService.AddVendor(new Vendor()
+            {
+                VendorName = model.VendorName,
+                VendorType = model.VendorType,
+                VendorUserName = model.VendorUserName,
+                Website = model.Website,
+                Zip = model.Zip,
+                AccountNo = model.AccountNo,
+                City = model.City,
+                ContactName = model.ContactName,
+                Country = model.Country,
+                MailingAddress = model.MailingAddress,
+                IsActive = model.IsActive,
+                BatchDeliveryMethod = model.BatchDeliveryMethod,
+                Mobile = model.Mobile,
+                ExpenseAccount = model.ExpenseAccount,
+                Email = model.Email,
+                No = model.No,
+                PaymentAddress = model.PaymentAddress,
+                PurchaseAccountId = model.PurchaseAccountId,
+                PhoneNo = model.PhoneNo,
+                PurchaseOrderAdd = model.PurchaseOrderAdd,
+                PurchaseRep = model.PurchaseRep,
+                ShipmentAddress = model.ShipmentAddress,
+                State = model.State,
+                TaxIdNum = model.TaxIdNum,
+                TaxType = model.TaxType,
+
+                ShipVia = model.ShipVia,
+
+            });
+            TempData["Msg"] = "Data has been saved succeessfully";
+            return RedirectToAction("Vendors");
+        }
+
+        [Audit]
+        [Authorize]
+        public ViewResult GetVendor(int id)
+        {
+            Vendor vendor = _purchasingService.GetVendorById(id);
+            return View(vendor);
+
+        }
+       
+        public ActionResult EditVendor(int id)
+        {
+            return View(this._purchasingService.GetVendorById(id));
+
+        }
+        [Audit]
+        [HttpPost]
+        public ActionResult EditVendor(Vendor model)
+        {
+            var vendor = _purchasingService.GetVendorById(model.Id);
+            vendor.TaxType = model.TaxType;
+            vendor.TaxIdNum = model.TaxIdNum;
+            vendor.State = model.State;
+            vendor.ShipVia = model.ShipVia;
+            vendor.ShipmentAddress = model.ShipmentAddress;
+            vendor.PurchaseRep = model.PurchaseRep;
+            vendor.PurchaseOrderAdd = model.PurchaseOrderAdd;
+            vendor.PurchaseAccountId = model.PurchaseAccountId;
+            vendor.PhoneNo = model.PhoneNo;
+            vendor.Mobile = model.Mobile;
+            vendor.MailingAddress = model.MailingAddress;
+            vendor.IsActive = model.IsActive;
+            vendor.PaymentAddress = model.PaymentAddress;
+            vendor.PurchaseDiscountAccountId = model.PurchaseDiscountAccountId;
+            vendor.VendorName = model.VendorName;
+            vendor.VendorType = model.VendorType;
+            vendor.VendorUserName = model.VendorUserName;
+            vendor.Website = model.Website;
+            vendor.Zip = model.Zip;
+            
+            return RedirectToAction("Vendors");
+        }
+
+        [Audit]
+        public ActionResult DeleteVendor(int id)
+        {
+            var vendor = _purchasingService.GetVendorById(id);
+         
+            return View(vendor);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteVendor(int id, Vendor vendor)
+        {
+            var vendors = _purchasingService.GetVendorById(id);
+            _purchasingService.DeleteVendor(vendors);
+           
+            return RedirectToAction("Vendors");
+
+        }
         public ActionResult AddOrEditVendor(int id = 0)
         {
             Vendor vendor = null;
@@ -313,7 +610,7 @@ namespace Web.Controllers
             if (id != 0)
             {
                 vendor = _purchasingService.GetVendorById(id);                
-                model.VendorName = vendor.Party.Name;
+                model.VendorName = vendor.VendorName;
                 model.AccountsPayableAccountId = vendor.AccountsPayableAccountId;
                 model.PurchaseAccountId = vendor.PurchaseAccountId;
                 model.PurchaseDiscountAccountId = vendor.PurchaseDiscountAccountId;
@@ -336,7 +633,7 @@ namespace Web.Controllers
                 vendor = new Vendor();
             }
             
-            vendor.Party.Name = model.VendorName;
+            vendor.VendorName = model.VendorName;
             vendor.AccountsPayableAccountId = model.AccountsPayableAccountId.Value == -1 ? null : model.AccountsPayableAccountId;
             vendor.PurchaseAccountId = model.PurchaseAccountId.Value == -1 ? null : model.PurchaseAccountId;
             vendor.PurchaseDiscountAccountId = model.PurchaseDiscountAccountId.Value == -1 ? null : model.PurchaseDiscountAccountId;
@@ -348,30 +645,152 @@ namespace Web.Controllers
 
             return RedirectToAction("Vendors");
         }
+        //public ActionResult AddVendor()
+        //{
+        //    return View();
+        //}
+        //[Audit]
+        //[HttpPost, ActionName("AddVendor")]
+        //public ActionResult AddVendor(Vendor model)
+        //{
+        //    _purchasingService.AddVendor(new Vendor()
+        //    {
+        //       MailingAddress = model .MailingAddress ,
+        //       Mobile = model.Mobile,
+        //       AccountNo = model.AccountNo,
+        //       City = model.City,
+        //       ContactName = model.ContactName,
+        //       Country = model.Country,
+        //       Email = model.Email,
+        //       ExpenseAccount = model.ExpenseAccount,
+        //       IsActive = model.IsActive,
+        //       PaymentAddress = model.PaymentAddress,
+        //       PaymentTerm = model.PaymentTerm,
+        //       PhoneNo = model.PhoneNo,
+        //       No = model.No,
+        //       PurchaseAccountId = model.PurchaseAccountId,
+        //       PurchaseOrderAdd = model.PurchaseOrderAdd,
+        //       ShipVia = model.ShipVia,
+        //       VendorName = model.VendorName,
+        //       VendorUserName = model.VendorUserName,
+        //       Zip = model.Zip,
+        //       Website = model.Website,
+        //       VendorType = model.VendorType,
+        //       TaxType = model.TaxType,
+        //       State = model.State,
+        //       ShipmentAddress= model.ShipmentAddress,
+        //       PurchaseRep = model.PurchaseRep,
+        //       TaxIdNum =model.TaxIdNum,
+        //       AccountsPayableAccountId = model.AccountsPayableAccountId,
+        //       PaymentTermId = model.PaymentTermId
+        //    });
 
-        public ActionResult AddVendor()
-        {
-            var model = new Models.ViewModels.Purchases.AddVendor();
-            model.Accounts = Models.ModelViewHelper.Accounts();
-            return View(model);
-        }
-        [Audit]
-        [HttpPost, ActionName("AddVendor")]
-        [FormValueRequiredAttribute("SaveVendor")]
-        public ActionResult AddVendor(Models.ViewModels.Purchases.AddVendor model)
-        {
-            var vendor = new Vendor()
-            {
-                AccountsPayableAccountId = model.AccountsPayableAccountId.Value == -1 ? null : model.AccountsPayableAccountId,
-                PurchaseAccountId = model.PurchaseAccountId.Value == -1 ? null : model.PurchaseAccountId,
-                PurchaseDiscountAccountId = model.PurchaseDiscountAccountId.Value == -1 ? null : model.PurchaseDiscountAccountId,
-            };
-            vendor.Party.Name = model.VendorName;
+        //    return RedirectToAction("Vendors");
+        //}
 
-            _purchasingService.AddVendor(vendor);
+        //[Audit]
+        //public ActionResult Vendors(Vendor model)
+        //{
+        //    var viewVendor = _purchasingService.GetVendors();
 
-            return RedirectToAction("Vendors");
-        }
+        //    return View(viewVendor);
+
+        //}
+
+        //public ActionResult EditVendor(int id)
+        //{
+        //    return View(this._purchasingService.GetVendorById(id));
+        //}
+        //[Audit]
+        //[HttpPost, ActionName("EditAccountClass")]
+
+        //public ActionResult EditVendor(Vendor model)
+        //{
+
+        //    var vendor = _purchasingService.GetVendorById(model.Id);
+        //    vendor.MailingAddress = model.MailingAddress;
+        //      vendor. Mobile = model.Mobile;
+        //       vendor.AccountNo = model.AccountNo;
+        //       vendor.City = model.City;
+        //       vendor.ContactName = model.ContactName;
+        //       vendor.Country = model.Country;
+        //       vendor.Email = model.Email;
+        //       vendor.ExpenseAccount = model.ExpenseAccount;
+        //       vendor.IsActive = model.IsActive;
+        //       vendor.PaymentAddress = model.PaymentAddress;
+        //       vendor.PaymentTerm = model.PaymentTerm;
+        //       vendor.PhoneNo = model.PhoneNo;
+        //       vendor.No = model.No;
+        //       vendor.PurchaseAccountId = model.PurchaseAccountId;
+        //       vendor.PurchaseOrderAdd = model.PurchaseOrderAdd;
+        //       vendor.ShipVia = model.ShipVia;
+        //       vendor.VendorName = model.VendorName;
+        //       vendor.VendorUserName = model.VendorUserName;
+        //       vendor.Zip = model.Zip;
+        //       vendor.Website = model.Website;
+        //       vendor.VendorType = model.VendorType;
+        //       vendor.TaxType = model.TaxType;
+        //       vendor.State = model.State;
+        //       vendor.ShipmentAddress= model.ShipmentAddress;
+        //       vendor.PurchaseRep = model.PurchaseRep;
+        //       vendor.TaxIdNum =model.TaxIdNum;
+        //       vendor.AccountsPayableAccountId = model.AccountsPayableAccountId;
+        //       vendor.PaymentTermId = model.PaymentTermId;
+
+        //    _purchasingService.UpdateVendor(vendor);
+            
+        //    return RedirectToAction("Vendors");
+        //}
+
+        //[Audit]
+        //[Authorize]
+        //public ViewResult GetVendor(int id)
+        //{
+        //    Vendor vendor = _purchasingService.GetVendorById(id);
+            
+        //    return View(vendor);
+
+        //}
+        //[Audit]
+        //public ActionResult DeleteVendor(int id)
+        //{
+        //    var vendor = _purchasingService.GetVendorById(id);
+
+        //    return View(vendor);
+        //}
+
+        //[HttpPost]
+        //public ActionResult DeleteVendor(int id, Vendor vendor)
+        //{
+        //    var vendors = _purchasingService.GetVendorById(id);
+        //    _purchasingService.DeleteVendor(vendors);
+            
+        //    return RedirectToAction("Vendors");
+
+        //}
+        //public ActionResult AddVendor()
+        //{
+        //    var model = new Models.ViewModels.Purchases.AddVendor();
+        //    model.Accounts = Models.ModelViewHelper.Accounts();
+        //    return View(model);
+        //}
+        //[Audit]
+        //[HttpPost, ActionName("AddVendor")]
+        //[FormValueRequiredAttribute("SaveVendor")]
+        //public ActionResult AddVendor(Models.ViewModels.Purchases.AddVendor model)
+        //{
+        //    var vendor = new Vendor()
+        //    {
+        //        AccountsPayableAccountId = model.AccountsPayableAccountId.Value == -1 ? null : model.AccountsPayableAccountId,
+        //        PurchaseAccountId = model.PurchaseAccountId.Value == -1 ? null : model.PurchaseAccountId,
+        //        PurchaseDiscountAccountId = model.PurchaseDiscountAccountId.Value == -1 ? null : model.PurchaseDiscountAccountId,
+        //    };
+        //    vendor.VendorName = model.VendorName;
+
+        //    _purchasingService.AddVendor(vendor);
+
+        //    return RedirectToAction("Vendors");
+        //}
         [Audit]
         public ActionResult PurchaseInvoices()
         {
@@ -383,12 +802,12 @@ namespace Web.Controllers
                 var invoiceModel = new Models.ViewModels.Purchases.PurchaseInvoiceListLine()
                 {
                     Id = invoice.Id,
-                    No = invoice.No,
-                    Date = invoice.Date,
-                    Vendor = invoice.Vendor.Party.Name,
+                    No = invoice.CustInvoiceNo,
+                    Date = invoice.InvoiceDate,
+                    Vendor = invoice.Vendor.VendorName,
                     TotalAmount = invoice.PurchaseInvoiceLines.Sum(a => a.Amount),
                     //IsPaid = invoice.IsPaid(),
-                    TotalTax = _taxService.GetPurchaseTaxes(invoice.VendorId.Value, invoice.PurchaseInvoiceLines.AsEnumerable()).Sum(t => t.Value)
+                    //TotalTax = _taxService.GetPurchaseTaxes(invoice.VendorId.Value, invoice.PurchaseInvoiceLines.AsEnumerable()).Sum(t => t.Value)
                 };
 
                 model.PurchaseInvoiceListLines.Add(invoiceModel);
@@ -402,8 +821,8 @@ namespace Web.Controllers
             var invoice = _purchasingService.GetPurchaseInvoiceById(id);
 
             model.InvoiceId = invoice.Id;
-            model.InvoiceNo = invoice.No;
-            model.Vendor = invoice.Vendor.Party.Name;
+            model.InvoiceNo = invoice.CustInvoiceNo;
+            model.Vendor = invoice.Vendor.VendorName;
             //model.Amount = invoice.GeneralLedgerHeader.GeneralLedgerLines.Where(dr => dr.DrCr == Core.Domain.DrOrCrSide.Dr).Sum(l => l.Amount);
 
             return View(model);
@@ -419,7 +838,7 @@ namespace Web.Controllers
             _purchasingService.SavePayment(invoice.Id, invoice.VendorId.Value, model.AccountId, model.AmountToPay, DateTime.Now);
             return RedirectToAction("PurchaseInvoices");
         }
-
+        [Audit]
         public ActionResult PurchaseOrder(int id = 0)
         {
             var model = new Models.ViewModels.Purchases.PurchaseHeaderViewModel();
@@ -440,10 +859,10 @@ namespace Web.Controllers
                 {
                     var lineItem = new Models.ViewModels.Purchases.PurchaseLineItemViewModel();
                     lineItem.Id = line.Id;
-                    lineItem.ItemId = line.ItemId;
-                    lineItem.ItemNo = line.Item.No;
-                    lineItem.ItemDescription = line.Item.Description;
-                    lineItem.Measurement = line.Measurement.Description;
+                    lineItem.Item = line.Item;
+                    //lineItem.ItemNo = line.Item.SerialNo;
+                    lineItem.ItemDescription = line.Description;
+                    //lineItem.Measurement = line.Measurement.Description;
                     lineItem.Quantity = line.Quantity;
                     lineItem.Price = line.Amount;
                     model.PurchaseLine.PurchaseLineItems.Add(lineItem);
@@ -451,7 +870,7 @@ namespace Web.Controllers
                 return View(model);
             }
         }
-
+        [Audit]
         public ActionResult PurchaseDelivery(int id = 0, int orderid = 0)
         {
             var model = new Models.ViewModels.Purchases.PurchaseHeaderViewModel();
@@ -470,10 +889,10 @@ namespace Web.Controllers
                     {
                         var lineItem = new Models.ViewModels.Purchases.PurchaseLineItemViewModel();
                         lineItem.Id = line.Id;
-                        lineItem.ItemId = line.ItemId;
-                        lineItem.ItemNo = line.Item.No;
-                        lineItem.ItemDescription = line.Item.Description;
-                        lineItem.Measurement = line.Measurement.Description;
+                        lineItem.Item = line.Item;
+                       // lineItem.ItemNo = line.Item.SerialNo;
+                        lineItem.ItemDescription = line.Description;
+                        //lineItem.Measurement = line.Measurement.Description;
                         lineItem.Quantity = line.Quantity;
                         lineItem.Price = line.Amount;
                         model.PurchaseLine.PurchaseLineItems.Add(lineItem);
@@ -492,10 +911,10 @@ namespace Web.Controllers
                 {
                     var lineItem = new Models.ViewModels.Purchases.PurchaseLineItemViewModel();
                     lineItem.Id = line.Id;
-                    lineItem.ItemId = line.ItemId;
-                    lineItem.ItemNo = line.Item.No;
-                    lineItem.ItemDescription = line.Item.Description;
-                    lineItem.Measurement = line.Measurement.Description;
+                    lineItem.Item = line.Item;
+                    //lineItem.ItemNo = line.Item.No;
+                    lineItem.ItemDescription = line.Description;
+                    //lineItem.Measurement = line.Measurement.Description;
                     lineItem.Quantity = line.Quantity;
                     lineItem.Price = line.Amount;
                     model.PurchaseLine.PurchaseLineItems.Add(lineItem);
@@ -503,7 +922,7 @@ namespace Web.Controllers
                 return View(model);
             }
         }
-
+        [Audit]
         public ActionResult PurchaseInvoice(int id = 0, int deliveryId = 0)
         {
             var model = new Models.ViewModels.Purchases.PurchaseHeaderViewModel();
@@ -519,16 +938,16 @@ namespace Web.Controllers
                 var invoice = _purchasingService.GetPurchaseInvoiceById(id);
                 model.Id = invoice.Id;
                 model.VendorId = invoice.VendorId;
-                model.Date = invoice.Date;
+                model.Date = invoice.InvoiceDate;
                 model.ReferenceNo = string.Empty;
                 foreach (var line in invoice.PurchaseInvoiceLines)
                 {
                     var lineItem = new Models.ViewModels.Purchases.PurchaseLineItemViewModel();
                     lineItem.Id = line.Id;
-                    lineItem.ItemId = line.ItemId;
-                    lineItem.ItemNo = line.Item.No;
-                    lineItem.ItemDescription = line.Item.Description;
-                    lineItem.Measurement = line.Measurement.Description;
+                    lineItem.Item = line.Item;
+                    //lineItem.ItemNo = line.Item.No;
+                    lineItem.ItemDescription = line.Description;
+                    //lineItem.Measurement = line.Measurement.Description;
                     lineItem.Quantity = line.Quantity;
                     lineItem.Price = line.Amount;
                     model.PurchaseLine.PurchaseLineItems.Add(lineItem);
@@ -540,21 +959,22 @@ namespace Web.Controllers
         [NonAction]
         protected void AddLineItem(Models.ViewModels.Purchases.PurchaseHeaderViewModel model)
         {
-            var item = _inventoryService.GetItemByNo(model.PurchaseLine.ItemNo);
+            //var item = _inventoryService.GetItemByNo(model.PurchaseLine.ItemNo);
             var newLine = new Models.ViewModels.Purchases.PurchaseLineItemViewModel()
             {
-                ItemId = item.Id,
-                ItemNo = item.No,
-                ItemDescription = item.Description,
-                Measurement = item.SellMeasurement.Description,
+                
+                //ItemNo = item.No,
+                ItemDescription = model.PurchaseLine.ItemDescription,
+                //Measurement = item.SellMeasurement.Description,
                 Quantity = model.PurchaseLine.Quantity,
                 Price = model.PurchaseLine.Price,
+                Item = model.PurchaseLine.Item,
             };
             model.PurchaseLine.PurchaseLineItems.Add(newLine);
 
             foreach (var line in model.PurchaseLine.PurchaseLineItems)
             {
-                var taxes = _financialService.ComputeInputTax(model.VendorId.Value, line.ItemId, line.Quantity, line.Price, decimal.Zero);
+             //   var taxes = _financialService.ComputeInputTax(model.VendorId.Value, line.Item, line.Quantity, line.Price, decimal.Zero);
                 var taxVM = new Models.ViewModels.Purchases.PurchaseLineItemTaxViewModel();
                 //foreach (var tax in taxes)
                 //{
@@ -645,40 +1065,40 @@ namespace Web.Controllers
                 model.PurchaseLine.PurchaseLineItems.RemoveAt(int.Parse(deletedItem));
             }
         }
-        [Audit]
-        [HttpPost, ActionName("PurchaseOrder")]
-        [FormValueRequiredAttribute("Save")]
-        public ActionResult SaveOrder(Models.ViewModels.Purchases.PurchaseHeaderViewModel model)
-        {
-            PurchaseOrderHeader order = null;
-            if (model.Id.HasValue == false || model.Id == 0)
-            {
-                order = new PurchaseOrderHeader();
-            }
-            else
-            {
-                order = _purchasingService.GetPurchaseOrderById(model.Id.Value);
-            }
-            order.VendorId = model.VendorId.Value;
-            order.Date = model.Date;
-            order.Description = string.Empty;
+        //[Audit]
+        //[HttpPost, ActionName("PurchaseOrder")]
+        //[FormValueRequiredAttribute("Save")]
+        //public ActionResult SaveOrder(Models.ViewModels.Purchases.PurchaseHeaderViewModel model)
+        //{
+        //    PurchaseOrderHeader order = null;
+        //    if (model.Id.HasValue == false || model.Id == 0)
+        //    {
+        //        order = new PurchaseOrderHeader();
+        //    }
+        //    else
+        //    {
+        //        order = _purchasingService.GetPurchaseOrderById(model.Id.Value);
+        //    }
+        //    order.VendorId = model.VendorId.Value;
+        //    order.Date = model.Date;
+        //    order.Description = string.Empty;
 
-            foreach (var line in model.PurchaseLine.PurchaseLineItems)
-            {
-                var item = _inventoryService.GetItemById(line.ItemId);
-                order.PurchaseOrderLines.Add(new PurchaseOrderLine()
-                {
-                    Amount = line.Price,
-                    ItemId = item.Id,
-                    Quantity = line.Quantity,
-                    MeasurementId = item.PurchaseMeasurementId.Value,
-                    Cost = item.Cost.Value,
-                });
-            }
+        //    foreach (var line in model.PurchaseLine.PurchaseLineItems)
+        //    {
+        //        var item = _inventoryService.GetItemById(line.ItemId);
+        //        order.PurchaseOrderLines.Add(new PurchaseOrderLine()
+        //        {
+        //            Amount = line.Price,
+        //            ItemId = item.Id,
+        //            Quantity = line.Quantity,
+        //            MeasurementId = item.PurchaseMeasurementId.Value,
+        //            Cost = item.Cost.Value,
+        //        });
+        //    }
 
-            _purchasingService.AddPurchaseOrder(order, true);
-            return RedirectToAction("PurchaseOrders");
-        }
+        //    _purchasingService.AddPurchaseOrder(order, true);
+        //    return RedirectToAction("PurchaseOrders");
+        //}
         [Audit]
         [HttpPost, ActionName("PurchaseDelivery")]
         [FormValueRequiredAttribute("Save")]
@@ -700,7 +1120,7 @@ namespace Web.Controllers
             if (model.Id == 0)
             {
                 var invoice = new PurchaseInvoiceHeader();
-                invoice.Date = model.Date;
+                invoice.InvoiceDate = model.Date;
                 invoice.Description = string.Empty;
                 invoice.VendorId = model.VendorId;
                 invoice.VendorInvoiceNo = model.ReferenceNo;

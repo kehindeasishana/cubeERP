@@ -15,19 +15,21 @@ namespace Services.Sales
     {
         private readonly IFinancialService _financialService;
         private readonly IInventoryService _inventoryService;
-
+        private readonly IRepository<SalesTax> _salesTaxRepo;
         private readonly IRepository<SalesOrderHeader> _salesOrderRepo;
         private readonly IRepository<SalesInvoiceHeader> _salesInvoiceRepo;
         private readonly IRepository<SalesReceiptHeader> _salesReceiptRepo;
         private readonly IRepository<Customer> _customerRepo;
+        private readonly IRepository<CustomerAllocation> _custAllocationRepo;
         private readonly IRepository<Account> _accountRepo;
         private readonly IRepository<Item> _itemRepo;
+        private readonly IRepository<InventoryCatalog> _inventoryRepo;
         private readonly IRepository<Measurement> _measurementRepo;
         private readonly IRepository<SequenceNumber> _sequenceNumberRepo;
         private readonly IRepository<PaymentTerm> _paymentTermRepo;
         private readonly IRepository<SalesDeliveryHeader> _salesDeliveryRepo;
         private readonly IRepository<Bank> _bankRepo;
-       
+        private readonly IRepository<TaxAgency> _taxAgencyRepo;
         private readonly IRepository<Contact> _contactRepo;
         //private readonly IRepository<TaxGroup> _taxGroupRepo;
 
@@ -37,14 +39,17 @@ namespace Services.Sales
             IRepository<SalesInvoiceHeader> salesInvoiceRepo,
             IRepository<SalesReceiptHeader> salesReceiptRepo,
             IRepository<Customer> customerRepo,
+            IRepository <CustomerAllocation> custAllocationRepo,
             IRepository<Account> accountRepo,
             IRepository<Item> itemRepo,
+            IRepository<InventoryCatalog> inventoryRepo,
             IRepository<Measurement> measurementRepo,
             IRepository<SequenceNumber> sequenceNumberRepo,
             IRepository<PaymentTerm> paymentTermRepo,
             IRepository<SalesDeliveryHeader> salesDeliveryRepo,
             IRepository<Bank> bankRepo,
-            
+            IRepository<SalesTax> salesTaxRepo,
+            IRepository <TaxAgency> taxAgencyRepo,
             IRepository<Contact> contactRepo
             )
             : base(sequenceNumberRepo,  paymentTermRepo, bankRepo)
@@ -55,13 +60,17 @@ namespace Services.Sales
             _salesInvoiceRepo = salesInvoiceRepo;
             _salesReceiptRepo = salesReceiptRepo;
             _customerRepo = customerRepo;
+            _custAllocationRepo = custAllocationRepo;
             _accountRepo = accountRepo;
             _itemRepo = itemRepo;
+            _inventoryRepo = inventoryRepo;
             _measurementRepo = measurementRepo;
             _sequenceNumberRepo = sequenceNumberRepo;
             _paymentTermRepo = paymentTermRepo;
             _salesDeliveryRepo = salesDeliveryRepo;
             _bankRepo = bankRepo;
+            _salesTaxRepo = salesTaxRepo;
+            _taxAgencyRepo = taxAgencyRepo;
             //_genetalLedgerSetting = generalLedgerSetting;
             _contactRepo = contactRepo;
             //_taxGroupRepo = taxGroupRepo;
@@ -105,19 +114,19 @@ namespace Services.Sales
             decimal totalAmount = 0, totalDiscount = 0;
 
             var taxes = new List<KeyValuePair<int, decimal>>();
+            //var sales = new List<KeyValuePair<int, decimal>>();
             var sales = new List<KeyValuePair<int, decimal>>();
-
             //var glHeader = _financialService.CreateGeneralLedgerHeader(DocumentTypes.SalesInvoice, salesInvoice.Date, string.Empty);
             var customer = _customerRepo.GetById(salesInvoice.CustomerId);
 
             foreach (var lineItem in salesInvoice.SalesInvoiceLines)
             {
-                var item = _itemRepo.GetById(lineItem.ItemId);
-
+                //var item = _itemRepo.GetById(lineItem.ItemId);
+                //var item = _inventoryRepo.GetById(lineItem.ItemId);
                 var lineAmount = lineItem.Quantity * lineItem.Amount;
 
-                if (!item.GLAccountsValidated())
-                    throw new Exception("Item is not correctly setup for financial transaction. Please check if GL accounts are all set.");
+                //if (!item.GLAccountsValidated())
+                //    throw new Exception("Item is not correctly setup for financial transaction. Please check if GL accounts are all set.");
 
                 var lineDiscountAmount = (lineItem.Discount / 100) * lineAmount;
                 totalDiscount += lineDiscountAmount;
@@ -126,7 +135,7 @@ namespace Services.Sales
                 
                 totalAmount += totalLineAmount;
                 
-                var lineTaxes = _financialService.ComputeOutputTax(salesInvoice.CustomerId, item.Id, lineItem.Quantity, lineItem.Amount, lineItem.Discount);
+                var lineTaxes = _financialService.ComputeOutputTax(salesInvoice.CustomerId, lineItem.Item, lineItem.Quantity, lineItem.Amount, lineItem.Discount);
 
                 foreach (var t in lineTaxes)
                     taxes.Add(t);
@@ -134,18 +143,18 @@ namespace Services.Sales
                 var lineTaxAmount = lineTaxes != null && lineTaxes.Count > 0 ? lineTaxes.Sum(t => t.Value) : 0;
                 totalLineAmount = totalLineAmount - lineTaxAmount;
                 
-                sales.Add(new KeyValuePair<int, decimal>(item.SalesAccountId.Value, totalLineAmount));
+               // sales.Add(new KeyValuePair<int, decimal>( totalLineAmount));
 
-                if (item.ItemCategory.ItemType == ItemTypes.Purchased)
-                {
-                    lineItem.InventoryControlJournal = _inventoryService.CreateInventoryControlJournal(lineItem.ItemId,
-                        lineItem.MeasurementId,
-                        DocumentTypes.SalesInvoice,
-                        null,
-                        lineItem.Quantity,
-                        lineItem.Quantity * item.Cost,
-                        lineItem.Quantity * item.Price);
-                }
+                //if (item.ItemType == ItemTypes.Purchased)
+                //{
+                //    lineItem.InventoryControlJournal = _inventoryService.CreateInventoryControlJournal(lineItem.ItemId,
+                //        lineItem.MeasurementId,
+                //        DocumentTypes.SalesInvoice,
+                //        null,
+                //        lineItem.Quantity,
+                //        lineItem.Quantity * item.UnitCost,
+                //        lineItem.Quantity * item.SalePrice);
+                //}
             }
             
             totalAmount += salesInvoice.ShippingHandlingCharge;
@@ -200,7 +209,7 @@ namespace Services.Sales
         public SalesInvoiceHeader GetSalesInvoiceByNo(string no)
         {
             var query = from invoice in _salesInvoiceRepo.Table
-                        where invoice.No == no
+                        where invoice.InvoiceNo == no
                         select invoice;
             return query.FirstOrDefault();
         }
@@ -209,7 +218,10 @@ namespace Services.Sales
         {
             _salesInvoiceRepo.Update(salesInvoice);
         }
-
+        public void AddSalesReceipt(SalesReceiptHeader salesReceipt)
+        {
+            _salesReceiptRepo.Insert(salesReceipt);
+        }
         public IEnumerable<SalesReceiptHeader> GetSalesReceipts()
         {
             var query = from receipt in _salesReceiptRepo.Table
@@ -217,11 +229,69 @@ namespace Services.Sales
             return query.ToList();
         }
 
+        public IEnumerable<SalesTax> ListSalesTax()
+        {
+            var query = from salesTax in _salesTaxRepo.Table
+                        select salesTax;
+            return query.ToList();
+        }
+        public SalesTax GetSalesTax(int id)
+        {
+            return _salesTaxRepo.GetById(id);
+
+        }
+        public void DeleteSalesTax(SalesTax salesTax)
+        {
+            _salesTaxRepo.Delete(salesTax);
+        }
+        public void AddSalesTax(SalesTax salesTax)
+        {
+            _salesTaxRepo.Insert(salesTax);
+        }
+        public void UpdateSalesTax(SalesTax salesTax)
+        {
+            _salesTaxRepo.Update(salesTax);
+        }
+
+        public IEnumerable<TaxAgency> TaxAgency()
+        {
+            var query = from Tax in _taxAgencyRepo.Table
+                        select Tax;
+            return query.ToList();
+        }
+        public TaxAgency GetTaxAgency(int id)
+        {
+            return _taxAgencyRepo.GetById(id);
+
+        }
+        public void DeleteTaxAgency(TaxAgency taxAgency)
+        {
+            _taxAgencyRepo.Delete(taxAgency);
+        }
+        public void AddTaxAgency(TaxAgency taxAgency)
+        {
+            _taxAgencyRepo.Insert(taxAgency);
+        }
+        public void UpdateTaxAgency(TaxAgency taxAgency)
+        {
+            _taxAgencyRepo.Update(taxAgency);
+        }
         public SalesReceiptHeader GetSalesReceiptById(int id)
         {
             return _salesReceiptRepo.GetById(id);
         }
-
+        public void DeleteContact(Contact contact)
+        {
+            _contactRepo.Delete(contact);
+        }
+        public void AddContact(Contact contact)
+        {
+            _contactRepo.Insert(contact);
+        }
+        public void UpdateContact(Contact contact)
+        {
+            _contactRepo.Update(contact);
+        }
         public void UpdateSalesReceipt(SalesReceiptHeader salesReceipt)
         {
             _salesReceiptRepo.Update(salesReceipt);
@@ -230,8 +300,8 @@ namespace Services.Sales
         public IEnumerable<Customer> GetCustomers()
         {
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
-                { p => p.Party, c => c.AccountsReceivableAccount };
-
+                //{ p => p.Party, c => c.AccountsReceivableAccount };
+                { c => c.AccountsReceivableAccount };
             var customers = _customerRepo.GetAllIncluding(includeProperties);
 
             return customers.AsEnumerable();
@@ -240,7 +310,7 @@ namespace Services.Sales
         public Customer GetCustomerById(int id)
         {
             System.Linq.Expressions.Expression<Func<Customer, object>>[] includeProperties =
-                { p => p.Party, c => c.AccountsReceivableAccount };
+                { c => c.AccountsReceivableAccount };
 
             var customer = _customerRepo.GetAllIncluding(includeProperties)
                 .Where(c => c.Id == id).FirstOrDefault();
@@ -252,7 +322,10 @@ namespace Services.Sales
         {
             _customerRepo.Update(customer);
         }
-
+        public void DeleteCustomer(Customer customer)
+        {
+            _customerRepo.Delete(customer);
+        }
         public ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId)
         {
             var customerReceipts = _salesReceiptRepo.Table.Where(r => r.CustomerId == customerId);
@@ -268,18 +341,18 @@ namespace Services.Sales
 
         public void AddCustomer(Customer customer)
         {
-            var accountAR = _accountRepo.Table.Where(e => e.AccountCode == "10120").FirstOrDefault();
-            var accountSales = _accountRepo.Table.Where(e => e.AccountCode == "40100").FirstOrDefault();
-            var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == "20120").FirstOrDefault();
-            var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == "40400").FirstOrDefault();
+            //var accountAR = _accountRepo.Table.Where(e => e.AccountCode == "10120").FirstOrDefault();
+            //var accountSales = _accountRepo.Table.Where(e => e.AccountCode == "40100").FirstOrDefault();
+            //var accountAdvances = _accountRepo.Table.Where(e => e.AccountCode == "20120").FirstOrDefault();
+            //var accountSalesDiscount = _accountRepo.Table.Where(e => e.AccountCode == "40400").FirstOrDefault();
 
-            customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
-            customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
-            customer.CustomerAdvancesAccountId = accountAdvances != null ? (int?)accountAdvances.Id : null;
-            customer.SalesDiscountAccountId = accountSalesDiscount != null ? (int?)accountSalesDiscount.Id : null;
+            //customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
+            //customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
+            //customer.CustomerAdvancesAccountId = accountAdvances != null ? (int?)accountAdvances.Id : null;
+            //customer.SalesDiscountAccountId = accountSalesDiscount != null ? (int?)accountSalesDiscount.Id : null;
             //customer.TaxGroupId = _taxGroupRepo.Table.Where(tg => tg.Description == "VAT").FirstOrDefault().Id;
 
-            //customer.IsActive = true;
+            customer.IsActive = true;
 
             _customerRepo.Insert(customer);
         }
@@ -300,7 +373,8 @@ namespace Services.Sales
 
             foreach(var salesOrder in salesOrders)
             {
-                salesOrder.Customer.Party = GetCustomerById(salesOrder.CustomerId.Value).Party;
+                //salesOrder.Customer.Party = GetCustomerById(salesOrder.CustomerId.Value).Party;
+                salesOrder.Customer.Username = GetCustomerById(salesOrder.CustomerId.Value).Username;
             }
 
             return salesOrders;
@@ -314,15 +388,18 @@ namespace Services.Sales
                 .Where(o => o.Id == id).FirstOrDefault()
                 ;
 
-            foreach(var line in salesOrder.SalesOrderLines)
-            {
-                line.Item = _itemRepo.GetById(line.ItemId);
-                line.Measurement = _measurementRepo.GetById(line.MeasurementId);
-            }
+            //foreach(var line in salesOrder.SalesOrderLines)
+            //{
+            //    line.Item = _itemRepo.GetById(line.ItemId);
+            //    line.Measurement = _measurementRepo.GetById(line.MeasurementId);
+            //}
 
             return salesOrder;
         }
-
+        public void DeleteSalesOrder(SalesOrderHeader salesOrder)
+        {
+            _salesOrderRepo.Delete(salesOrder);
+        }
         public SalesDeliveryHeader GetSalesDeliveryById(int id)
         {
             return _salesDeliveryRepo.GetById(id);
@@ -340,7 +417,10 @@ namespace Services.Sales
             _contactRepo.Insert(contact);
             return contact.Id;
         }
-
+        public Contact GetContactById(int id)
+        {
+           return _contactRepo.GetById(id);
+        }
         public ICollection<SalesInvoiceHeader> GetSalesInvoicesByCustomerId(int customerId, SalesInvoiceStatus status)
         {
             var query = from invoice in _salesInvoiceRepo.Table
@@ -348,10 +428,19 @@ namespace Services.Sales
                         select invoice;
             return query.ToList();
         }
-
+        public void SaveCustomerAllocation(CustomerAllocation allocation)
+        {
+            _custAllocationRepo.Insert(allocation);
+            
+           
+        }
         public ICollection<CustomerAllocation> GetCustomerAllocations(int customerId)
         {
-            return null;
+            var query = from invoice in _custAllocationRepo.Table
+                        where invoice.CustomerId == customerId 
+                        select invoice;
+            return query.ToList();
+            //return null;
         }
     }
 }

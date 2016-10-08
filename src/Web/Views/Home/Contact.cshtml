@@ -1,11 +1,12 @@
 ﻿@{
     ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<address>
+@*<address>
     One Microsoft Way<br />
     Redmond, WA 98052-6399<br />
     <abbr title="Phone">P:</abbr>
@@ -15,4 +16,119 @@
 <address>
     <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+</address>*@
+@*<h2>create pop up window</h2>
+<input type="button" onclick="showpopup()" value="Click to show pop up"/>
+<div id=" containPopUp" class="table-responsive" style="display:none">
+    <div>
+        <table class="table table-striped table-hover">
+            <tr>
+                <td>Account Code</td>
+                <td>Account Name</td>
+                <td>Balance</td>
+                <td>Debit</td>
+                <td>Credit</td>
+            </tr>
+
+            @for (int i = 1; i < 10; i++)
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+
+                    <td>Account Name @i</td>
+                    <td>Balance</td>
+                    <td>Debit</td>
+                    <td>Credit</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+        <script type="text/javascript">
+            function showpopup() {
+                $("#containPopUp").dialog({
+                    height: 400,
+                    width: 500,
+                    modal: true,
+                    buttons: {
+                        "Ok": function () {
+                            $(this).dialog("close");
+                            alert("You Selected OK!")
+                        },
+                        "Cancel": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        </script>*@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Dialog - Default functionality</title>
+    <link href="~/Scripts/jquery-ui-themes-1.12.1/themes/blitzer/jquery-ui.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+ 
+    <script>
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                height: 400,
+                weight: 700,
+                modal: true,
+                buttons: {
+                    "OK": function () {
+                        $(this).dialog("close");
+                        alert("You clicked Ok!")
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#modal-opener").click(function () {
+                $("#dialog").dialog("open");
+            });
+        });
+    </script>
+</head>
+<body>
+    <button id="modal-opener">Open Dialog</button>
+    <div id="dialog" class="table-responsive" style="display:none">
+        <div>
+            <table class="table table-striped table-hover">
+                <tr>
+                    <td>Account Code</td>
+                    <td>Account Name</td>
+                    <td>Balance</td>
+                    <td>Debit</td>
+                    <td>Credit</td>
+                </tr>
+
+                @for (int i = 1; i < 10; i++)
+                {
+                    <tr>
+                        <td>
+                            @i
+                        </td>
+
+                        <td>Account Name </td>
+                        <td>Balance</td>
+                        <td>Debit</td>
+                        <td>Credit</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+
+</body>
+</html>

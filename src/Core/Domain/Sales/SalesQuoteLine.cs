@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Sales
 {
-//    [Table("SalesQuoteLine")]
+
     public partial class SalesQuoteLine : BaseEntity
     {
         public int SalesQuoteHeaderId { get; set; }

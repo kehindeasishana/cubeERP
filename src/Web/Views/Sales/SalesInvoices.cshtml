@@ -3,10 +3,8 @@
     ViewBag.Title = "SalesInvoices";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Sales Invoices</h2>
-
-@Html.ActionLink("Add Sale Invoice", "SalesInvoice", "Sales")
+<h2>@Html.ActionLink("Add Sale Invoice", "SalesInvoice", "Sales")</h2>
+<h3>Sales Invoices</h3>
 
 <table class="table">
     <thead>

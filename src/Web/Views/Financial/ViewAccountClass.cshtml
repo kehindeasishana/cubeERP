@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<Core.Domain.Financials.AccountClass>
 
 @{
-    ViewBag.Title = "ViewAccountClass";
+    ViewBag.Title = "View Account Class";
 }
 
-<h2>ViewAccountClass</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <h2> @Html.ActionLink("Create New", "AddAccountClass")</h2>
+  
 </p>
+<h3>View Account Class</h3>
 <table class="table">
     <tr>
         <th>
@@ -29,9 +31,9 @@
             @Html.DisplayFor(modelItem => item.NormalBalance)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "EditAccountClass", new { id=item.Id }) |
+            @Html.ActionLink("Details", "GetAccountClass", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "DeleteAccountClass", new { id=item.Id })
         </td>
     </tr>
 }

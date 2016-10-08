@@ -77,6 +77,24 @@
   <ItemGroup>
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Domain\Address.cs" />
+    <Compile Include="Domain\DiscountTerm.cs" />
+    <Compile Include="Domain\Employees\Contracts.cs" />
+    <Compile Include="Domain\Employees\EducationLevel.cs" />
+    <Compile Include="Domain\Employees\Employee.cs" />
+    <Compile Include="Domain\Employees\EmployeeStatus.cs" />
+    <Compile Include="Domain\Employees\EmployeeType.cs" />
+    <Compile Include="Domain\Employees\Exit.cs" />
+    <Compile Include="Domain\Employees\ExitType.cs" />
+    <Compile Include="Domain\Employees\JobTitle.cs" />
+    <Compile Include="Domain\Employees\LeaveBenefit.cs" />
+    <Compile Include="Domain\Employees\LeaveManagement.cs" />
+    <Compile Include="Domain\Employees\LeaveType.cs" />
+    <Compile Include="Domain\Employees\OfficeHour.cs" />
+    <Compile Include="Domain\Employees\PayGrade.cs" />
+    <Compile Include="Domain\Employees\Resignation.cs" />
+    <Compile Include="Domain\Employees\Shift.cs" />
+    <Compile Include="Domain\Employees\Termination.cs" />
+    <Compile Include="Domain\Files.cs" />
     <Compile Include="Domain\Financials\CompanySetUp.cs" />
     <Compile Include="Domain\Financials\Tax.cs" />
     <Compile Include="Domain\Auditing\AuditableAttribute.cs" />
@@ -91,10 +109,17 @@
     <Compile Include="Domain\Financials\Bank.cs" />
     <Compile Include="Domain\Financials\FiscalYear.cs" />
     <Compile Include="Domain\Financials\JournalEntryLine.cs" />
+    <Compile Include="Domain\Items\Branch.cs" />
+    <Compile Include="Domain\Items\Category.cs" />
+    <Compile Include="Domain\Items\Inventory.cs" />
+    <Compile Include="Domain\Items\InventoryAdjustment.cs" />
     <Compile Include="Domain\Items\InventoryControlJournal.cs" />
     <Compile Include="Domain\Items\Item.cs" />
     <Compile Include="Domain\Items\ItemCategory.cs" />
+    <Compile Include="Domain\Items\Location.cs" />
+    <Compile Include="Domain\Items\Manufacturer.cs" />
     <Compile Include="Domain\Items\Measurement.cs" />
+    <Compile Include="Domain\Items\ReoderingRule.cs" />
     <Compile Include="Domain\Log.cs" />
     <Compile Include="Domain\Party.cs" />
     <Compile Include="Domain\PaymentTerm.cs" />
@@ -106,6 +131,7 @@
     <Compile Include="Domain\Purchases\PurchaseReceiptLine.cs" />
     <Compile Include="Domain\Purchases\Vendor.cs" />
     <Compile Include="Domain\Purchases\VendorPayment.cs" />
+    <Compile Include="Domain\SalesTax.cs" />
     <Compile Include="Domain\Sales\Customer.cs" />
     <Compile Include="Domain\Sales\CustomerAllocation.cs" />
     <Compile Include="Domain\Sales\SalesDeliveryHeader.cs" />
@@ -125,6 +151,7 @@
     <Compile Include="Domain\Security\SecurityUserRole.cs" />
     <Compile Include="Domain\Security\User.cs" />
     <Compile Include="Domain\SequenceNumber.cs" />
+    <Compile Include="Domain\TaxAgency.cs" />
     <Compile Include="MessageSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -135,9 +162,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\Administration\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

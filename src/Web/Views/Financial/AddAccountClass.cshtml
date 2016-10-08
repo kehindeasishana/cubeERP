@@ -37,19 +37,33 @@
         </div>
     </div>*@
 
-    <div class="panel panel-default  ">
-        <div class="form-group ">
-            <label class="col-md-2 control-label">Account Name</label>
-            <input type="text" name="Name"  />
+    <div class="panel panel-default ">
+        <div class="form-group col-md-12">
+            <label class="col-md-4 control-label">Account Name</label>
+            <input type="text" class="col-md-6" name="Name" />
 
         </div>
-        <div class="form-group ">
-            <label class="col-md-2 control-label">Normal Balance</label>
-            <input type="text" name="NormalBalance"  />
-            @*@Html.TextBoxFor(m => m.NormalBalance)*@
+        <div class="form-group col-md-12">
+            <label class="col-md-4 control-label">Normal Balance</label>
+            <input type="text" class="col-md-6" name="NormalBalance" />
+
         </div>
 
+        <div class="form-group col-md-12">
+            <label class="col-md-4 control-label">Account No</label>
+            <input type="text" class="col-md-6" name="AccountNo" />
 
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-4 control-label">Account Id</label>
+            <input type="text" class="col-md-6" name="AccountId" />
+
+        </div>
+        <div class="form-group col-md-12">
+            <label class="col-md-4 control-label">Description</label>
+            <textarea rows="5" class="col-md-6" name="Description"></textarea>
+
+        </div>
         <div>
             <input type="submit" value="Create" name="Create" />
         </div>

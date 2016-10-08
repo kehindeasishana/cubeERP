@@ -9,12 +9,14 @@ using Services.Inventory;
 using Services.TaxSystem;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Services.Financial
 {
     public partial class FinancialService : IFinancialService
     {
+        private DbSet<AccountSubCategory> entities = null;
         private readonly IInventoryService _inventoryService;
         private readonly ITaxService _taxService;
         private readonly IRepository<Account> _accountRepo;
@@ -54,7 +56,7 @@ namespace Services.Financial
             _journalEntryLineRepo = journalEntryLineRepo;
             
             _fiscalYearRepo = fiscalYearRepo;
-            
+            _company = company;
             _bankRepo = bankRepo;
             _taxRepo = taxRepo;
            
@@ -81,25 +83,40 @@ namespace Services.Financial
         {
             _bankRepo.Insert(bank);
         }
+        public void EditBank(Bank bank)
+        {
+            _bankRepo.Update(bank);
+        }
+        public void DeleteBank(Bank bank)
+        {
+            _bankRepo.Delete(bank);
+        }
         public void AddNewTax(Tax tax)
         {
             _taxRepo.Insert(tax);
         }
-
+        public Bank GetBank(int id)
+        {
+            return _bankRepo.Table.Where(a => a.Id == id).FirstOrDefault();        }
         public void UpdateTax(Tax tax)
         {
             _taxRepo.Update(tax);
         }
-
-        public void DeleteTax(int id)
+        public void DeleteTax(Tax tax)
         {
-            throw new System.NotImplementedException();
+            _taxRepo.Delete(tax);
         }
-
+        public Tax GetTax(int id)
+        {
+            return _taxRepo.Table.Where(a => a.Id == id).FirstOrDefault();
+        }
         public void AddCompany(CompanySetUp company)
         {
             _company.Insert(company);
-
+        }
+        public void EditCompany(CompanySetUp company)
+        {
+            _company.Update(company);
         }
         public void InitializeCompany()
         {
@@ -114,13 +131,16 @@ namespace Services.Financial
             return _company.Table.ToList().FirstOrDefault();
         }
 
-        public ICollection<CompanySetUp> GetCompany()
+        public ICollection<CompanySetUp> ListCompany()
         {
             var query = from f in _company.Table
                         select f;
             return query.ToList();
         }
-
+        public CompanySetUp GetCompanyById(int id)
+        {
+            return _company.Table.Where(a => a.Id == id).FirstOrDefault();
+        }
         public ICollection<FinancialYear> GetFinancialYears()
         {
             var query = from f in _fiscalYearRepo.Table
@@ -135,7 +155,10 @@ namespace Services.Financial
 
             return query;
         }
-
+        public FinancialYear GetFinancialYear(int id)
+        {
+            return _fiscalYearRepo.Table.Where(a => a.Id == id).FirstOrDefault();
+        }
         public void AddFiscalYear(FinancialYear financialYear)
         {
             _fiscalYearRepo.Insert(financialYear);
@@ -173,7 +196,7 @@ namespace Services.Financial
         
         public Account GetAccountByAccountCode(string accountcode)
         {
-            return _accountRepo.Table.Where(a => a.AccountCode == accountcode).FirstOrDefault();
+            return _accountRepo.Table.Where(a => a.AccountCode.ToString() == accountcode).FirstOrDefault();
         }
 
       
@@ -204,33 +227,36 @@ namespace Services.Financial
             var allDr = (from dr in _journalEntryLineRepo.Table.AsEnumerable()
                          where dr.DrCr == DrOrCrSide.Dr
 
-                         group dr by new { dr.AccountId, dr.Account.AccountCode, dr.Account.AccountName, dr.Amount } into tb
+                         group dr by new { dr.AccountId, dr.Account.AccountCode, dr.Account.AccountName, dr.SubCategory.AccountSubCategoryName, dr.Amount } into tb
                          select new
                          {
                              AccountId = tb.Key.AccountId,
                              AccountCode = tb.Key.AccountCode,
                              AccountName = tb.Key.AccountName,
+                              SubCategoryName = tb.Key.AccountSubCategoryName,
                              Debit = tb.Sum(d => d.Amount),
                          });
 
             var allCr = (from cr in _journalEntryLineRepo.Table.AsEnumerable()
                          where cr.DrCr == DrOrCrSide.Cr
                          
-                         group cr by new { cr.AccountId, cr.Account.AccountCode, cr.Account.AccountName, cr.Amount } into tb
+                         group cr by new { cr.AccountId, cr.Account.AccountCode, cr.Account.AccountName, cr.SubCategory.AccountSubCategoryName, cr.Amount } into tb
                          select new
                          {
                              AccountId = tb.Key.AccountId,
                              AccountCode = tb.Key.AccountCode,
                              AccountName = tb.Key.AccountName,
                              Credit = tb.Sum(c => c.Amount),
+                             SubCategoryName = tb.Key.AccountSubCategoryName,
                          });
 
             var allDrcr = (from x in allDr
                            select new TrialBalance
                            {
                                AccountId = x.AccountId,
-                               AccountCode = x.AccountCode,
+                               AccountCode = x.AccountCode.ToString(),
                                AccountName = x.AccountName,
+                                SubCategoryName = x.SubCategoryName,
                                Debit = x.Debit,
                                Credit = (decimal)0,
                            }
@@ -238,8 +264,9 @@ namespace Services.Financial
                                    select new TrialBalance
                                    {
                                        AccountId = y.AccountId,
-                                       AccountCode = y.AccountCode,
+                                       AccountCode = y.AccountCode.ToString(),
                                        AccountName = y.AccountName,
+                                        SubCategoryName = y.SubCategoryName,
                                        Debit = (decimal)0,
                                        Credit = y.Credit,
                                    });
@@ -255,6 +282,7 @@ namespace Services.Financial
                     AccountId = tb.First().AccountId,
                     AccountCode = tb.First().AccountCode,
                     AccountName = tb.First().AccountName,
+                    SubCategoryName = tb.First().SubCategoryName,
                     Credit = tb.Sum(x => x.Credit),
                     Debit = tb.Sum(y => y.Debit)
                 }).ToList();
@@ -282,7 +310,7 @@ namespace Services.Financial
                     AccountId = asset.Id,
                     AccountClassId = asset.AccountClassId,
                     
-                    AccountCode = asset.AccountCode,
+                    AccountCode = asset.AccountCode.ToString(),
                     AccountName = asset.AccountName,
                     Amount = asset.Balance
                 });
@@ -293,7 +321,7 @@ namespace Services.Financial
                 {
                     AccountId = liability.Id,
                     AccountClassId = liability.AccountClassId,
-                    AccountCode = liability.AccountCode,
+                    AccountCode = liability.AccountCode.ToString(),
                     AccountName = liability.AccountName,
                     Amount = liability.Balance
                 });
@@ -304,7 +332,7 @@ namespace Services.Financial
                 {
                     AccountId = equity.Id,
                     AccountClassId = equity.AccountClassId,
-                    AccountCode = equity.AccountCode,
+                    AccountCode = equity.AccountCode.ToString(),
                     AccountName = equity.AccountName,
                     Amount = equity.Balance 
                 });
@@ -329,7 +357,7 @@ namespace Services.Financial
                 {
                     AccountId = revenue.Id,
                     
-                    AccountCode = revenue.AccountCode,
+                    AccountCode = revenue.AccountCode.ToString(),
                     AccountName = revenue.AccountName,
                     Amount = revenue.Balance ,
                     IsExpense = false
@@ -340,7 +368,7 @@ namespace Services.Financial
                 revenues_expenses.Add(new IncomeStatement()
                 {
                     AccountId = expense.Id,
-                    AccountCode = expense.AccountCode,
+                    AccountCode = expense.AccountCode.ToString(),
                     AccountName = expense.AccountName,
                     Amount = expense.Balance ,
                     IsExpense = true
@@ -353,20 +381,40 @@ namespace Services.Financial
             var revenues = from r in _accountRepo.Table
                            where r.AccountClassId == 4
                            select r;
-            //var cost = from x in _accountSubCategory.Table
-            //           where x.Accounts.AccountName == "Cost of Sales"
-            //           select x;
-            var cost = from x in _accountSubCategory.Table
-                       where (x.Accounts.AccountName == "Cost of Sales"||
-                              x.Accounts.AccountName == "Cost of Goods Sold"||
-                              x.Accounts.AccountName == "Cost")
+
+            var costs = from x in _accountSubCategory.Table
+                        where (x.Accounts.AccountClassId == 5 &&( x.Accounts.AccountName == "Cost of Sales" || x.Accounts.AccountName == "Cost of Goods Sold" || x.Accounts.AccountName == "Cost"))
                        select x;
+            //var costs = from x in _accountSubCategory.Table
+            //            where (x.Accounts.AccountName == "Cost of Sales" ||
+            //                   x.Accounts.AccountName == "Cost of Goods Sold" ||
+            //                   x.Accounts.AccountName == "Cost")
+            //            select x;
+
+            //var costExpenses = from c in _accountRepo.Table
+            //                   where (c.AccountName == "Cost of Sales" || c.AccountName == "Cost of Goods Sold" || c.AccountName == "Cost")
+            //                   select c;
+
             var expenses = from e in _accountRepo.Table
                            where (e.AccountClassId == 5 && 
                                   (e.AccountName != "Cost of Sales" || e.AccountName != "Cost of Goods Sold" || e.AccountName != "Cost"))
                            select e;
             
             var revenues_expenses = new HashSet<ProfitAndLoss>();
+
+
+            foreach (var cost in costs)
+            {
+                revenues_expenses.Add(new ProfitAndLoss()
+                {
+                    AccountId = cost.Id,
+                    AccountSubCategory = cost.AccountSubCategoryName,
+                    AccountName = cost.Accounts.AccountName,
+                    Amount = cost.Accounts.Balance,
+                    IsExpense = true
+                });
+            }
+
             foreach (var revenue in revenues)
             {
                 revenues_expenses.Add(new ProfitAndLoss()
@@ -390,19 +438,20 @@ namespace Services.Financial
                     IsExpense = true
                 });
             }
+
+            //foreach (var costExpense in costExpenses)
+            //{
+            //    revenues_expenses.Add(new ProfitAndLoss()
+            //    {
+            //        AccountId = costExpense.Id,
+               
+            //        AccountName = costExpense.AccountName,
+            //        Amount = costExpense.Balance,
+            //        IsExpense = true
+            //    });
+            //}
            // return revenues_expenses;
 
-            foreach (var expense in cost)
-            {
-                revenues_expenses.Add(new ProfitAndLoss()
-                {
-                    AccountId = expense.Id,
-                    AccountSubCategory = expense.AccountSubCategoryName,
-                    AccountName = expense.Accounts .AccountName,
-                    Amount = expense.Accounts.Balance,
-                    IsExpense = true
-                });
-            }
             return revenues_expenses;
         }
         public new IEnumerable<Bank> GetCashAndBanks()
@@ -419,12 +468,12 @@ namespace Services.Financial
         /// <param name="quantity"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
-        public List<KeyValuePair<int, decimal>> ComputeInputTax(int vendorId, int itemId, decimal quantity, decimal amount, decimal discount)
+        public List<KeyValuePair<int, decimal>> ComputeInputTax(int vendorId, string item, decimal quantity, decimal amount, decimal discount)
         {
             decimal taxAmount = 0, amountXquantity = 0, discountAmount = 0, subTotalAmount = 0;
 
             var taxes = new List<KeyValuePair<int, decimal>>();
-            var item = _inventoryService.GetItemById(itemId);
+            //var item = _inventoryService.GetItemById(itemId);
 
             amountXquantity = amount * quantity;
 
@@ -451,12 +500,12 @@ namespace Services.Financial
         /// <param name="quantity"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
-        public List<KeyValuePair<int, decimal>> ComputeOutputTax(int customerId, int itemId, decimal quantity, decimal amount, decimal discount)
+        public List<KeyValuePair<int, decimal>> ComputeOutputTax(int customerId, string item, decimal quantity, decimal amount, decimal discount)
         {
             decimal taxAmount = 0, amountXquantity = 0, discountAmount = 0, subTotalAmount = 0;
 
-            var item = _itemRepo.GetById(itemId);
-            var customer = _customerRepo.GetById(customerId);
+            //var item = _itemRepo.GetById(itemId);
+            //var customer = _customerRepo.GetById(customerId);
             var taxes = new List<KeyValuePair<int, decimal>>();
 
             amountXquantity = amount * quantity;
@@ -502,15 +551,34 @@ namespace Services.Financial
        {
            _accountSubCategory.Update(accountSubCategory);
        }
+       public void EditAccountClass(AccountClass editAccountClass)
+       {
+           _accountclassRepo.Update(editAccountClass);
+           
+       }
        public AccountSubCategory GetSubCategoryById(int id)
        {
            return _accountSubCategory.Table.Where(a => a.Id == id).FirstOrDefault();
+       }
+       public AccountClass GetAccountClass(int id)
+       {
+           return _accountclassRepo.Table.Where(a => a.Id == id).FirstOrDefault();
+          
        }
        public IEnumerable<AccountSubCategory> ListAccountSubCategory()
        {
            var query = from f in _accountSubCategory.Table
                        select f;
            return query.AsEnumerable();
+       }
+       public void DeleteSubCategory(AccountSubCategory subCategory)
+       {
+           _accountSubCategory.Delete(subCategory);
+           
+       }
+       public void DeleteAccountClass(AccountClass accountClass)
+       {
+           _accountclassRepo.Delete(accountClass);
        }
        public IEnumerable<AccountClass> ViewAccountClass()
        {
@@ -611,11 +679,9 @@ namespace Services.Financial
 
 
             var journalEntry = new JournalEntryLine();
-            journalEntry.Memo = "Closing entries";
+            journalEntry.Description = "Closing entries";
             journalEntry.Date = DateTime.Now;
-            journalEntry.Posted = false;
-            
-
+            //journalEntry.Posted = false;
             return journalEntry;
         }
     }

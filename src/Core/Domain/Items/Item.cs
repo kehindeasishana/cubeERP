@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Items
 {
-//    [Table("Item")]
+
     public partial class Item : BaseEntity
     {
         public Item()
@@ -31,12 +31,14 @@ namespace Core.Domain.Items
         public int? CostOfGoodsSoldAccountId { get; set; }
         public int? InventoryAdjustmentAccountId { get; set; }
         public string No { get; set; }
+        public string Name { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
         public string PurchaseDescription { get; set; }
         public string SellDescription { get; set; }
         public decimal? Cost { get; set; }
         public decimal? Price { get; set; }
+        public decimal? PurchaseCost { get; set; }
         public virtual ItemCategory ItemCategory { get; set; }
         //public virtual ItemTaxGroup ItemTaxGroup { get; set; }
         public virtual Vendor PreferredVendor { get; set; }

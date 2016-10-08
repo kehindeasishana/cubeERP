@@ -31,11 +31,12 @@ namespace Web.Models.ViewModels.Purchases
                 PurchaseReceiptLines.Add(new AddPurchaseReceiptLine()
                 {
                     Id = line.Id,
-                    ItemId = line.ItemId,
+                    Item = line.Item,
+                   
                     PurchaseOrderLineId = line.Id,
-                    UnitOfMeasurementId = line.MeasurementId,
+                    //UnitOfMeasurementId = line.MeasurementId,
                     Quantity = line.Quantity,
-                    Cost = line.Cost,
+                    Cost = line.Amount,
                     ReceiptQuantity = line.GetReceivedQuantity(),
                     IsCompleted = line.IsCompleted()
                 });
@@ -46,7 +47,7 @@ namespace Web.Models.ViewModels.Purchases
     public class AddPurchaseReceiptLine
     {
         public int Id { get; set; }
-        public int ItemId { get; set; }
+        public string Item { get; set; }
         public int? PurchaseOrderLineId { get; set; }
         public string Description { get; set; }
         public int UnitOfMeasurementId { get; set; }

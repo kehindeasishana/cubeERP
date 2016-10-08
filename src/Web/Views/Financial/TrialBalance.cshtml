@@ -2,6 +2,10 @@
 @{
     ViewBag.Title = "TrialBalance";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var TotalDebit = @Model.Sum(m => m.Debit);
+    var TotalCredit = @Model.Sum(m => m.Credit);
+    var dr = (TotalDebit >= 0) ? string.Format("#,###.00", TotalDebit) : string.Format("#,##0.00;(#,##0.00)", TotalDebit);
+    var cr = (TotalCredit >= 0) ? string.Format("#,###.00", TotalCredit) : string.Format("#,##0.00;(#,##0.00)", TotalCredit);
 }
 <div style="text-align: center">
     <h3>
@@ -14,7 +18,8 @@
     <table class="table">
         <tr style="font-weight: bold;">
             <td>Account Code</td>
-            <td>Account Name</td>
+            <td>Account Category</td>
+            <td>Account SubCategory</td>
             <td style="text-align: right;">Debit</td>
             <td style="text-align: right;">Credit</td>
         </tr>
@@ -23,15 +28,17 @@
             <tr>
                 <td>@Html.ActionLink((string)string.Format("{0}", account.AccountCode), "EditAccount", new { id = account.AccountId })</td>
                 <td>@account.AccountName</td>
+                <td>@account.SubCategoryName</td>
                 <td style="text-align: right;">@account.Debit</td>
                 <td style="text-align: right;">@account.Credit</td>
             </tr>
         }
         <tr style="font-weight: bold; text-align: right;">
             <td></td>
+            <td></td>
             <td>Total</td>
-            <td>@Model.Sum(m => m.Debit)</td>
-            <td>@Model.Sum(m => m.Credit)</td>
+            <td>@TotalDebit.ToString(@dr)</td>
+            <td>@TotalCredit.ToString(@cr)</td>
         </tr>
     </table>
 </div>

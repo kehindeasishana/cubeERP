@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-
 namespace Core.Domain.Financials
 {
     public partial class JournalEntryLine : BaseEntity
@@ -16,9 +15,9 @@ namespace Core.Domain.Financials
         public virtual AccountSubCategory SubCategory { get; set; }
         public virtual Account Account { get; set; }
         public DateTime Date { get; set; }
-        public string Memo { get; set; }
+        public string Description { get; set; }
         public string ReferenceNo { get; set; }
-        public bool? Posted { get; set; }
+        //public bool? Posted { get; set; }
 
     //    [NotMapped]
     //    public decimal Balance { get { return GetBalance(); } }
@@ -122,5 +121,16 @@ namespace Core.Domain.Financials
 
     //        return side;
     //    }
+    }
+    public class FileUploadViewModel
+    {
+        public int Id { get; set; }
+        public int AccountId { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime Date { get; set; }
+        public int? SubCategoryId { get; set; }
+        public string Description { get; set; }
+        public string ReferenceNo { get; set; }
+        public DrOrCrSide DrCr { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Services.Purchasing;
 using Services.Sales;
 using Services.Security;
 using Services.TaxSystem;
+using Services.Employees;
 using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace Web
             builder.RegisterType<SecurityService>().As<ISecurityService>().InstancePerLifetimeScope();
             builder.RegisterType<TaxService>().As<ITaxService>().InstancePerLifetimeScope();
             //builder.RegisterType<NLoggingService>().As<ILoggingService>().InstancePerLifetimeScope();
-
+            builder.RegisterType<EmployeeService>().As<IEmployeeService>().InstancePerLifetimeScope();
             container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);

@@ -26,7 +26,7 @@
         <thead>
             <tr>
                 <th>Item</th>
-                <th>Unit of Measure</th>
+                @*<th>Unit of Measure</th>*@
                 <th>Cost</th>
                 <th>Quantity</th>
                 <th>Received Qty</th>
@@ -38,16 +38,16 @@
             @for (int i = 0; i < Model.PurchaseReceiptLines.Count; i++)
             {
                 @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].Id)
-                @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].ItemId)
-                @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].Description)
-                @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].UnitOfMeasurementId)
+                @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].Item)
+                @*@Html.HiddenFor(m => Model.PurchaseReceiptLines[i].Description)*@
+                @*@Html.HiddenFor(m => Model.PurchaseReceiptLines[i].UnitOfMeasurementId)*@
                 @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].Cost)
                 @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].Quantity)
                 @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].ReceiptQuantity)
                 @Html.HiddenFor(m => Model.PurchaseReceiptLines[i].PurchaseOrderLineId)
                 <tr>
-                    <td>@Model.PurchaseReceiptLines[i].Description</td>
-                    <td>@Model.PurchaseReceiptLines[i].UnitOfMeasurementId</td>
+                    <td>@Model.PurchaseReceiptLines[i].Item</td>
+                    @*<td>@Model.PurchaseReceiptLines[i].UnitOfMeasurementId</td>*@
                     <td>@Model.PurchaseReceiptLines[i].Cost</td>
                     <td>@Model.PurchaseReceiptLines[i].Quantity</td>
                     <td>@Model.PurchaseReceiptLines[i].ReceiptQuantity</td>

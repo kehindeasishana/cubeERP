@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Sales
 {
-//    [Table("SalesQuoteHeader")]
     public partial class SalesQuoteHeader : BaseEntity
     {
         public int CustomerId { get; set; }

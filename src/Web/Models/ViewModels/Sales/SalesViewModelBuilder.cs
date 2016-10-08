@@ -55,7 +55,7 @@ namespace Web.Models.ViewModels.Sales
                 model.SalesOrdersViewModel.Add(new SalesOrderViewModel()
                 {
                     Id = order.Id,
-                    Customer = order.Customer.Party.Name,
+                    Customer = order.Customer.Username,
                     PaymentTermId = order.PaymentTermId,
                     Date = order.Date,
                     Amount = order.SalesOrderLines.Sum(a => a.Amount)

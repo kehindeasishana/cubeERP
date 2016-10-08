@@ -22,24 +22,24 @@ namespace Services.TaxSystem
             _itemRepo = itemRepo;
         }
 
-        public List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, IEnumerable<PurchaseInvoiceLine> purchaseInvoiceLines)
-        {
-            var taxes = new List<KeyValuePair<int, decimal>>();
+        //public List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, IEnumerable<PurchaseInvoiceLine> purchaseInvoiceLines)
+        //{
+        //    var taxes = new List<KeyValuePair<int, decimal>>();
             
-            foreach(var line in purchaseInvoiceLines)
-            {
-                taxes.AddRange(GetPurchaseTaxes(vendorId, line.ItemId, line.Quantity, line.Cost.Value, line.Discount.Value));
-            }
+        //    foreach(var line in purchaseInvoiceLines)
+        //    {
+        //        taxes.AddRange(GetPurchaseTaxes(vendorId, line.ItemId, line.Quantity, line.Cost.Value, line.Discount.Value));
+        //    }
 
-            return taxes;
-        }
+        //    return taxes;
+        //}
 
-        public List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, int itemId, decimal quantity, decimal amount, decimal discount)
+        public List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, string item, decimal quantity, decimal amount, decimal discount)
         {
             decimal taxAmount = 0, amountXquantity = 0, discountAmount = 0, subTotalAmount = 0;
 
             var taxes = new List<KeyValuePair<int, decimal>>();
-            var item = _itemRepo.GetById(itemId);
+            //var item = _itemRepo.GetById(itemId);
 
             amountXquantity = amount * quantity;
 
@@ -65,17 +65,17 @@ namespace Services.TaxSystem
 
             foreach (var line in salesInvoiceLines)
             {
-                taxes.AddRange(GetSalesTaxes(customerId, line.ItemId, line.Quantity, line.Amount, line.Discount));
+                taxes.AddRange(GetSalesTaxes(customerId, line.Item, line.Quantity, line.Amount, line.Discount));
             }
 
             return taxes;
         }
 
-        public List<KeyValuePair<int, decimal>> GetSalesTaxes(int customerId, int itemId, decimal quantity, decimal amount, decimal discount)
+        public List<KeyValuePair<int, decimal>> GetSalesTaxes(int customerId, string item, decimal quantity, decimal amount, decimal discount)
         {
             decimal taxAmount = 0, amountXquantity = 0, discountAmount = 0, subTotalAmount = 0;
 
-            var item = _itemRepo.GetById(itemId);
+            //var item = _itemRepo.GetById(itemId);
             var customer = _customerRepo.GetById(customerId);
             var taxes = new List<KeyValuePair<int, decimal>>();
 

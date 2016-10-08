@@ -14,6 +14,9 @@ namespace Core.Domain.Financials
 
         public string Name { get; set; }
         public string NormalBalance { get; set; }
+        public string Description { get; set; }
+        public string AccountNo { get; set; }
+        public string AccountId { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
         //public virtual ICollection<AccountSubCategory> SubCategory { get; set; }
     }

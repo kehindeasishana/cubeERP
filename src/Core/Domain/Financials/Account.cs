@@ -3,22 +3,29 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Core.Domain.Items;
+using Core.Domain.Sales;
+using Core.Domain.Purchases;
+using Core.Domain.Employees;
 
 namespace Core.Domain.Financials
 {
     public partial class Account : BaseEntity
     {
+        private string newGuid;
+      
         public Account()
         {
-           
+            newGuid = Guid.NewGuid().ToString().Substring(0, Guid.NewGuid().ToString().IndexOf("-"));
+            //_guid = Guid.NewGuid();  
             JournalEntryLines = new HashSet<JournalEntryLine>();
           
         }
         public int AccountClassId { get; set; }
-      
-        [Required]
-        [StringLength(50)]
-        public string AccountCode { get; set; }
+
+        public virtual string AccountCode { get { return newGuid; } }
+        
+        //public string AccountCode { get; set; }
         [Required]
         [StringLength(200)]
         public string AccountName { get; set; }
@@ -27,7 +34,15 @@ namespace Core.Domain.Financials
         public virtual ICollection< AccountSubCategory> SubCategory { get; set; }
         public virtual AccountClass AccountClass { get; set; }
         public virtual ICollection<JournalEntryLine> JournalEntryLines { get; set; }
-
+        public virtual ICollection<Item> Items { get; set; }
+        public virtual ICollection<TaxAgency> TaxAgencies { get; set; }
+        public virtual ICollection<SalesInvoiceHeader> SalesInvoiceHeaders { get; set; }
+        public virtual ICollection<PurchaseInvoiceHeader> PurchaseInvoiceHeaders { get; set; }
+        public virtual ICollection<InventoryCatalog> InventoryCatalogs { get; set; }
+        public virtual ICollection<InventoryAdjustment> InventoryAdjustments { get; set; }
+        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeader { get; set; }
+        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<EmployeeType> EmployeeTypes { get; set; }
         [NotMapped]
         public decimal Balance { get { return GetBalance(); } }
         [NotMapped]

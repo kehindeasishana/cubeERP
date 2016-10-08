@@ -1,16 +1,304 @@
-﻿@model Web.Models.ViewModels.Sales.AddCustomer
+﻿@model Core.Domain.Sales.Customer
 @{
-    ViewBag.Title = "AddCustomer";
+    ViewBag.Title = "Add Customer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @using (Html.BeginForm())
 {
-    <div class="form-group">
-        <label class="control-label">Name</label>
-        @Html.TextBoxFor(m => m.Name)
+    <div class="portlet-body">
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#tab_general" data-toggle="tab">
+                        General Details
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab_meta" data-toggle="tab">
+                        Contact Info
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab_images" data-toggle="tab">
+                        Sales Info
+                      
+                    </a>
+                </li>
+               
+
+            </ul>
+            <div class="tab-content no-space">
+                <div class="tab-pane active" id="tab_general">
+                    <div class="form-body">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="text">Customer Code:</label>
+                                <input type="text" name="CustNo" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Customer ID:</label>
+                                <input type="text" name="Username" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">First Name:</label>
+                                <input type="text" name="FirstName" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Last Name:</label>
+                                <input type="text" name="LastName" class="form-control" id="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="text">Address:</label>
+                                <input type="text" name="Address" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Website:</label>
+                                <input type="text" name="Website" class="form-control" id="email">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                           
+                            <div class="form-group">
+                                <label for="text">Country:</label>
+                                <select name="Country" id="country_list" class="form-control">
+                                    <option value=""></option>
+                                    
+                                    <option value="NE">Niger</option>
+                                    <option value="NG">Nigeria</option>
+                                    <option value="NU">Niue</option>
+                                    
+                                    <option value="UG">Uganda</option>
+                                    <option value="UA">Ukraine</option>
+                                    <option value="AE">United Arab Emirates</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="US">United States</option>
+                                    <option value="UM">United States Minor Outlying Islands</option>
+                                   
+                                    <option value="ZW">Zimbabwe</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="text"> State:</label>
+                                <input type="text" name="State" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text"> City:</label>
+                                <input type="text" name="City" class="form-control" id="email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="text">Telephone:</label>
+                                <input type="text" name="Phone" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Mobile:</label>
+                                <input type="text" name="mobile" class="form-control" id="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="text">Email Address:</label>
+                                <input type="text" name="Email" class="form-control" id="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" name="SaveCustomer" />
+                            @*<button class="btn btn-primary"> Save All</button>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_meta">
+                    <div class="form-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="text">Company Name:</label>
+                                <input type="text" name="CompanyName" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">First Name:</label>
+                                <input type="text" name="FirstName" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Last Name:</label>
+                                <input type="text" name="LastName" class="form-control" id="email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="text">Job Title:</label>
+                                <input type="text" name="JobTitle" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Email:</label>
+                                <input type="text" name="Email" class="form-control" id="email">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="text"> Telephone No:</label>
+                                <input type="text" name="Phone" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text"> Mobile:</label>
+                                <input type="text" name="Mobile" class="form-control" id="email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="text">Gender:</label>
+                                <input type="text" name="Gender" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Mobile:</label>
+                                <input type="text" name="mobile" class="form-control" id="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="text">Notes:</label>
+                                <input type="text" name="Notes" class="form-control" id="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary"> Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab_images">
+                    <div class="form-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="text">Sales Rep:</label>
+                                <input type="text" name="SalesRep" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">GL Sales Account:</label>
+                                <input type="text" name="GLAccount" class="form-control" id="email">
+                            </div>
+                           
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="text">Open Purchase Order No:</label>
+                                <input type="text" name="OpenPONo" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="text">Ship Via:</label>
+                                <select name="ShipVia" id="ShipVia" class="form-control">
+                                    <option value="">Select Shipping Method...</option>
+
+                                    <option></option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="text">Resale No:</label>
+                                <input type="text" name="ResaleNo" class="form-control" id="email">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+               
+
+            </div>
+        </div>
+    </div>
+
+    @*<h2>Contact</h2>
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-default panel-body">
+        <div class="form-group">
+            <label class="col-md-3 control-label">First Name</label>
+            @Html.TextBoxFor(m => m.FirstName)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Last Name</label>
+            @Html.TextBoxFor(m => m.LastName)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Phone No</label>
+            @Html.TextBoxFor(m => m.Phone)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Fax</label>
+            @Html.TextBoxFor(m => m.Fax)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Email</label>
+            @Html.TextBoxFor(m => m.Email)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">WebSite</label>
+            @Html.TextBoxFor(m => m.Website)
+        </div>
+
+    </div>
+
+    <h2>Invoicing</h2>
+    <div class="panel panel-default panel-body">
+        <div class="form-group">
+            <label class="col-md-3 control-label">Accounts Receivable</label>
+            @Html.DropDownListFor(m => m.AccountsReceivableAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Sales Account</label>
+            @Html.DropDownListFor(m => m.SalesAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Sales Discount Account</label>
+            @Html.DropDownListFor(m => m.SalesDiscountAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Prompt Payment Discount Account</label>
+            @Html.DropDownListFor(m => m.PromptPaymentDiscountAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Customer Advances Account</label>
+            @Html.DropDownListFor(m => m.CustomerAdvancesAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" name="SaveCustomer" />
     </div>
+    <input type="hidden" id="dialogAddCustomerContactReturnValue" value="" />
+    <div id="addCustomerContact" style="display: none; clear: both;" />*@
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = "";
+        $("#addCustomerContact").dialog({
+            title: 'Modal',
+            autoOpen: false,
+            resizable: false,
+            width: 700,
+            height: 500,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(".ui-dialog-titlebar-close").hide();
+                $(this).load(url);
+            },
+            close: function () {
+                //var newOption = "<option value='" + result.contactid + "'>" + result.FirstName + "</option>";
+                //$("#PrimaryContactId").append(newOption);
+                HandlePopupResult($("#dialogReturnValue").val());
+            }
+        });
+        $("#AddCustomerContact").on("click", function (e) {
+            e.preventDefault();
+            url = $(this).attr('href');
+            $(".ui-dialog-title").html("Contact");
+            $("#addCustomerContact").dialog('open');
+            return false;
+        });
+    });
+
+    function HandlePopupResult(result) {
+        //var txtName = document.getElementById("txtName");
+        //txtName.value = result;
+    }
+</script>

@@ -10,12 +10,53 @@
 {
     <div class="panel panel-default panel-body">
         <div class="form-group">
+            <label class="col-md-2 control-label">Item Name</label>
+            @Html.TextBoxFor(m => m.Name )
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Selling Price </label>
+            @Html.TextBoxFor(m => m.SellPrice)
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Purchase Cost</label>
+            @Html.TextBoxFor(m => m.PurchaseCost)
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Purchase Description</label>
+            @Html.TextAreaFor(m => m.PurchaseDescription)
+        </div><br />
+        <div class="form-group">
+            <label class="col-md-2 control-label">Selling Description</label>
+            @Html.TextAreaFor(m => m.SellDescription)
+        </div>
+        <div class="form-group">
             <label class="col-md-2 control-label">Code</label>
             @Html.TextBoxFor(m => m.Code)
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">Description</label>
-            @Html.TextBoxFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description)
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Sales Account</label>
+            @Html.DropDownListFor(m => m.SalesAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Cost of Goods Account</label>
+            @Html.DropDownListFor(m => m.CostOfGoodsSoldAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div><br />
+        <div class="form-group">
+            <label class="col-md-2 control-label">Inventory Account</label>
+            @Html.DropDownListFor(m => m.InventoryAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div><br />
+        <div class="form-group">
+            <label class="col-md-2 control-label">Inventory Adjustment Account</label>
+            @Html.DropDownListFor(m => m.InventoryAdjustmentAccountId, Web.Models.ListHelper.GetCategoryList())
+        </div><br />
+       
+        <div class="form-group">
+            <label class="col-md-2 control-label">Item Category</label>
+            @Html.DropDownListFor(m => m.ItemCategoryId, Web.Models.ListHelper.GetItemCategoryList())
         </div>
         @*<div class="form-group">
             <label class="col-md-2 control-label">Item Type</label>

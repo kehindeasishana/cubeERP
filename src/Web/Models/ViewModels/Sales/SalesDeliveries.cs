@@ -48,11 +48,11 @@ namespace Web.Models.ViewModels.Sales
         /// <summary>
         /// Field for new line Item Id
         /// </summary>
-        public int? ItemId { get; set; }
+        public string Item { get; set; }
         /// <summary>
         /// Field for new line Measurement Id
         /// </summary>
-        public int? MeasurementId { get; set; }
+        //public int? MeasurementId { get; set; }
         /// <summary>
         /// Field for new line Quantity
         /// </summary>
@@ -70,8 +70,8 @@ namespace Web.Models.ViewModels.Sales
 
     public partial class SalesDeliveryLineViewModel
     {
-        public int? ItemId { get; set; }
-        public int? MeasurementId { get; set; }
+        public string Item { get; set; }
+        //public int? MeasurementId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Sales
 {
-//    [Table("SalesInvoiceLine")]
+
     public partial class SalesInvoiceLine : BaseEntity
     {
         public SalesInvoiceLine()
@@ -15,16 +15,17 @@ namespace Core.Domain.Sales
             SalesReceiptLines = new HashSet<SalesReceiptLine>();
         }
         public int SalesInvoiceHeaderId { get; set; }
-        public int ItemId { get; set; }
-        public int MeasurementId { get; set; }
+        public string Item { get; set; }
+        public string ItemDescription { get; set; }
+        //public int MeasurementId { get; set; }
         public int? InventoryControlJournalId { get; set; }
         public int? TaxId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Discount { get; set; }
         public decimal Amount { get; set; }
         public virtual SalesInvoiceHeader SalesInvoiceHeader { get; set; }
-        public virtual Item Item { get; set; }
-        public virtual Measurement Measurement { get; set; }
+        //public virtual Item Item { get; set; }
+        //public virtual Measurement Measurement { get; set; }
         public virtual InventoryControlJournal InventoryControlJournal { get; set; }
         //public virtual Tax Tax { get; set; }
 

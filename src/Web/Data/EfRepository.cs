@@ -147,7 +147,7 @@ namespace Data
             {
                 if (entity == null)
                     throw new ArgumentNullException("entity");
-
+                entity = this.Entities.Find(entity.Id);
                 this.Entities.Remove(entity);
 
                 this._context.SaveChanges();
@@ -165,6 +165,8 @@ namespace Data
                 throw fail;
             }
         }
+
+       
 
         /// <summary>
         /// Delete entities

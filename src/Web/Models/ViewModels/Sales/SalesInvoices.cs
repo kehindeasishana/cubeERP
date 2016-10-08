@@ -52,7 +52,7 @@ namespace Web.Models.ViewModels.Sales
         public IEnumerable<SelectListItem> Measurements { get; set; }
 
         #region Fields for new invoice item
-        public int ItemId { get; set; }
+        public string Item { get; set; }
         public int MeasurementId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Amount { get; set; }
@@ -63,7 +63,7 @@ namespace Web.Models.ViewModels.Sales
 
     public class AddSalesInvoiceLine
     {
-        public int ItemId { get; set; }
+        public string Item { get; set; }
         public int MeasurementId { get; set; }
         public decimal Quantity { get; set; }
         public decimal Amount { get; set; }

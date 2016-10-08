@@ -1,0 +1,59 @@
+﻿@model Core.Domain.TaxAgency
+
+@{
+    ViewBag.Title = "GetTaxAgency";
+    Layout = null;
+}
+
+<h2>Get Tax Agency</h2>
+
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Account.AccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Account.AccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Vendor.No)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vendor.No)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxAgencyId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaxAgencyId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxAgencyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaxAgencyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaxRate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditTaxAgency", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "ListTaxAgency")
+</p>

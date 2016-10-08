@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Services.Financial;
+using Core.Domain;
 namespace Web.Models.ViewModels.Sales
 {
     public class SalesLineItemsViewModel
@@ -34,11 +35,16 @@ namespace Web.Models.ViewModels.Sales
         public IList<SalesLineItemTaxViewModel> SalesLineItemsTaxes { get; set; }
 
         #region Fields for New Line Item
-        public string ItemId { get; set; }
-        public string ItemNo { get; set; }
+        public string Item { get; set; }
+        //public string ItemNo { get; set; }
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
+        public string ItemDescription { get; set; }
+        public string CustomerPO { get; set; }
+        public ShipVia ShipVia { get; set; }
+        public string SalesRep { get; set; }
+        public string SalesOrderNo { get; set; }
         #endregion
 
         private decimal ComputeSubTotal()
@@ -91,10 +97,14 @@ namespace Web.Models.ViewModels.Sales
 
         public int? Id { get; set; }
         public int CustomerId { get; set; }
-        public int ItemId { get; set; }
-        public string ItemNo { get; set; }
+        public string CustomerPO { get; set; }
+        public ShipVia ShipVia { get; set; }
+        public string SalesRep { get; set; }
+        public string SalesOrderNo { get; set; }
+        public string Item { get; set; }
+       // public string ItemNo { get; set; }
         public string ItemDescription { get; set; }
-        public string Measurement { get; set; }
+        //public string Measurement { get; set; }
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
@@ -119,8 +129,9 @@ namespace Web.Models.ViewModels.Sales
             decimal lineTaxAmount = 0;
             if (_financialService != null)
             {
-                var taxes = _financialService.ComputeOutputTax(CustomerId, ItemId, Quantity, Price, Discount);
-                lineTaxAmount = Math.Round(taxes.Sum(t => t.Value), 2);
+                var tax = _financialService.ComputeOutputTax(CustomerId,Item, Quantity,Price,Discount);
+               // var taxes = _financialService.ComputeOutputTax(CustomerId, Item, Quantity, Price, Discount);
+                lineTaxAmount = Math.Round(tax.Sum(t => t.Value), 2);
             }
             return lineTaxAmount;
         }

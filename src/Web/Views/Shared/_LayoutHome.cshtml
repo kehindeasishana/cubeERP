@@ -1,9 +1,190 @@
-﻿@{
-    Layout = null;
-}
+﻿
+@*<!DOCTYPE html>
+<html>
+<head>
+    @RenderSection("scripts", required: false)
+    <title>CubebarnERP| Home</title>
+    <link href="~/Scripts/theme/assets/global/css/css/boots.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/Scripts/theme/assets/global/css/css/bootstrapmedia.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/Scripts/theme/assets/global/css/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+    <meta name="keywords" content="From ERP to CRM, eCommerce Logistics To Supply chain Management  Electronic payment and CMS.   Use Cubebarn  in the cloud. Grow Your Business." />
+    <meta name="keywords" content="Supplychain ,  Cubebarn, business, apps, saas, cloud, insider, erp, business software" />
+
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script src="~/Scripts/theme/assets/global/js/jquery-1.11.1.min.js"></script>
+    <script src="~/Scripts/theme/assets/global/js/bootstrap.js"></script>
+    <!--fonts-->
+    <link href='//fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+    <!--fonts-->
+    <!--script-->
+    <script src="~/Scripts/theme/assets/global/js/modernizr.custom.97074.js"></script>
+    <script src="~/Scripts/theme/assets/global/js/jquery.chocolat.js"></script>
+    <link rel="stylesheet" href="~/Scripts/theme/assets/global/css/css/chocolat.css" type="text/css" media="screen">
+    <!--lightboxfiles-->
+    <script type="text/javascript">
+        $(function () {
+            $('.team a').Chocolat();
+        });
+    </script>
+    <style>
+        a {
+            font-family: inherit;
+            cursor: pointer !important;
+        }
+
+            a:hover {
+                text-decoration: none;
+                cursor: pointer !important;
+            }
+
+        ul {
+            list-style-type: none;
+        }
+    </style>
+    <script type="text/javascript" src="~/Scripts/theme/assets/global/js/jquery.hoverdir.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $(' #da-thumbs > li ').each(function () { $(this).hoverdir(); });
+
+        });
+    </script>
+    <!--script-->
+</head>
+    
+<body>
+  
+    <nav id="menu" class="navbar navbar-default navbar-fixed-top">
+        <div class="banner" id="home">
+            <div class="container body-content">
+                <div class="container">
+                    <div class="banner-grids">
+                        <div class="col-md-6 banner-grid">
+                            <img src="~/Scripts/theme/assets/global/img/Cube-barn-mockup.png" class="img-responsive" alt="" style="margin-top:35px;" />
+                        </div>
+                        <div class="col-md-6 banner-grid">
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                @RenderBody()
+            </div>
+        </div>
+            
+
+            <!-- /.container-fluid -->
+</nav>
+
+
+    <!--footer-->
+    <div class="facebook-section" id="contact">
+        <div class="container">
+            <div class="face-top">
+
+            </div>
+        </div>
+    </div>
+    <div class="footer-section">
+        <div class="container">
+            <div class="footer-grids">
+                <div class="col-md-7 footer-grid">
+                    <h4>subscribe</h4>
+                    <div class="footer-top">
+                        <form action="#" method="post">
+                            <div class="input-group">
+                                <input type="email" name="email" id="email" class="flat form-control" placeholder="Email">
+                                <span class="input-group-btn">
+                                    <button class="btn flat" style="background-color:#263911; color:#fff;">Subscribe</button>
+                                </span>
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 footer-grid pull-right">
+                    <h4>get in touch</h4>
+                    <p>294 Herbert Macaulay road</p>
+                    <p>Lagos,Nigeria. 23401.</p>
+                    <p>Telephone : +234 8093910965</p>
+                    <p>Telephone : +234 7037411553</p>
+
+                    <p>E-mail : <a href="mailto:info@cubebarn.com"> info@cubebarn.com</a></p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="copy-section">
+                <p>&copy; 2016 Appcentury Solutions. All rights reserved | Design by <a href="http://www.appcenturysolutions.com">Appcentury</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- Mass Mailing -->
+    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content flat">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <center><h4 class="modal-title" id="myModalLabel">Existing User</h4></center>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control flat" name="email" id="email" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control flat" name="password" id="password" required>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-left">
+                        <ul>
+                            <li><a href="sign-up.html">Register Now</a></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="flat btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="flat btn btn-success">Login</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--footer-->
+    <script>
+        $(function () {
+            $('a[href*=#]:not([href=#])').click(function () {
+                if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        $('html,body').animate({
+                            scrollTop: target.offset().top
+                        }, 1000);
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+
+
+</body>
+</html>*@
+
+
 <!DOCTYPE html>
 <html>
 <head>
+    @RenderSection("scripts", required: false)
     <title>CubebarnERP| Home</title>
     <link href="~/Scripts/theme/assets/global/css/css/boots.css" rel="stylesheet" type="text/css" media="all" />
     <link href="~/Scripts/theme/assets/global/css/css/bootstrapmedia.css" rel="stylesheet" type="text/css" media="all" />
@@ -59,48 +240,42 @@
 </head>
 <body>
     <!--header-->
-    <!--<div class="navbar-brand">
-
-
-    </div>-->
-    <!--<div >
-        <div > <img src="images/logo-bingo.png" height="84" width="84" alt=""> </div>
-    </div>-->
-    <nav id="menu" class="navbar navbar-default navbar-fixed-top">
-
+    <div class="header fixed" >
         <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <img src="~/Scripts/theme/assets/global/img/cube.png" class="img-responsive img-logo"  alt="">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <i class="sr-only">Toggle navigation</i>
+                            <i class="icon-bar"></i>
+                            <i class="icon-bar"></i>
+                            <i class="icon-bar"></i>
+                        </button>
+                        <div class="navbar-brand">
+                            <!--<h1><a href="index.html">CubebarnERP</a></h1> -->
 
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
+                            
+                        </div>
+                    </div>
 
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-                <a class="navbar-brand">
-                    <img src="~/Scripts/theme/assets/global/img/cube.png" height="90" width="200" alt=""</a>
-            </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav" style="margin-top: -10px;">
+                            <li><a href="#home">Home <i class="sr-only">(current)</i></a></li>
+                            <li><a href="#partners">Partners</a></li>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                            <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                <ul class="nav navbar-nav navbar-right">
-
-                    <li><a href="#home">Home <i class="sr-only">(current)</i></a></li>
-                    <li><a href="#partners">Partners</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    
-                    <li>@Html.ActionLink("Login", "Login", "Account")</li>
-
-                    <li><a href="#contact">Contact</a></li>
-
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
         </div>
-        <!-- /.container-fluid -->
-    </nav>
-
-
-
+    </div>
     <!--header-->
     <!--banner-->
     <div class="banner" id="home">
@@ -109,16 +284,13 @@
                 <div class="col-md-6 banner-grid">
                     <img src="~/Scripts/theme/assets/global/img/Cube-barn-mockup.png" class="img-responsive" alt="" style="margin-top:35px;" />
                 </div>
-                <div class="col-md-6 banner-grid">
+                <div class="col-md-6 banner-grid" style="margin-top:35px;">
                     <h3>CubebarnERP</h3>
                     <p>
                         Cubebarn is an Enterprise Resource Planning application solution that automates business processes and operations of an organization. It is very easy to use (user friendly) and fast to implement solution which empowers micro, small and medium scale enterprise. It automates the entire business operations making accountability possible .The solution has a Point of Sales, HRM, Inventory, Project management, Financial Accounting, Business Intelligence and Data mining,
                         Fleet management and Electronic payment solution for small and medium businesses Enterprise delivered from the cloud as a pay-per-use service.
                     </p>
-                  
-                    
                     <a href="@(Url.Action("Register", "Account"))" class="button btn btn-md flat" style="margin-bottom: 10px; margin-top: 1px;">get started</a>
-                    @*<a href="sign-up.html" class="button btn btn-md flat" style="margin-bottom: 10px; margin-top: 1px;">get started</a>*@
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -136,7 +308,7 @@
                     </div>
                     <div class="col-md-9 pull-right brilliant-grid">
                         <div class="col-md-3">
-                            <img src="~/Scripts/theme/assets/global/img/tally.png" alt="" width="150px">
+                            <img src="~/Scripts/theme/assets/global/img/Appcentury 1.jpg" alt="" width="150px">
                         </div>
 
                         <div class="col-md-3">
@@ -188,7 +360,7 @@
             </div>
         </div>
         <div class="brilliant-section" id="features" style="margin-top: 10px;">
-            <div class="container" style="margin-top:-50px;">
+            <div class="container" style="margin-top:-40px;">
                 <h2>Features</h2>
                 <h5>The full product features</h5>
                 <div class="brilliant-grids">
@@ -370,7 +542,7 @@
                                 <h4>Platinum</h4>
                             </div>
                             <div class="price-bottom">
-                                <h6><span>Call</span></h6>
+                                <h6>Call</span></h6>
                                 <ul>
                                     <li>Unlimited</li>
                                     <li>Point of Sale</li>
@@ -398,6 +570,7 @@
         <!--prices-->
     </div>
     <!--footer-->
+    @RenderBody()
     <div class="facebook-section" id="contact">
         <div class="container">
             <div class="face-top">
@@ -411,7 +584,7 @@
                 <div class="col-md-7 footer-grid">
                     <h4>subscribe</h4>
                     <div class="footer-top">
-                        <form action="#" method="post">
+                        <form action="#" method="">
                             <div class="input-group">
                                 <input type="email" name="email" id="email" class="flat form-control" placeholder="Email">
                                 <span class="input-group-btn">
@@ -424,7 +597,9 @@
                 </div>
                 <div class="col-md-3 footer-grid pull-right">
                     <h4>get in touch</h4>
-                    <p>294 Herbert Macaulay road</p>
+                    <p>No 13, Alabi Street</p>
+                    <p>Off Oguntona Crescent</p>
+                    <p>Gbagada Phase 1</p>
                     <p>Lagos,Nigeria. 23401.</p>
                     <p>Telephone : +234 8093910965</p>
                     <p>Telephone : +234 7037411553</p>
@@ -434,7 +609,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="copy-section">
-                <p>&copy; 2016 Appcentury Solutions. All rights reserved | Design by <a href="http://www.appcenturysolutions.com">Appcentury</a></p>
+                <p>&copy; 2016 Appcentury Solutions. All rights reserved | Design by <a href="http://www.appcenturysolutions.com">Appcentury Solutions</a></p>
             </div>
         </div>
     </div>

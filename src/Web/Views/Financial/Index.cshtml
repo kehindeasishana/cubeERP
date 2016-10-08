@@ -6,3 +6,39 @@
 
 <h2>Index</h2>
 
+<div style="width: 100px; margin: 0 auto ">
+    <table id=" myTable">
+        
+        <thead>
+            <tr>
+                <th>Account Code</th>
+                <th>Account Name</th>
+                <th>Account Category</th>
+                <th>Balance</th>
+                
+            </tr>
+        </thead>
+    </table>
+
+</div>
+
+<link href="//cdn.datatables.net/1.10.9/css/query.dataTables.min.css" rel=" stylesheet"/>
+<script src="//cdn/datatables.net/1.10.9/js/query.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTables({
+            "ajax": {
+                "url": "/Financial/loaddata",
+                "type": "GET",
+                "datatype":"json"
+            },
+            "columns": [
+                 { "data": "AccountCode", "autoWidth": true },
+                { "data": "AccountClassId", "autoWidth": true },
+                 { "data": "AccountName", "autoWidth": true },
+                  { "data": "Balance", "autoWidth": true },
+                  
+            ]
+        });
+    });
+</script>

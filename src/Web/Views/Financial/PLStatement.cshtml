@@ -3,11 +3,14 @@
    
     Layout = "~/Views/Shared/_Layout.cshtml";
    var netIncome = Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) - Model.Where(a => a.IsExpense == true).Sum(a => a.Amount);
-   var grossProfit = Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) - Model.Where(a => a.IsExpense == true && (a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost")).Sum(a => a.Amount); 
+   var s = (netIncome >= 0) ? string.Format("#,###.00", netIncome) : string.Format("#,##0.00;(#,##0.00)", netIncome);
+   var grossProfit = Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) - Model.Where(a => a.IsExpense == true && (a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost")).Sum(a => a.Amount);
+   var g = (grossProfit >= 0) ? string.Format("#,###.00", grossProfit) : string.Format("#,##0.00;(#,##0.00)", grossProfit);
    //var grossMargin= ( (Model.Where(a => a.IsExpense == false).Sum(a => a.Amount) -Model.Where(a => a.IsExpense == true && (a.AccountSubCategory == "Cost of Sales" || a.AccountSubCategory == "Cost of Goods Sold" || a.AccountSubCategory == "Cost")).Sum(a => a.Amount))
           //  /(Model.Where(a => a.IsExpense == false).Sum(a => a.Amount))) * 100;
    //var grossMargin = (grossProfit / netIncome) / 100;
    var costTotal = Model.Where(a => a.IsExpense == true && (a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost")).Sum(a => a.Amount);
+   var c = (costTotal >= 0) ? string.Format("#,###.00", costTotal) : string.Format("#,##0.00;(#,##0.00)", costTotal);
     ViewBag.Title = "P $ L Statement";
 }
 
@@ -37,8 +40,46 @@
        
     </table>
 </div>
-  
-        <div>
+  <div>
+    <table class="table">
+        <tr style="font-weight: bold;">
+
+            <td>Cost of Sales</td>
+            <td style="text-align: right">Amount</td>
+        </tr>
+        @foreach (var cost in Model.Where(a => a.AccountName == "Cost of Sales" || a.AccountName == "Cost of Goods Sold" || a.AccountName == "Cost"))
+        {
+            <tr>
+                <td>@cost.AccountSubCategory </td>
+
+                <td style="text-align: right">@cost.Amount</td>
+            </tr>
+        }
+        <tr style="font-weight: bold;">
+            <td>Cost of Sales Total</td>
+            <td style="text-align: right"> @costTotal.ToString(@c)</td>
+        </tr>
+
+        <tr style="font-weight: bold;">
+            <td>Gross Profit</td>
+            <td style="text-align:right">
+                @grossProfit.ToString(@g)
+
+            </td>
+
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr style="font-weight: bold;">
+            <td>Gross Margin</td>
+            <td style="text-align: right"></td>
+
+        </tr>
+    </table>
+</div>
+
+        @*<div>
             <table class="table">
                 <tr style="font-weight: bold;">
                     
@@ -55,13 +96,14 @@
                 }
                 <tr style="font-weight: bold;">
                     <td>Cost of Sales Total</td>
-                    <td style="text-align: right">@costTotal</td>
+                    <td style="text-align: right"> @costTotal.ToString(@c)</td>
                 </tr>
 
                 <tr style="font-weight: bold;">
                     <td>Gross Profit</td>
                     <td style="text-align:right">
-                        @grossProfit
+                        @grossProfit.ToString(@g)
+                        
                     </td>
 
                 </tr>
@@ -71,12 +113,12 @@
                 <tr style="font-weight: bold;">
                     <td>Gross Margin</td>
                     <td style="text-align: right">
-                        @*@grossMargin*@
+                       
                     </td>
                    
                 </tr>
             </table>
-        </div>
+        </div>*@
 
       <div>
         <table class="table">
@@ -102,6 +144,6 @@
 
    
     <div style="text-align: right; font-weight: bold; font-size: large">
-        Net Profit: @netIncome
+        Net Profit: @netIncome.ToString(@s)
     </div>
     @*</div>*@

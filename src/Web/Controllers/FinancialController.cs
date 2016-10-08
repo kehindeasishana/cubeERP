@@ -10,15 +10,30 @@ using PagedList;
 using PagedList.Mvc;
 using System.Web;
 using System.IO;
+using Data;
+using System.Data;
+using Core.Domain;
 
 namespace Web.Controllers
 {
     //[Authorize(Roles= "SuperAdmin, Account Manager, CFO, Accountant, Chief Financial Officer, Inventory Manager, Store Manager, Store Keeper")]
-   [Authorize(Roles = "SuperAdmin")]
+   [Authorize(Roles = "SuperAdmin, Accountant, CFO, Account Manager")]
     public class FinancialController : BaseController
     {
         private readonly IFinancialService _financialService;
-       
+       public ActionResult Index()
+        {
+            return View();
+        }
+       public ActionResult loaddata()
+       {
+           using (ApplicationContext db = new ApplicationContext ())
+           {
+               var data = db.Accounts.OrderBy(s => s.AccountName).ToList();
+               return Json(new { data = data },JsonRequestBehavior.AllowGet);
+           }
+           
+       }
        [Audit]
         public ActionResult Accounts(string sortOn, string orderBy,
         string pSortOn, string keyword, int? page)
@@ -107,7 +122,7 @@ StringComparison.CurrentCultureIgnoreCase))
             _financialService = financialService;
             
         }
-
+       [Audit]
         public ActionResult Company()
         {
             var company = _financialService.GetDefaultCompany();
@@ -120,27 +135,66 @@ StringComparison.CurrentCultureIgnoreCase))
         }
         [Audit]
         [HttpPost]
-        public ActionResult AddCompany(CompanySetUp model)
+        public ActionResult AddCompany(CompanySetUp model, HttpPostedFileBase upload)
         {
+
+            if (upload != null && upload.ContentLength > 0)
+            {
+                var avatar = new Files
+                {
+                    FileName = System.IO.Path.GetFileName(upload.FileName),
+                    FileType = FileType.Avatar,
+                    ContentType = upload.ContentType
+                };
+                using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                {
+                    avatar.Content = reader.ReadBytes(upload.ContentLength);
+                }
+                model.files = new List<Files> { avatar };
+            }
             _financialService.AddCompany(new CompanySetUp()
             {
                 CompanyName = model.CompanyName,
                 BusinessType = model.BusinessType,
                 ShortName = model.ShortName,
-                Logo = model.Logo
+                Logo = model.Logo,
+                Address = model.Address,
+                Email = model.Email,
+                Website = model.Website
             });
-            return RedirectToAction("Company");
+            return RedirectToAction("ListCompany");
         }
         public ActionResult EditCompany()
         {
             return View();
         }
         [Audit]
-        //[HttpPost]
-        //public ActionResult EditCompany()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public ActionResult EditCompany(CompanySetUp model)
+        {
+            var company = _financialService.GetCompanyById(model.Id);
+            company.Logo = model.Logo;
+            company.ShortName = model.ShortName;
+            company.Website = model.Website;
+            company.Email = model.Email;
+            company.CompanyName = model.CompanyName;
+            company.BusinessType = model.BusinessType;
+            company.Address = model.Address;
+            _financialService.EditCompany(company);
+            return RedirectToAction("ListCompany");
+        }
+        [Audit]
+        public ActionResult ListCompany()
+        {
+            var company = _financialService.ListCompany();
+            return View(company);
+        }
+       [Audit]
+       public ActionResult GetCompany(int id)
+        {
+            var company = _financialService.GetCompanyById(id);
+            return View(company);
+        }
         public ActionResult AddTax()
         {
             return View();
@@ -156,14 +210,32 @@ StringComparison.CurrentCultureIgnoreCase))
                 TaxRate = model.TaxRate,
                 TaxType = model.TaxType
             });
-            return View();
+            return RedirectToAction("Tax");
         }
+       [Audit]
         public ActionResult Tax()
         {
             var tax = _financialService.GetAllTax();
             return View(tax);
         }
         
+       public ActionResult EditTax()
+       {
+           return View();
+       }
+       [Audit ]
+       [HttpPost]
+       public ActionResult EditTax(Tax model)
+       {
+           var tax = _financialService.GetTax(model.Id);
+           tax.IsActive = model.IsActive;
+           tax.TaxCode = model.TaxCode;
+           tax.TaxName = model.TaxName;
+           tax.TaxRate = model.TaxRate;
+           tax.TaxType = model.TaxType;
+           _financialService.UpdateTax(tax);
+           return RedirectToAction("Tax");
+       }
         [Audit]
         public ActionResult Banks()
         {
@@ -194,7 +266,50 @@ StringComparison.CurrentCultureIgnoreCase))
         {
             return View();
         }
+        [Audit]
+       [HttpPost]
+       public ActionResult EditBank(Bank model)
+        {
+            var banks = _financialService.GetBank(model.Id);
+            banks.IsActive = model.IsActive;
+            banks.Name = model.Name;
+            banks.Number = model.Number;
+            banks.AccountId = model.AccountId;
+            banks.Address = model.Address;
+            banks.BankBranch = model.BankBranch;
+            _financialService.EditBank(banks);
+            return RedirectToAction("Banks");
+        }
+        //[Authorize]
+        public ActionResult DeleteBank(int id)
+        {
+            Bank bank = _financialService.GetBank(id);
+            return View(bank);
 
+        }
+       [Audit]
+        [HttpPost]
+        //[Authorize]
+        //[ValidateAntiForgeryToken]
+        public ActionResult DeleteBank(int id, Bank bank)
+        {
+            var banks = _financialService.GetBank(id);
+            _financialService.DeleteBank(banks);
+            return RedirectToAction("Banks");
+        }
+       [Audit]
+       public ViewResult GetBank(int id)
+       {
+           Bank bank = _financialService.GetBank(id);
+           return View(bank);
+
+       }
+        [Audit]
+        public ActionResult GetFinancialYears()
+        {
+            var year = _financialService.GetFinancialYears();
+            return View(year);
+        }
        [Audit]
        public ActionResult AddFinancialYear()
         {
@@ -206,57 +321,21 @@ StringComparison.CurrentCultureIgnoreCase))
          
            _financialService.AddFiscalYear(new FinancialYear()
                {
-                   FiscalYearName = model.FiscalYearName,
+                   //FiscalYearName = model.FiscalYearName,
                    FiscalYearCode = model.FiscalYearCode,
                    StartDate = model.StartDate,
                    EndDate = model.EndDate,
                    IsActive = model.IsActive
                });
-           return RedirectToAction("Index");
+           return RedirectToAction("GetFinancialYears");
        }
-        [Audit]
-        //public ActionResult Accounts(string SearchName, string SearchCode, string SearchCategory)
-        //{
-          
-        //    var accounts = _financialService.GetAccounts();
-           
-        //    var model = new Accounts();
+       [Audit]
+       public ViewResult GetFinancialYear(int id)
+       {
+           FinancialYear year = _financialService.GetFinancialYear(id);
+           return View(year);
 
-           
-        //    foreach(var account in accounts)
-        //    {
-        //        if (!String.IsNullOrEmpty(SearchName))
-        //        {
-        //            accounts = accounts.Where(s => s.AccountName.Contains(SearchName));
-        //            //return View(accounts.Where(x => x.AccountClass.Name == SearchName || SearchName == null).ToList());
-        //        }
-
-        //        else if (!String.IsNullOrEmpty(SearchCode))
-        //        {
-        //            accounts = accounts.Where(s => s.AccountCode.Contains(SearchCode));
-        //            //return View(accounts.Where(x => x.AccountCode == SearchCode || SearchCode == null).ToList());
-        //        }
-        //        else
-        //        {
-        //            accounts = accounts.Where(s => s.AccountClass.Name.Contains(SearchCategory));
-        //            //return View(accounts.Where(x => x.AccountName == SearchName || SearchName == null).ToList());
-        //        }
-          
-        //        model.AccountsListLines.Add(new AccountsListLine()
-        //        {
-        //            Id = account.Id,
-        //            AccountCode = account.AccountCode,
-        //            AccountName = account.AccountName,
-
-        //            Balance = account.Balance,
-        //            DebitBalance = account.DebitBalance,
-        //            CreditBalance = account.CreditBalance
-        //        });
-        //    }
-
-           
-        //    return View(model);
-        //}
+       }
         public ActionResult AddAccountClass()
         {
             return View();
@@ -269,11 +348,14 @@ StringComparison.CurrentCultureIgnoreCase))
             { 
                 Name = model.Name,
                 NormalBalance = model.NormalBalance,
+                Description = model.Description,
+                AccountId = model.AccountId,
+                AccountNo = model.AccountNo
             });
             
             return RedirectToAction("ViewAccountClass");
         }
-
+       [Audit]
         public ActionResult ViewAccountClass(AccountClass model)
         {
             var viewAccountClass = _financialService.ViewAccountClass();
@@ -281,6 +363,57 @@ StringComparison.CurrentCultureIgnoreCase))
             return View(viewAccountClass);
            
         }
+
+       public ActionResult EditAccountClass(int id)
+       {
+           return View(this._financialService.GetAccountClass(id));
+       }
+       [Audit]
+       [HttpPost, ActionName("EditAccountClass")]
+      
+       public ActionResult EditAccountClass(AccountClass model)
+       {
+
+           var accountClass = _financialService.GetAccountClass(model.Id);
+           accountClass.Name = model.Name;
+           accountClass.NormalBalance = model.NormalBalance;
+           accountClass.AccountNo = model.AccountNo;
+           accountClass.AccountId = model.AccountId;
+           accountClass.Description = model.Description;
+           _financialService.EditAccountClass(accountClass);
+           
+
+           return RedirectToAction("ViewAccountClass");
+       }
+       [Audit]
+       [Authorize]
+       public ViewResult GetAccountClass(int id)
+       {
+           //AccountingEntry account = AccountRepo.GetById(id);
+           AccountClass accountClass = _financialService.GetAccountClass(id);
+
+           return View(accountClass);
+
+       }
+       [Audit]
+       [Authorize]
+       public ActionResult DeleteAccountClass(int id)
+       {
+           AccountClass accountClass = _financialService.GetAccountClass(id);
+
+           return View(accountClass);
+
+       }
+
+       [HttpPost, ActionName("DeleteAccountClass")]
+       [Authorize]
+       [ValidateAntiForgeryToken]
+       public ActionResult DeleteAccountClass(int id, AccountClass accountClass)
+       {
+           var accountType = _financialService.GetAccountClass(id);
+           _financialService.DeleteAccountClass(accountType);
+           return RedirectToAction("ViewAccountClass");
+       }
         public ActionResult AddAccount()
         {
             return View(new AddAccountViewModel());
@@ -292,7 +425,7 @@ StringComparison.CurrentCultureIgnoreCase))
         {
             Account account = new Account()
             {
-                AccountCode = model.AccountCode,
+                //AccountCode = model.AccountCode,
                 AccountName = model.AccountName,
                 AccountClassId = model.AccountClass,
                 Description = model.Description
@@ -310,7 +443,7 @@ StringComparison.CurrentCultureIgnoreCase))
             Models.ViewModels.Financials.EditAccountViewModel model = new Models.ViewModels.Financials.EditAccountViewModel()
             {
                 Id = account.Id,
-                AccountCode = account.AccountCode,
+                //AccountCode = account.AccountCode,
                 AccountName = account.AccountName,
                 AccountClass = account.AccountClass.Name,
                
@@ -328,7 +461,7 @@ StringComparison.CurrentCultureIgnoreCase))
         {
             var account = _financialService.GetAccounts().Where(a => a.Id == model.Id).FirstOrDefault();
 
-            account.AccountCode = model.AccountCode;
+            //account.AccountCode = model.AccountCode;
             account.AccountName = model.AccountName;
            
             _financialService.UpdateAccount(account);
@@ -345,7 +478,7 @@ StringComparison.CurrentCultureIgnoreCase))
                 model.AccountsListLines.Add(new Models.ViewModels.Financials.AccountsListLine()
                 {
                     Id = account.Id,
-                    AccountCode = account.AccountCode,
+                    //AccountCode = account.AccountCode,
                     AccountName = account.AccountName,
                     Balance = account.Balance
                 });
@@ -432,7 +565,9 @@ StringComparison.CurrentCultureIgnoreCase))
 
                     }
                     break;
-             
+
+                
+
                 case "Date":
                     if (orderBy.Equals("desc"))
                     {
@@ -459,15 +594,15 @@ StringComparison.CurrentCultureIgnoreCase))
                     }
                     break;
 
-                case "AccountCode":
+                case "AccountName":
                     if (orderBy.Equals("desc"))
                     {
-                        journals = journals.OrderByDescending(p => p.Account.AccountCode);
+                        journals = journals.OrderByDescending(p => p.Account.AccountClass.Name);
                         //list = list.OrderByDescending(p => p.Age);
                     }
                     else
                     {
-                        journals = journals.OrderBy(p => p.Account.AccountCode);
+                        journals = journals.OrderBy(p => p.Account.AccountClass.Name);
                         // list = list.OrderBy(p => p.Age);
                     }
                     break;
@@ -510,9 +645,54 @@ StringComparison.CurrentCultureIgnoreCase))
            
 
           // return RedirectToAction("Accounts");
-           return RedirectToAction("SubCategories");
+           return RedirectToAction("Subcategories");
+       }
+       public ActionResult EditSubCategory(int id)
+       {
+           return View(this._financialService.GetSubCategoryById(id));
+       }
+       [Audit]
+       [HttpPost, ActionName("EditSubcategory")]
+       //[FormValueRequiredAttribute("UpdateSubCategory")]
+       public ActionResult EditSubCategory(AccountSubCategory model)
+       {
+           
+           var subCategory = _financialService.GetSubCategoryById(model.Id);
+           subCategory.AccountSubCategoryName = model.AccountSubCategoryName;
+           subCategory.AccountId = model.AccountId;
+           subCategory.Description = model.Description;
+            _financialService.EditAccountSubCategory(subCategory);
+           
+           return RedirectToAction("Subcategories");
+       }
+       [Authorize]
+       public ViewResult ViewSubCategory(int id)
+       {
+           //AccountingEntry account = AccountRepo.GetById(id);
+          AccountSubCategory subCategory =  _financialService.GetSubCategoryById(id);
+           
+           return View(subCategory);
+
        }
 
+       [Authorize]
+       public ActionResult DeleteSubCategory(int id)
+       {
+           AccountSubCategory subCategory = _financialService.GetSubCategoryById(id);
+           
+           return View(subCategory);
+
+       }
+
+       [HttpPost, ActionName("DeleteSubCategory")]
+       [Authorize]
+       [ValidateAntiForgeryToken]
+       public ActionResult DeleteSubCategory(int id, AccountSubCategory subCategory)
+       {
+           var subCategories = _financialService.GetSubCategoryById(id);
+           _financialService.DeleteSubCategory(subCategories);
+           return RedirectToAction("Subcategories");
+       }
        [Audit]
        public ActionResult Subcategories()
        {
@@ -522,10 +702,81 @@ StringComparison.CurrentCultureIgnoreCase))
        }
         public ActionResult AddJournalEntry()
         {
+            //ApplicationContext db = new ApplicationContext();
+            //AccountClass accountClass = new AccountClass();
+            //accountClass.Name = new List<Account>().ToString();
+            //accountClass.Name = GetAllAccountCategory().ToString();
+            
+            //return View(accountClass);
+
             var model = new AddJournalEntry();
             return View(model);
         }
-       
+
+        [HttpPost]
+        public ActionResult GetCategoryById(int id)
+        {
+            ApplicationContext db = new ApplicationContext();
+            List<AccountSubCategory> accountSubCategory = db.AccountSubCategory.Where(s=>s.AccountId == id).ToList();
+            //Models.TheDataContext db = new Models.TheDataContext();
+            //List<Models.Model> models = db.Models.Where(p => p.MakeID == id).ToList();
+
+            return Json(accountSubCategory);
+        }
+
+        //[HttpPost]
+        //public ActionResult GetCategoryById(string Id)
+        //{
+        //    //List<Accounts> objcity = new List<Accounts>();
+        //    List<SelectListItem> accountCategory = new List<SelectListItem>();
+        //    using (ApplicationContext db = new ApplicationContext())
+        //    {
+        //        accountCategory = GetAllAccountCategory().Where(m => m.Value.Equals(Id)).ToList();
+        //        SelectList obgcity = new SelectList(accountCategory, "AccountName", "Id");
+        //        return Json(obgcity);
+        //    }
+
+        //}
+        //public List<SelectListItem> GetAllAccounts()
+        //{
+
+        //    List<SelectListItem> account = new List<SelectListItem>();
+        //    using (ApplicationContext db = new ApplicationContext())
+        //    {
+        //        var query = from u in db.Accounts select u;
+        //        if (query.Count() > 0)
+        //        {
+        //            foreach (var v in query)
+        //            {
+        //                account.Add(new SelectListItem { Text = v.AccountName, Value = v.Id.ToString() });
+        //            }
+        //        }
+        //        ViewBag.Accounts = account;
+        //    }
+        //    return account;
+        //}
+
+        //public List<SelectListItem> GetAllAccountCategory()
+        //{
+        //    // List<AccountSubCategory>accountCategory = new List<AccountSubCategory>().ToList();
+        //    //accountCategory.Add(new AccountSubCategory { AccountSubCategoryName = acc, Id});
+        //    List<SelectListItem> accountCategory = new List<SelectListItem>();
+        //    using (ApplicationContext db = new ApplicationContext())
+        //    {
+        //        var query = from u in db.AccountSubCategory select u;
+        //        if (query.Count() > 0)
+        //        {
+        //            foreach (var v in query)
+        //            {
+        //                accountCategory.Add(new SelectListItem { Text = v.AccountSubCategoryName, Value = v.Id.ToString() });
+        //            }
+        //        }
+        //        ViewBag.AccountSubCategory = accountCategory;
+        //    }
+        //    return accountCategory;
+        //}
+
+      
 
         [Audit]
         [HttpPost, ActionName("AddJournalEntry")]
@@ -540,7 +791,7 @@ StringComparison.CurrentCultureIgnoreCase))
                 DrCr = model.DrCr,
                 Date = model.Date,
                 Amount= model.Amount,
-                Memo = model.Memo,
+                Description = model.Memo,
                 SubCategoryId = model.SubCategoryId
             };
            
@@ -573,7 +824,7 @@ StringComparison.CurrentCultureIgnoreCase))
 
             var model = new AddJournalEntry();
             model.Date = je.Date;
-            model.Memo = je.Memo;
+            model.Memo = je.Description;
             model.ReferenceNo = je.ReferenceNo;
             model.Id = je.Id;
             //model.JournalEntryId = je.Id;
@@ -593,7 +844,7 @@ StringComparison.CurrentCultureIgnoreCase))
             var journalEntry = _financialService.GetJournalEntry(model.Id);
 
             journalEntry.Date = model.Date;
-            journalEntry.Memo = model.Memo;
+            journalEntry.Description = model.Memo;
             journalEntry.ReferenceNo = model.ReferenceNo;
 
             _financialService.UpdateJournalEntry(journalEntry);
@@ -631,7 +882,7 @@ StringComparison.CurrentCultureIgnoreCase))
             var journalEntry = new JournalEntryLine()
             {
                 Date = model.Date,
-                Memo = model.Memo,
+                Description = model.Memo,
                 ReferenceNo = model.ReferenceNo,
                 
             };
@@ -639,7 +890,7 @@ StringComparison.CurrentCultureIgnoreCase))
             _financialService.AddJournalEntry(journalEntry);
             return RedirectToAction("JournalEntries");
         }
-
+       [Audit]
         public ActionResult TrialBalance()
         {
             var model = _financialService.TrialBalance();

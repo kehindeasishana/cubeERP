@@ -1,4 +1,5 @@
-﻿@model System.Data.DataTable
+﻿@*@model System.Data.DataTable*@
+@model List<Core.Domain.Financials.FileUploadViewModel>
 @using System.Data;
 @{
     ViewBag.Title = "AddBatchUpload";
@@ -7,16 +8,57 @@
 
 <h2>Add Batch Upload</h2>
 
-@*@using (Html.BeginForm("AddBatchUpload","",FormMethod.Post, new {enctype="multipart/form-data"})){ 
+<table class="table table-striped table-hover">
+ <tr>
+     <th>Account Id</th>
+     <td>Sub Category Id</td>
+     <th>Amount</th>
+     <th>Date</th>
+     <th>Description</th>
+     <th>Reference No</th>
+     <th>Dr/Cr</th>
+     
+ </tr>
+    @if (Model != null)
+    {
+        foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.AccountId</td>
+                <td>@c.SubCategoryId</td>
+                <td>@c.Amount</td>
+                <td>@c.Date.ToShortDateString()</td>
+                <td>@c.Description</td>
+                <td>@c.ReferenceNo</td>
+                <td>@c.DrCr</td>
 
-<input type="file" name="FileUpload" />
-<input type="submit" name="Submit" id="Submit" value="Upload" />
+            </tr>
+        }
+    }
+   
+</table>
 
-}   
 
-<p>@Html.Encode(ViewData["Feedback"])</p>*@
 
-@using (Html.BeginForm("AddBatchUpload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@*<form action="" method="post" enctype="multipart/form-data">
+    
+</form>*@
+
+@using (Html.BeginForm("AddBatchUpload", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <table style="margin-top:150px">
+        <tr>
+            <td><label for=" file">File Name</label></td>
+            <td><input type="file" name="upload" id="upload" /></td>
+            <td><input type="submit" value="Upload" id=" submit"/></td>
+        </tr>
+    </table>
+}
+
+    @*<p>@Html.Encode(ViewData["Feedback"])</p>*@
+
+@*@using (Html.BeginForm("AddBatchUpload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
@@ -28,30 +70,32 @@
     <div class="form-group">
         <input type="submit" value="Upload" name=" Submit" class="btn btn-default" />
     </div>
-    <p>@Html.Encode(ViewData["Feedback"])</p>
-    if (Model != null)
-    {
-        <table>
-            <thead>
+
+
+}
+
+<p>@Html.Encode(ViewData["Feedback"])</p>
+@if (Model != null)
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                @foreach (DataColumn col in Model.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.Rows)
+            {
                 <tr>
                     @foreach (DataColumn col in Model.Columns)
                     {
-                        <th>@col.ColumnName</th>
+                        <td>@row[col.ColumnName]</td>
                     }
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (DataRow row in Model.Rows)
-                {
-                    <tr>
-                        @foreach (DataColumn col in Model.Columns)
-                        {
-                            <td>@row[col.ColumnName]</td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-
-}
+            }
+        </tbody>
+    </table>
+}*@

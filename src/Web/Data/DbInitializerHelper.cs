@@ -281,9 +281,9 @@ namespace Data
                     string accountCode = row["AccountCode"].ToString();
                     string parentAccountCode = row["ParentAccountCode"].ToString();
 
-                    var account = _context.Accounts.Where(a => a.AccountCode == accountCode).FirstOrDefault();
+                    var account = _context.Accounts.Where(a => a.AccountCode.ToString() == accountCode).FirstOrDefault();
                     _context.Set<Account>().Attach(account);
-                    var parentAccount = _context.Accounts.Where(a => a.AccountCode == parentAccountCode).FirstOrDefault();
+                    var parentAccount = _context.Accounts.Where(a => a.AccountCode.ToString() == parentAccountCode).FirstOrDefault();
                                  
                 }
                 var accounts = _context.Accounts.ToList();
@@ -302,8 +302,8 @@ namespace Data
         {
             // NOTE: each tax should have its own tax account.
 
-            var salesTaxAccount = _context.Accounts.Where(a => a.AccountCode == "20300").FirstOrDefault();
-            var purchaseTaxAccount = _context.Accounts.Where(a => a.AccountCode == "50700").FirstOrDefault();
+            var salesTaxAccount = _context.Accounts.Where(a => a.AccountCode.ToString() == "20300").FirstOrDefault();
+            var purchaseTaxAccount = _context.Accounts.Where(a => a.AccountCode.ToString() == "50700").FirstOrDefault();
 
             //var vat5 = new Tax()
             //{
@@ -424,18 +424,18 @@ namespace Data
             vendor.AccountsPayableAccountId = _context.Accounts.Where(a => a.AccountName == "Accounts Payable").FirstOrDefault().Id;
             vendor.PurchaseAccountId = _context.Accounts.Where(a => a.AccountName == "Purchase A/C").FirstOrDefault().Id;
             vendor.PurchaseDiscountAccountId = _context.Accounts.Where(a => a.AccountName == "Purchase Discounts").FirstOrDefault().Id;
-            vendor.Party = vendorParty;
+            //vendor.Party = vendorParty;
 
             Contact primaryContact = new Contact();
             primaryContact.ContactType = ContactTypes.Vendor;
             primaryContact.FirstName = "Mary";
             primaryContact.LastName = "Walter";
 
-            primaryContact.Party = new Party();
-            primaryContact.Party.Name = "Mary Walter";
-            primaryContact.Party.PartyType = PartyTypes.Contact;
+            //primaryContact.Party = new Party();
+            //primaryContact.Party.Name = "Mary Walter";
+            //primaryContact.Party.PartyType = PartyTypes.Contact;
 
-            vendor.PrimaryContact = primaryContact;                        
+            //vendor.PrimaryContact = primaryContact;                        
 
             _context.Vendors.Add(vendor);
 
@@ -446,10 +446,10 @@ namespace Data
 
         public  static Customer InitCustomer()
         {
-            var accountAR = _context.Accounts.Where(e => e.AccountCode == "10120").FirstOrDefault();
-            var accountSales = _context.Accounts.Where(e => e.AccountCode == "40100").FirstOrDefault();
-            var accountAdvances = _context.Accounts.Where(e => e.AccountCode == "20120").FirstOrDefault();
-            var accountSalesDiscount = _context.Accounts.Where(e => e.AccountCode == "40400").FirstOrDefault();
+            var accountAR = _context.Accounts.Where(e => e.AccountCode.ToString() == "10120").FirstOrDefault();
+            var accountSales = _context.Accounts.Where(e => e.AccountCode.ToString() == "40100").FirstOrDefault();
+            var accountAdvances = _context.Accounts.Where(e => e.AccountCode.ToString() == "20120").FirstOrDefault();
+            var accountSalesDiscount = _context.Accounts.Where(e => e.AccountCode.ToString() == "40400").FirstOrDefault();
 
             Party customerParty = new Party();
             customerParty.Name = "ABC Customer";
@@ -457,24 +457,24 @@ namespace Data
             customerParty.IsActive = true;
 
             Customer customer = new Customer();
-            customer.No = "1";
+            customer.CustNo = "1";
             customer.AccountsReceivableAccountId = accountAR != null ? (int?)accountAR.Id : null;
             customer.SalesAccountId = accountSales != null ? (int?)accountSales.Id : null;
             customer.CustomerAdvancesAccountId = accountAdvances != null ? (int?)accountAdvances.Id : null;
             customer.SalesDiscountAccountId = accountSalesDiscount != null ? (int?)accountSalesDiscount.Id : null;
             //customer.TaxGroupId = _context.TaxGroups.Where(tg => tg.Description == "VAT").FirstOrDefault().Id;
-            customer.Party = customerParty;
+            //customer.Party = customerParty;
 
             Contact primaryContact = new Contact();
             primaryContact.ContactType = ContactTypes.Customer;
             primaryContact.FirstName = "John";
             primaryContact.LastName = "Doe";
 
-            primaryContact.Party = new Party();
-            primaryContact.Party.Name = "John Doe";
-            primaryContact.Party.PartyType = PartyTypes.Contact;
+            //primaryContact.Party = new Party();
+            //primaryContact.Party.Name = "John Doe";
+            //primaryContact.Party.PartyType = PartyTypes.Contact;
 
-            customer.PrimaryContact = primaryContact;
+            //customer.PrimaryContact = primaryContact;
 
             _context.Customers.Add(customer);
             _context.SaveChanges();
@@ -491,11 +491,11 @@ namespace Data
             _context.SaveChanges();
 
             // Accounts = Sales A/C (40100), Inventory (10800), COGS (50300), Inv Adjustment (50500), Item Assm Cost (10900)
-            var sales = _context.Accounts.Where(a => a.AccountCode == "40100").FirstOrDefault();
-            var inventory = _context.Accounts.Where(a => a.AccountCode == "10800").FirstOrDefault();
-            var invAdjusment = _context.Accounts.Where(a => a.AccountCode == "50500").FirstOrDefault();
-            var cogs = _context.Accounts.Where(a => a.AccountCode == "50300").FirstOrDefault();
-            var assemblyCost = _context.Accounts.Where(a => a.AccountCode == "10900").FirstOrDefault();
+            var sales = _context.Accounts.Where(a => a.AccountCode.ToString() == "40100").FirstOrDefault();
+            var inventory = _context.Accounts.Where(a => a.AccountCode.ToString() == "10800").FirstOrDefault();
+            var invAdjusment = _context.Accounts.Where(a => a.AccountCode.ToString() == "50500").FirstOrDefault();
+            var cogs = _context.Accounts.Where(a => a.AccountCode.ToString() == "50300").FirstOrDefault();
+            var assemblyCost = _context.Accounts.Where(a => a.AccountCode.ToString() == "10900").FirstOrDefault();
 
             _context.ItemCategories.Add(new ItemCategory()
             {
@@ -515,7 +515,7 @@ namespace Data
                 Price = 350,
                 SmallestMeasurement = _context.Measurements.Where(m => m.Code == "MO").FirstOrDefault(),
                 SellMeasurement = _context.Measurements.Where(m => m.Code == "MO").FirstOrDefault(),
-                SalesAccount = _context.Accounts.Where(a => a.AccountCode == "40200").FirstOrDefault(),
+                SalesAccount = _context.Accounts.Where(a => a.AccountCode.ToString() == "40200").FirstOrDefault(),
                 No = "1"
             });
 
@@ -604,7 +604,7 @@ namespace Data
         {
             var bank = new Bank()
             {
-                AccountId = _context.Accounts.Where(a => a.AccountCode == "10111").FirstOrDefault().Id,
+                AccountId = _context.Accounts.Where(a => a.AccountCode.ToString() == "10111").FirstOrDefault().Id,
                 Name = "General Fund",
                 Type = BankTypes.CheckingAccount,
                 BankBranch = "GFB",
@@ -617,7 +617,7 @@ namespace Data
 
             bank = new Bank()
             {
-                AccountId = _context.Accounts.Where(a => a.AccountCode == "10113").FirstOrDefault().Id,
+                AccountId = _context.Accounts.Where(a => a.AccountCode.ToString() == "10113").FirstOrDefault().Id,
                 Name = "Petty Cash Account",
                 Type = BankTypes.CashAccount,
                 IsDefault = false,

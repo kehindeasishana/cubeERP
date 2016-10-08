@@ -23,8 +23,8 @@ namespace Web.Models.ViewModels.Purchases
         public IList<PurchaseLineItemTaxViewModel> PurchaseLineItemsTaxes { get; set; }
 
         #region Fields for New Line Item
-        public string ItemId { get; set; }
-        public string ItemNo { get; set; }
+        public string Item { get; set; }
+        public string ItemDescription { get; set; }
         public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         #endregion
@@ -64,15 +64,15 @@ namespace Web.Models.ViewModels.Purchases
         { }
 
         public int? Id { get; set; }
-        public int ItemId { get; set; }
-        public string ItemNo { get; set; }
+        public string Item { get; set; }
+        //public string ItemNo { get; set; }
         public string ItemDescription { get; set; }
         public string Measurement { get; set; }
         public decimal Quantity { get; set; }
         public decimal Received { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get { return ComputeLineTotal(); } }
-
+        public decimal Discount { get; set; }
         private decimal ComputeLineTotal()
         {
             return (Quantity * Price);

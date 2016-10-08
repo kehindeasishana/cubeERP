@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Items
 {
-//    [Table("ItemCategory")]
+
     public partial class ItemCategory : BaseEntity
     {
         public ItemCategory()
@@ -21,6 +21,7 @@ namespace Core.Domain.Items
         public int? AdjustmentAccountId { get; set; }
         public int? AssemblyAccountId { get; set; }
         public string Name { get; set; }
+        public string Code { get; set; }
         public virtual Measurement Measurement { get; set; }
         public virtual Account SalesAccount { get; set; }
         public virtual Account InventoryAccount { get; set; }

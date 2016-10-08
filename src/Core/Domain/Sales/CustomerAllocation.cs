@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Sales
 {
-//    [Table("CustomerAllocation")]
     public partial class CustomerAllocation : BaseEntity
     {
         public CustomerAllocation()

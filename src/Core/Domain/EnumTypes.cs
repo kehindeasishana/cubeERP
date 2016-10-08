@@ -6,10 +6,78 @@ namespace Core.Domain
         Liabilities = 2,
         Equity = 3,
         Revenue = 4,
-        Expense = 5,
+        Expense = 5
+        
+    }
+    public enum Gender
+    {
+        Male = 1,
+        Female = 2
+    }
+    public enum TaxOnFreight
+    {
+        Yes = 1,
+        No = 2
+    }
+    public enum CalculateTax
+    {
+        SingleRate = 1,
+        Formula = 2
+    }
+    public enum MaritalStatus
+    {
+        Single = 1,
+        Married = 2,
+        Divorced = 3,
+        Separated = 4
+    }
+    public enum FileType
+    {
+        Avatar = 1, Photo
+    }
+    //public enum ExitType
+    //{
+    //    Resignation = 1,
+    //    Termination = 2,
+    //    Transfer = 3
+    //}
+    //public enum ChangeStatus
+    //{
+    //    Employee = 1,
+    //    Intern = 2,
+    //    Contract = 3,
+    //    Permanent =  4,
+    //    NYSC = 5
+    //}
+    public enum ItemClass
+    {
+        StockItem = 1,
+        MasterStockItem = 2,
+        SerializedStockItem = 3,
+        Service = 4,
+        Labour = 5,
+        Assembly = 6,
+        SerializedAssembly = 7,
+        ActivityItem = 8,
+        ChargeItem = 9,
+        NonStockItem = 10,
+        DescriptionOnly = 11
+    }
+    public enum Producttype
+    {
+        Consumable = 1,
+        Service = 2,
+        StockableProduct = 3
+    }
+    public enum ShipVia
+    {
+        Airbone = 1,
+        Courier = 2,
+        HandDeliver = 3,
+        CustomerPickUp = 4,
+        UPS = 5,
         //Temporary = 6
     }
-
     public enum DocumentTypes
     {
         SalesQuote = 1,
@@ -40,7 +108,7 @@ namespace Core.Domain
 
     public enum DrOrCrSide
     {
-        NA = 0,
+        //NA = 0,
         Dr = 1,
         Cr = 2
     }
@@ -128,7 +196,7 @@ namespace Core.Domain
 
     public enum PaymentTypes
     {
-        Prepaymnet = 1,
+        Prepayment = 1,
         Cash,
         AfterNoOfDays,
         DayInTheFollowingMonth

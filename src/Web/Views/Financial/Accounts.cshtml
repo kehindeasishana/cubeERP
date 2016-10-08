@@ -50,9 +50,12 @@
     </div> 
 }
     </div>
-<h2>Charts of Account</h2>
+<p>
+    <h2>@Html.ActionLink("Add Account", "AddAccount") </h2>
+   
+</p>
+<h3>Charts of Account</h3>
 
-@Html.ActionLink("Add Account", "AddAccount")
 
 <table class="table">
 
@@ -106,8 +109,8 @@
                 <td>
                     @Html.DisplayFor(modelitem => account.AccountCode)
             </td>
+                <td>@Html.DisplayFor(modelitem => account.AccountClass.Name)</td>
                 <td>@Html.DisplayFor(modelitem => account.AccountName)</td>
-                <td>@Html.DisplayFor(modelitem=> account.AccountClass.Name)</td>
                 <td>@Html.DisplayFor(modelitem => account.Balance)</td>
             </tr>
         }

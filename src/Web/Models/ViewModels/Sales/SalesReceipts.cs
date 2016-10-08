@@ -50,8 +50,9 @@ namespace Web.Models.ViewModels.Sales
         public IList<SalesInvoiceHeader> CustomerOutstandingSalesInvoices { get; set; }
 
         #region Fields to add new receipt
-        public int? ItemId { get; set; }
-        public int? MeasurementId { get; set; }
+        public string Item { get; set; }
+        //public int? MeasurementId { get; set; }
+        public decimal? Price { get; set; }
         public decimal? Quantity { get; set; }
         public decimal? Discount { get; set; }
         public decimal? Amount { get; set; }
@@ -64,9 +65,10 @@ namespace Web.Models.ViewModels.Sales
     {
         public string RowId { get; set; }
         public int? SalesInvoiceLineId { get; set; }
-        public int? ItemId { get; set; }
+        public string Item { get; set; }
+        public decimal? Price { get; set; }
         public int? AccountToCreditId { get; set; }
-        public int? MeasurementId { get; set; }
+       // public int? MeasurementId { get; set; }
         public decimal? Quantity { get; set; }
         public decimal? Discount { get; set; }
         public decimal? Amount { get; set; }

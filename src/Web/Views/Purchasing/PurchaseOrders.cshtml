@@ -1,21 +1,20 @@
 ﻿@model Web.Models.ViewModels.Purchases.PurchaseOrders
 
 @{
-    ViewBag.Title = "PurhaseOrders";
+    ViewBag.Title = "Purhase Orders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Purchase Orders</h2>
-
-@Html.ActionLink("Add Purchase Order", "AddPurchaseOrder", "Purchasing")
-
+<h2>@Html.ActionLink("Add Purchase Order", "AddPurchaseOrder", "Purchasing") </h2>
+<h3>Purchase Orders</h3>
 <table class="table">
     <thead>
         <tr>
             <th>Date</th>
-            <th>No</th>
-            <th>Vendor</th>
+            <th>Customer Invoice No</th>
+            <th>Vendor Id</th>
             <th>Amount</th>
+            <th>GL Account</th>
+            <th>Quantity Received</th>
             <th></th>
         </tr>
     </thead>
@@ -27,6 +26,9 @@
                 <td>@Html.ActionLink((string)string.Format("{0}", po.Id), "Edit", new { id = po.Id })</td>
                 <td>@po.Vendor</td>
                 <td>@po.Amount</td>
+                <td>@po.GLAccount</td>
+                <td>@po.Quantity</td>
+                <td></td>
                 @if (po.Completed)
                 {
                     if (!po.HasInvoiced)
@@ -36,7 +38,7 @@
                 }
                 else
                 {
-                    <td>@Html.ActionLink("Receipt", "AddPurchaseReceipt", new { @id = @po.Id })</td>
+                    <td>@Html.ActionLink(" Create Receipt", "AddPurchaseReceipt", new { @id = @po.Id })</td>
                 }
             </tr>
         }

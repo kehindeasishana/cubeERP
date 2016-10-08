@@ -2203,8 +2203,9 @@ Page content
 
 /* Page content */
 .page-content {
-  margin-top: 0px;
-  padding: 0px;
+  margin-top: auto;
+  padding-left: 100px;
+  padding-top: 120px;
   background-color: #fff;
 }
 .page-container-bg-solid .page-content {

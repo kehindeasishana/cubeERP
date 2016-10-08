@@ -5,47 +5,89 @@
     ViewBag.Title = "AddJournalEntry";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
+
+
 <a href="@(Url.Action("AddBatchUpload", "Home"))" class="button btn btn-md flat" style="margin-bottom: 10px; margin-top: 1px;">Do Batch Upload here</a>
 <h2>Single GL Posting Entry</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("AddJournalEntry","Financial", FormMethod.Post))
 {
+    
+    @*@Html.DropDownListFor(m => m.StateModel, new SelectList(Model.StateModel, "Id", "StateName"), new { @id = "ddlstate", @style = "width:200px;", @onchange = "javascript:GetCity(this.value);" })*@
+    <br />
+    <br />
+    @*<select id="ddlcity" name="ddlcity" style="width: 200px">
+
+    </select>*@
+
     <div class="panel panel-default panel-body">
         <div class="form-group">
             <label class="col-md-2 control-label">Date</label>
             @Html.EditorFor(m => m.Date)
         </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">GL Code</label>
+            <label class="col-md-2 control-label">Reference No</label>
             @Html.TextBoxFor(m => m.ReferenceNo)
         </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">Narration</label>
-            @Html.TextBoxFor(m => m.Memo)
+            <label class="col-md-2 control-label">Description</label>
+            @Html.TextAreaFor(m => m.Memo)
         </div>
+         @*@Html.DropDownList("MakeList", new SelectList(Model.AccountId, "ID", "Name"))*@
         
         <div class="form-group">
             <label class="col-md-2 control-label">Account Category</label>
+            @*@Html.DropDownListFor(m => m.AccountId, ListHelper.GetCategoryList())*@
             @Html.DropDownListFor(m => m.AccountId, ListHelper.GetCategoryList())
         </div>
+       
         <div class="form-group">
             <label class="col-md-2 control-label">Account SubCategory</label>
-            @Html.DropDownListFor(m => m.SubCategoryId, ListHelper.GetSubCategoryList())
+            <select id="SubCategoryId" name="SubCategoryId" disabled="disabled"></select>
+            @*@Html.DropDownListFor(m => m.SubCategoryId, ListHelper.GetSubCategoryList(), "Select Account SubCategory...")*@
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">Debit or Credit</label>
-            @Html.EnumDropDownListFor(m => m.DrCr, new { @style = "width: 70px;" })
+            @Html.EnumDropDownListFor(m => m.DrCr, "Select either Debit or Credit..")
+            @*@Html.EnumDropDownListFor(m => m.DrCr, "Select either Debit or Credit.." ,new { @style = "width: 70px;" })*@
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">Amount</label>
             @Html.TextBoxFor(m => m.Amount)
         </div>
     </div>
+   
+    <script>
+    $(document).ready(function () {
+        $('#AccountId').change(function () {
+            $.ajaxSetup({ cache: false });
+            var selectedItem = $(this).val();
+            if (selectedItem == "" || selectedItem == 0) {
+                //Do nothing or hide...?
+            } else {
+                $.post('ResolveUrl("~/Financial/GetCategoryById/")' + $("#AccountId > option:selected").attr("value"), function (data) {
+                    var items = "";
+                    $.each(data, function (i, data) {
+                        items += "<option value='" + data.ID + "'>" + data.Name + "</option>";
+                    });
+                    $("#SubCategoryId").html(items);
+                    $("#SubCategoryId").removeAttr('disabled');
+                });
+            }
+        });
+    });
+</script>
+    
     @*<div class="panel panel-default panel-body">
         <table class="table">
             <thead>
                 <tr>
-                    
+
                     <th>Account Category</th>
                     <th>DrCr</th>
                     <th>Amount</th>
@@ -55,9 +97,9 @@
             </thead>
             <tbody>
                 <tr>
-                   
+
                     <td>@Html.DropDownListFor(m => m.AccountId, ListHelper.GetCategoryList())</td>
-                  
+
                     <td>@Html.EnumDropDownListFor(m => m.DrCr, new { @style = "width: 70px;" })</td>
                     <td>@Html.TextBoxFor(m => m.Amount, new { @style = "width: 100px;" })</td>
                     <td>@Html.TextBoxFor(m => m.Memo)</td>
@@ -70,7 +112,7 @@
                     @Html.HiddenFor(m => Model.AddJournalEntryLines[i].AccountName)
                     @Html.HiddenFor(m => Model.AddJournalEntryLines[i].Amount)
                     @Html.HiddenFor(m => Model.AddJournalEntryLines[i].DrCr)
-                  
+
                     @Html.HiddenFor(m => Model.AddJournalEntryLines[i].Memo)
                     <tr>
                         <td>@Html.DisplayFor(m => Model.AddJournalEntryLines[i].AccountName)</td>
@@ -89,8 +131,10 @@
         <input type="submit" value="Save" name="AddJournalEntry" />
     </div>
 }
-<script type="text/javascript">
+    @*<script type="text/javascript">
     function DeleteLineItem(id) {
         $('input[name="DeletedLineItem"]').val(id.toString());
     }
-</script>
+</script>*@
+
+@*<script src="@Url.Content("~/Scripts/GetAccountCategory.js")"></script>*@

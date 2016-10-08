@@ -8,6 +8,7 @@ using Microsoft.Owin.Security;
 using Web.Models;
 using Services.Security;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net.Mail;
 
 namespace Web.Controllers
 {
@@ -195,10 +196,54 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FirstName = model.FirstName, LastName=model.LastName };
+               // var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+               
+                
+                //var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FirstName = model.FirstName, LastName=model.LastName };
+                //var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+
+                    MailMessage m = new MailMessage();
+                    SmtpClient sc = new SmtpClient();
+                    m.From = new MailAddress("kehindeasishana@gmail.com");
+                    //m.From = new MailAddress("kehinde@mainstreamss.biz");
+                    m.To.Add(user.Email);
+                    m.Subject = "Cubebarn Registration";
+                    m.IsBodyHtml = true;
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //m.Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = user.Id, Email = user.Email }, Request.Url.Scheme)); ;
+                    m.Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { UserId = user.Id, code = code }, Request.Url.Scheme)); ;
+                    sc.Host = "smtp.gmail.com";
+                    //sc.Host = "gator3099.hostgator.com";
+                    sc.Port = 587;
+                    //sc.Port = 465;
+                    //sc.Port = 26;
+                    //sc.Port = 2096;
+                    sc.UseDefaultCredentials = false;
+                    sc.Credentials = new System.Net.NetworkCredential("kehindeasishana@gmail.com", "kehinde0803");
+                    //sc.Credentials = new System.Net.NetworkCredential("kehinde@mainstreamss.biz", "kehinde.2015");
+                    sc.EnableSsl = true;
+                    //sc.Timeout = 2000000;
+                    sc.Send(m);
+
+                    //var Subject = "Cubebarn Email confirmation";
+                    //var Message = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = user.Id, Email = user.Email }, Request.Url.Scheme));
+                    
+
+                    //    if (result.Succeeded)
+                    //    {
+
+                    //        Email.SendEmail(user.Email, Subject, Message);
+                    //        _securityService.AddUser(user.UserName, user.Email, user.FirstName, user.LastName);
+
+                    //        return RedirectToAction("Index", "Home");
+                    //    }
+                   
                     //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                      
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -207,8 +252,42 @@ namespace Web.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
                     //await SignInAsync(user, isPersistent: false);
+                    //_securityService.AddUser(user.UserName, user.Email, user.FirstName, user.LastName);
+
+                    //System.Net.Mail.MailMessage m = new System.Net.Mail.MailMessage(
+                    //new System.Net.Mail.MailAddress("contact@atop.com.ng", "Cubebarn Registration"),
+                    //new System.Net.Mail.MailAddress(user.Email));
+                   
+                    //m.IsBodyHtml = true;
+                    //System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("mail.contact@atop.com.ng");
+                    //smtp.Credentials = new System.Net.NetworkCredential("contact@atop.com.ng", "Cubebarn2016");
+                    
+                    //smtp.EnableSsl = true;
+                    //smtp.Send(m);
+
+                    //SmtpClient smtpClient = new SmtpClient("mail.contact@atop.com.ng", 465);
+                    //SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                    //smtpClient.Credentials = new System.Net.NetworkCredential("kehindeasishana@gmail.com", "kehinde0803");
+                    //smtpClient.UseDefaultCredentials = true;
+                    //smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    //smtpClient.EnableSsl = true;
+                    //MailMessage mail = new MailMessage();
+
+                    //Setting From , To and CC
+                   // mail.From = new MailAddress("contact@atop.com.ng", "Cubebarn Registration");
+                    //mail.To.Add(new MailAddress(user.Email));
+                    //mail.CC.Add(new MailAddress("MyEmailID@gmail.com"));
+
+                    //smtpClient.Send(mail);
+                   
+
+                    
+                    //Response.Write("Email Send successfully");
+                    
+                    //return RedirectToAction("Confirm", "Account", new { Email = user.Email }); 
 
                     //_securityService.AddUser(user.UserName, user.Email, user.FirstName,user.LastName);
+                    
                     if (_securityService.GetAllUser().Any())
                     {
                         _securityService.AddUser(user.UserName, user.Email, user.FirstName, user.LastName);
@@ -240,10 +319,6 @@ namespace Web.Controllers
                         //add as admin
                     }
 
-                    
-                    
-                   
-                   
 
                     // Uncomment to debug locally 
                     // TempData["ViewBagLink"] = callbackUrl;
@@ -254,7 +329,11 @@ namespace Web.Controllers
                    // return View("Info");
                     //Assign Role to user Here       
                     //await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles); 
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("ConfirmEmail", "Account", new { Email = user.Email });
+                    ViewBag.Message = "You have been sent an email notification. Click on the link in your email to continue";
+                    //return View();
+                    return RedirectToAction("Notify", "Account");
+                    //return RedirectToAction("Login", "Account");
                 }
                 //ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin"))
                 //                    .ToList(), "Name", "Name"); 
@@ -264,8 +343,14 @@ namespace Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        [Audit]
+        [AllowAnonymous]
+        public ActionResult Notify()
+        {
+            return View();
+        }
         // GET: /Account/Register
+        [Audit]
         [AllowAnonymous]
         public ActionResult AddUser()
         {
@@ -285,14 +370,52 @@ namespace Web.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
+                MailMessage m = new MailMessage();
+                SmtpClient sc = new SmtpClient();
+                m.From = new MailAddress("kehindeasishana@gmail.com");
+                //m.From = new MailAddress("kehinde@mainstreamss.biz");
+                m.To.Add(user.Email);
+                m.Subject = "Cubebarn Registration";
+                m.IsBodyHtml = true;
+                string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                //m.Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = user.Id, Email = user.Email }, Request.Url.Scheme)); ;
+                m.Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("Login", "Account", new { UserId = user.Id, code = code }, Request.Url.Scheme)); ;
+                sc.Host = "smtp.gmail.com";
+                //sc.Host = "gator3099.hostgator.com";
+                sc.Port = 587;
+                //sc.Port = 465;
+                //sc.Port = 26;
+                //sc.Port = 2096;
+                sc.UseDefaultCredentials = false;
+                sc.Credentials = new System.Net.NetworkCredential("kehindeasishana@gmail.com", "kehinde0803");
+                //sc.Credentials = new System.Net.NetworkCredential("kehinde@mainstreamss.biz", "kehinde.2015");
+                sc.EnableSsl = true;
+                //sc.Timeout = 2000000;
+                sc.Send(m);
+                
+               
+                //var Subject = "Cubebarn Email confirmation";
+                //var Body = string.Format("Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>", user.UserName, Url.Action("ConfirmEmail", "Account", new { Token = user.Id, Email = user.Email }, Request.Url.Scheme));
+                //try
+                //{
                     
+                //    if (result.Succeeded)
+                //    {
 
-                    _securityService.AddUser(user.UserName, user.Email, user.FirstName,user.LastName);
-                   
-                    return RedirectToAction("Index", "Home");
-                }
+                //        Email.SendEmail(user.Email, Subject, Body);
+                //        _securityService.AddUser(user.UserName, user.Email, user.FirstName, user.LastName);
+
+                //        return RedirectToAction("Index", "Home");
+                //    }
+                //}
+                //catch (System.Exception)
+                //{
+
+                //    throw;
+                //}
+
                 
                 AddErrors(result);
             }
@@ -310,9 +433,11 @@ namespace Web.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            return View(result.Succeeded ? "Login" : "Error");
+            //return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
+       
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]

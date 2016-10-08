@@ -16,34 +16,65 @@
         <div class="form-group">
             <label class="col-md-3 control-label">Primary Contact</label>
             @Html.DropDownListFor(m => m.PrimaryContactId, ModelViewHelper.Contacts())
-            @Html.ActionLink("Add", "AddCustomerContact", null, new { id = "AddCustomerContact" })
+            @Html.ActionLink("Add", "AddContact", null, new { id = "AddCustomerContact" })
         </div>
       
     </div>
-    <div>
-        @Html.ActionLink("Details", "CustomerDetail", new { id = Model.Id })
+
+    <h2>Contact</h2>
+    @Html.HiddenFor(m => m.Id)
+    <div class="panel panel-default panel-body">
+        <div class="form-group">
+            <label class="col-md-3 control-label">First Name</label>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
+        <div class="form-group">
+                <label class="col-md-3 control-label">Last Name</label>
+               @Html.TextBoxFor(m => m.Name)
+         </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Phone No</label>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Fax</label>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Email</label>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">WebSite</label>
+            @Html.TextBoxFor(m => m.Name)
+        </div>
+
     </div>
+
+    @*<div>
+        @Html.ActionLink("Details", "CustomerDetail", new { id = Model.Id })
+    </div>*@
     <h2>Invoicing</h2>
     <div class="panel panel-default panel-body">
         <div class="form-group">
             <label class="col-md-3 control-label">Accounts Receivable</label>
-            @Html.DropDownListFor(m => m.AccountsReceivableAccountId, ModelViewHelper.Accounts())
+            @Html.DropDownListFor(m => m.AccountsReceivableAccountId, Web.Models.ListHelper.GetCategoryList())
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Sales Account</label>
-            @Html.DropDownListFor(m => m.SalesAccountId, ModelViewHelper.Accounts())
+            @Html.DropDownListFor(m => m.SalesAccountId, Web.Models.ListHelper.GetCategoryList())
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Sales Discount Account</label>
-            @Html.DropDownListFor(m => m.SalesDiscountAccountId, ModelViewHelper.Accounts())
+            @Html.DropDownListFor(m => m.SalesDiscountAccountId, Web.Models.ListHelper.GetCategoryList())
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Prompt Payment Discount Account</label>
-            @Html.DropDownListFor(m => m.PromptPaymentDiscountAccountId, ModelViewHelper.Accounts())
+            @Html.DropDownListFor(m => m.PromptPaymentDiscountAccountId, Web.Models.ListHelper.GetCategoryList())
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Customer Advances Account</label>
-            @Html.DropDownListFor(m => m.CustomerAdvancesAccountId, ModelViewHelper.Accounts())
+            @Html.DropDownListFor(m => m.CustomerAdvancesAccountId, Web.Models.ListHelper.GetCategoryList())
         </div>
     </div>
     <div class="form-group">

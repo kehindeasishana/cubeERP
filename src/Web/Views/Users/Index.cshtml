@@ -16,3 +16,61 @@ else
 {
     <h2>  Welcome <strong>@ViewBag.Name</strong> :) .We will add user module soon </h2>
 }  
+
+@*@{
+    ViewBag.Title = "Classic Cascading DDL";
+}
+
+@using (Html.BeginForm("IndexDDL", "Home", FormMethod.Post,
+    new
+    {
+        id = "CountryStateFormID",
+        data_stateListAction = @Url.Action("StateList")
+    }))
+{
+    <fieldset>
+        <legend>Country/State</legend>
+        @Html.DropDownList("Countries", ViewBag.Country as SelectList,
+            "Select a Country", new { id = "CountriesID" })
+        <div id="StatesDivID">
+            <label for="States">States</label>
+            <select id="StatesID" name="States"></select>
+        </div>
+        <p>
+            <input type="submit" value="Submit" id="SubmitID" />
+        </p>
+    </fieldset>
+}
+
+<script src="@Url.Content("~/Scripts/countryState.js")"></script>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post,
+    new
+    {
+        id = "CountryStateFormID",
+        data_stateListAction = @Url.Action("StateList"),
+        data_countryListAction = @Url.Action("CountryList")
+    }))
+{
+    <fieldset>
+        <legend>Country/State</legend>
+        <div class="editor-label">
+            <label for="Countries">Countries</label>
+        </div>
+        <select id="CountriesID" name="Countries"></select>
+        <div id="StatesDivID">
+            <label for="States">States</label>
+            <select id="StatesID" name="States"></select>
+        </div>
+    </fieldset>
+    <input type="submit" value="Submit" id="SubmitID" />
+}
+
+
+<script src="@Url.Content("~/Scripts/GetCountry.js")"></script>
+<script src="@Url.Content("~/Scripts/countryState.js")"></script>*@

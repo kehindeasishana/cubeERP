@@ -8,7 +8,6 @@ namespace Web.Models
 {
     public class Audit
     {
-        //[Table("Audit")]
         // Audit Properties
         public Guid AuditID { get; set; }
         public string UserName { get; set; }

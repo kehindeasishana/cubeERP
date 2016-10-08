@@ -3,77 +3,77 @@
 <script type="text/javascript">
     function validateNewLineItem() {
         var SalesLineItemViewModel = new Object();
-        SalesLineItemViewModel.ItemNo = $('#txtItemNo').val();
+        SalesLineItemViewModel.Item = $('#Item').val();
         SalesLineItemViewModel.Quantity = $('#Quantity').val();
         SalesLineItemViewModel.Price = $('#Price').val();
         SalesLineItemViewModel.Discount = $('#Discount').val();
     }
 
-    function onChangedItem(_this) {
-        var ddl = document.getElementById('ddlItemNo');
-        $('#Quantity').val("1");
-        if ($(_this).attr('id') == 'txtItemNo') {
-            var opts = ddl.options.length;
-            for (var i = 0; i < opts; i++) {
-                if (ddl.options[i].value == $('#txtItemNo').val()) {
-                    ddl.options[i].selected = true;
-                    break;
-                }
-            }
-        }
-        else if ($(_this).attr('id') == 'ddlItemNo') {
-            var itemNo = ddl.options[ddl.selectedIndex].value;
-            if (itemNo != "-1")
-                $('#txtItemNo').val(itemNo);
-            else
-                $('#txtItemNo').val("");
-        }
+    //function onChangedItem(_this) {
+    //    var ddl = document.getElementById('ItemDescription');
+    //    $('#Quantity').val("1");
+    //    if ($(_this).attr('id') == 'txtItemNo') {
+    //        var opts = ddl.options.length;
+    //        for (var i = 0; i < opts; i++) {
+    //            if (ddl.options[i].value == $('#txtItemNo').val()) {
+    //                ddl.options[i].selected = true;
+    //                break;
+    //            }
+    //        }
+    //    }
+    //    else if ($(_this).attr('id') == 'ItemDescription') {
+    //        var itemNo = ddl.options[ddl.selectedIndex].value;
+    //        if (itemNo != "-1")
+    //            $('#txtItemNo').val(itemNo);
+    //        else
+    //            $('#txtItemNo').val("");
+    //    }
 
-        var _itemNo = ddl.options[ddl.selectedIndex].value;
-        var url = '/Inventory/GetItemByNo';
-        /*GET*/
-        $.ajax({
-            url: url,
-            dataType: "json",
-            type: "GET",
-            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-            data: { itemNo: _itemNo },
-            async: true,
-            processData: true,
-            cache: false,
-            success: function (d) {
-                $('#Price').val(d.Price);
-                setLineTotal();
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
-    }
+    //    var _itemNo = ddl.options[ddl.selectedIndex].value;
+    //    var url = '/Inventory/GetItemByNo';
+    //    /*GET*/
+    //    $.ajax({
+    //        url: url,
+    //        dataType: "json",
+    //        type: "GET",
+    //        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+    //        data: { itemNo: _itemNo },
+    //        async: true,
+    //        processData: true,
+    //        cache: false,
+    //        success: function (d) {
+    //            $('#Price').val(d.Price);
+    //            setLineTotal();
+    //        },
+    //        error: function (xhr) {
+    //            alert('error');
+    //        }
+    //    });
+    //}
 
-    function onChangedQuantity() {
-        var ddl = document.getElementById('ddlItemNo');
-        var _itemNo = ddl.options[ddl.selectedIndex].value;
-        var url = '/Inventory/GetItemByNo';
-        /*GET*/
-        $.ajax({
-            url: url,
-            dataType: "json",
-            type: "GET",
-            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
-            data: { itemNo: _itemNo },
-            async: true,
-            processData: true,
-            cache: false,
-            success: function (d) {
-                setLineTotal();
+    //function onChangedQuantity() {
+    //    var ddl = document.getElementById('ItemDescription');
+    //    var _itemNo = ddl.options[ddl.selectedIndex].value;
+    //    var url = '/Inventory/GetItemByNo';
+    //    /*GET*/
+    //    $.ajax({
+    //        url: url,
+    //        dataType: "json",
+    //        type: "GET",
+    //        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+    //        data: { itemNo: _itemNo },
+    //        async: true,
+    //        processData: true,
+    //        cache: false,
+    //        success: function (d) {
+    //            setLineTotal();
 
-            },
-            error: function (xhr) {
-                alert('error');
-            }
-        });
-    }
+    //        },
+    //        error: function (xhr) {
+    //            alert('error');
+    //        }
+    //    });
+    //}
 
     function setLineTotal() {
         var qty = $('#Quantity').val();
@@ -83,6 +83,7 @@
         document.getElementById("lblLineTotal").innerHTML = (price * qty) - discountAmount;
     }
 </script>
+
 <script type="text/javascript">
     function deleteLineItem(_this) {
         var id = $(_this).attr('id');
@@ -91,14 +92,38 @@
 </script>
 <h2>@ViewBag.Transaction Items</h2>
 <input type="hidden" value="" name="DeletedLineItem" />
+
+<div class="panel panel-default panel-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-md-3">Customer PO</th>
+                <th class="col-md-3">Sales Rep</th>
+                <th class="col-md-3">Sales Order No</th>
+                
+                <th class="col-md-3">Ship Via</th>
+                
+
+            </tr>
+            <tr>
+                <td>@Html.TextBoxFor(m => m.SalesLine.CustomerPO)</td>
+               
+                <td>@Html.TextBoxFor(m => m.SalesLine.SalesRep)</td>
+                <td>@Html.TextBoxFor(m => m.SalesLine.SalesOrderNo)</td>
+                <td>@Html.EnumDropDownListFor(m => m.SalesLine.ShipVia)</td>
+                
+            </tr>
+        </thead>
+    </table>
+</div>
 <div class="panel panel-default">
     <div class="panel-body table-responsive">
         <table class="table table-bordered table-condensed f11">
             <thead>
                 <tr>
-                    <th>Item No</th>
+                    <th>Item </th>
                     <th>Item Description</th>
-                    <th>Measurement</th>
+                    @*<th>Measurement</th>*@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Discount %</th>
@@ -108,13 +133,16 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>@Html.TextBoxFor(m => m.SalesLine.ItemNo, new { @onchange = "onChangedItem(this)", @id = "txtItemNo", @style = "width: 100px;" })</td>
-                    <td>@Html.DropDownListFor(m => m.SalesLine.ItemNo, ModelViewHelper.Items(), new { @onchange = "onChangedItem(this)", @id = "ddlItemNo" }) </td>
-                    <td>
+                    <td>@Html.TextBoxFor(m => m.SalesLine.Item, new { @id = "Item", @style = "width: 100px;" })</td>
+                    @*<td>@Html.TextBoxFor(m => m.SalesLine.Item, new { @onchange = "onChangedItem(this)", @id = "txtItemNo", @style = "width: 100px;" })</td>*@
+                    <td>@Html.TextBoxFor(m => m.SalesLine.ItemDescription, new { @id = "ItemDescription", @style = "width: 100px;" })</td>
+                    @*<td>@Html.DropDownListFor(m => m.SalesLine.ItemNo, ModelViewHelper.Items(), new { @onchange = "onChangedItem(this)", @id = "ddlItemNo" }) </td>*@
+                    @*<td>
                         <label id="lblMeasurement" />
-                    </td>
+                    </td>*@
                     <td>@Html.TextBoxFor(m => m.SalesLine.Quantity, new { @onchange = "onChangedQuantity()", @id = "Quantity", @style = "width: 100px;" })</td>
                     <td>@Html.TextBoxFor(m => m.SalesLine.Price, new { @id = "Price", @style = "width: 100px;" })</td>
+                    
                     <td>@Html.TextBoxFor(m => m.SalesLine.Discount, new { @id = "Discount", @style = "width: 100px;" })</td>
                     <td>
                         <label id="lblLineTotal" />
@@ -125,19 +153,19 @@
                 @for (int i = 0; i < Model.SalesLine.SalesLineItems.Count; i++)
                 {
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Id)
-                    @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].ItemId)
+                    @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Item)
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].CustomerId)
-                    @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].ItemNo)
+                 
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].ItemDescription)
-                    @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Measurement)
+                   
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Quantity)
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Price)
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Discount)
                     @Html.HiddenFor(m => Model.SalesLine.SalesLineItems[i].Total)
                     <tr>
-                        <td>@Model.SalesLine.SalesLineItems[i].ItemNo</td>
+                        <td>@Model.SalesLine.SalesLineItems[i].Item</td>
                         <td>@Model.SalesLine.SalesLineItems[i].ItemDescription</td>
-                        <td>@Model.SalesLine.SalesLineItems[i].Measurement</td>
+                        
                         <td>@Model.SalesLine.SalesLineItems[i].Quantity</td>
                         <td>@Model.SalesLine.SalesLineItems[i].Price</td>
                         <td>@Model.SalesLine.SalesLineItems[i].Discount</td>

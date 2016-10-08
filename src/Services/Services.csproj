@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="Employees\EmployeeService.cs" />
+    <Compile Include="Employees\IEmployeeService.cs" />
     <Compile Include="Financial\FinancialReports.cs" />
     <Compile Include="Financial\FinancialService.cs" />
     <Compile Include="Financial\IFinancialService.cs" />

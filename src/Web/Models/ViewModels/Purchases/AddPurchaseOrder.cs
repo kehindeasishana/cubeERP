@@ -1,3 +1,4 @@
+using Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -17,7 +18,13 @@ namespace Web.Models.ViewModels.Purchases
 
         public DateTime Date { get; set; }
         public int VendorId { get; set; }
-
+        public string ShippingAddress { get; set; }
+        public string CustSalesOrder { get; set; }
+        public string CustInvoiceNo { get; set; }
+        public decimal DiscountAmount { get; set; }
+        public string Terms { get; set; }
+        public ShipVia ShipVia { get; set; }
+        public int? AccountPayableAcc { get; set; }
         public IList<AddPurchaseOrderLine> PurchaseOrderLines { get; set; }
 
         public ICollection<SelectListItem> Vendors { get; set; }
@@ -25,20 +32,23 @@ namespace Web.Models.ViewModels.Purchases
         public ICollection<SelectListItem> UnitOfMeasurements { get; set; }
 
         #region Fields Add Line Item
-        public int ItemId { get; set; }
-        public int UnitOfMeasurementId { get; set; }
-        public decimal Cost { get; set; }
+        public string Item { get; set; }
+        public string Description { get; set; }
+        public int GLAccount { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Amount { get; set; }
         public decimal Quantity { get; set; }
         #endregion
     }
 
     public partial class AddPurchaseOrderLine
     {
-        public int ItemId { get; set; }
+        public string Item { get; set; }
         public string Description { get; set; }
-        public int UnitOfMeasurementId { get; set; }
+        public int GLAccount { get; set; }
+        public decimal UnitPrice { get; set; }
         public decimal Quantity { get; set; }
-        public decimal? Cost { get; set; }
-        public decimal TotalLineCost { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal TotalLineAmount { get; set; }
     }
 }

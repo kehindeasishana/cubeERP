@@ -16,7 +16,7 @@ namespace Services.Purchasing
     {
         private readonly IFinancialService _financialService;
         private readonly IInventoryService _inventoryService;
-
+        private readonly IRepository<InventoryCatalog> _inventoryRepo;
         private readonly IRepository<PurchaseOrderHeader> _purchaseOrderRepo;
         private readonly IRepository<PurchaseInvoiceHeader> _purchaseInvoiceRepo;
         private readonly IRepository<PurchaseReceiptHeader> _purchaseReceiptRepo;
@@ -32,6 +32,7 @@ namespace Services.Purchasing
 
         public PurchasingService(IFinancialService financialService,
             IInventoryService inventoryService,
+            IRepository<InventoryCatalog> inventoryRepo,
             IRepository<PurchaseOrderHeader> purchaseOrderRepo,
             IRepository<PurchaseInvoiceHeader> purchaseInvoiceRepo,
             IRepository<PurchaseReceiptHeader> purchaseReceiptRepo,
@@ -58,7 +59,7 @@ namespace Services.Purchasing
             _measurementRepo = measurementRepo;
             _sequenceNumberRepo = sequenceNumberRepo;
             _vendorPaymentRepo = vendorPaymentRepo;
-            
+            _inventoryRepo = inventoryRepo;
             _paymentTermRepo = paymentTermRepo;
             _bankRepo = bankRepo;
         }
@@ -70,7 +71,7 @@ namespace Services.Purchasing
             {
                 var po = new PurchaseOrderHeader()
                 {
-                    Date = purchaseIvoice.Date,
+                    Date = purchaseIvoice.DueDate,
                     //No = GetNextNumber(SequenceNumberTypes.PurchaseOrder).ToString(),
                     Vendor = purchaseIvoice.Vendor,
                     VendorId = purchaseIvoice.VendorId.Value,
@@ -78,16 +79,18 @@ namespace Services.Purchasing
                 };
                 foreach (var line in purchaseIvoice.PurchaseInvoiceLines)
                 {
-                    var item = _itemRepo.GetById(line.ItemId);
-
+                    //var item = _itemRepo.GetById(line.ItemId);
+                    
                     po.PurchaseOrderLines.Add(new PurchaseOrderLine()
                     {
-                        ItemId = item.Id,
-                        MeasurementId = line.MeasurementId,
+                        Item = line.Item,
+                        Description = line.Description,
+                        UnitPrice = line.Cost.Value,
+                        
                         Quantity = line.Quantity,
-                        Cost = item.Cost.Value,
+                        //Cost = item.Cost.Value,
                         Discount = line.Discount.HasValue ? line.Discount.Value : 0,
-                        Amount = item.Cost.Value * line.Quantity,
+                        Amount = line.Cost.Value * line.Quantity,
                     });
                 }
                 purchaseIvoice.PurchaseOrders.Add(po);
@@ -104,8 +107,8 @@ namespace Services.Purchasing
                 {
                     poReceipt.PurchaseReceiptLines.Add(new PurchaseReceiptLine()
                     {
-                        ItemId = line.ItemId,
-                        MeasurementId = line.MeasurementId,
+                        Item = line.Item,
+                        //MeasurementId = line.MeasurementId,
                         Quantity = line.Quantity,
                         ReceivedQuantity = (line.ReceivedQuantity.HasValue ? line.ReceivedQuantity.Value : 0),
                         Cost = line.Cost.Value,
@@ -125,7 +128,7 @@ namespace Services.Purchasing
 
             foreach (var line in purchaseIvoice.PurchaseInvoiceLines)
             {
-                var lineTaxes = _financialService.ComputeInputTax(purchaseIvoice.VendorId.Value, line.ItemId, line.Quantity, line.Cost.Value, decimal.Zero);
+                var lineTaxes = _financialService.ComputeInputTax(purchaseIvoice.VendorId.Value, line.Item, line.Quantity, line.Cost.Value, decimal.Zero);
 
                 var lineAmount = line.Quantity * line.Cost;
 
@@ -165,14 +168,22 @@ namespace Services.Purchasing
            
         }
 
-        public void AddPurchaseOrder(PurchaseOrderHeader purchaseOrder, bool toSave)
-        {
-            purchaseOrder.No =(SequenceNumberTypes.PurchaseOrder).ToString();
+        //public void AddPurchaseOrder(PurchaseOrderHeader purchaseOrder, bool toSave)
+        //{
+        //    purchaseOrder.No =(SequenceNumberTypes.PurchaseOrder).ToString();
             
-            if(toSave)
+        //    if(toSave)
+        //        _purchaseOrderRepo.Insert(purchaseOrder);
+        //}
+
+        public void AddPurchaseOrder(PurchaseOrderHeader purchaseOrder)
+        {
                 _purchaseOrderRepo.Insert(purchaseOrder);
         }
-
+        public void DeletePurchaseOrder(PurchaseOrderHeader purchaseOrder)
+        {
+            _purchaseOrderRepo.Delete(purchaseOrder);
+        }
         public void AddPurchaseOrderReceipt(PurchaseReceiptHeader purchaseOrderReceipt)
         {
            // var glLines = new List<GeneralLedgerLine>();
@@ -182,7 +193,7 @@ namespace Services.Purchasing
 
             foreach (var lineItem in purchaseOrderReceipt.PurchaseReceiptLines)
             {
-                var item = _itemRepo.GetById(lineItem.ItemId);
+                var item = _itemRepo.GetById(lineItem.Item);
                 //decimal lineItemTotalAmountAfterTax = lineItem.Amount - lineItem.LineTaxAmount;
 
                 //lineItem.InventoryControlJournal = _inventoryService.CreateInventoryControlJournal(lineItem.ItemId,
@@ -228,7 +239,11 @@ namespace Services.Purchasing
         {
             return _purchaseOrderRepo.GetById(id);
         }
-
+        public void UpdatePurchaseOrder(PurchaseOrderHeader purchaseOrder)
+        {
+            _purchaseOrderRepo.Update(purchaseOrder);
+            
+        }
         public PurchaseReceiptHeader GetPurchaseReceiptById(int id)
         {
             return _purchaseReceiptRepo.GetById(id);
@@ -236,9 +251,9 @@ namespace Services.Purchasing
 
         public void AddVendor(Vendor vendor)
         {
-            vendor.AccountsPayableAccountId = _accountRepo.Table.Where(a => a.AccountCode == "20110").FirstOrDefault().Id;
-            vendor.PurchaseAccountId = _accountRepo.Table.Where(a => a.AccountCode == "50200").FirstOrDefault().Id;
-            vendor.PurchaseDiscountAccountId = _accountRepo.Table.Where(a => a.AccountCode == "50400").FirstOrDefault().Id;
+            //vendor.AccountsPayableAccountId = _accountRepo.Table.Where(a => a.AccountCode == "20110").FirstOrDefault().Id;
+            //vendor.PurchaseAccountId = _accountRepo.Table.Where(a => a.AccountCode == "50200").FirstOrDefault().Id;
+            //vendor.PurchaseDiscountAccountId = _accountRepo.Table.Where(a => a.AccountCode == "50400").FirstOrDefault().Id;
 
             //vendor.IsActive = true;
 
@@ -249,7 +264,10 @@ namespace Services.Purchasing
         {
             _vendorRepo.Update(vendor);
         }
-
+        public void DeleteVendor(Vendor vendor)
+        {
+            _vendorRepo.Delete(vendor);
+        }
         public IEnumerable<PurchaseInvoiceHeader> GetPurchaseInvoices()
         {
             var query = from purchInvoice in _purchaseInvoiceRepo.Table

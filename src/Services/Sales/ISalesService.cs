@@ -8,8 +8,9 @@ namespace Services.Sales
     {
         void AddSalesOrder(SalesOrderHeader salesOrder, bool toSave);
         void UpdateSalesOrder(SalesOrderHeader salesOrder);
+        void DeleteSalesOrder(SalesOrderHeader salesOrder);
         void AddSalesInvoice(SalesInvoiceHeader salesInvoice, int? salesOrderId);
-        //void AddSalesReceipt(SalesReceiptHeader salesReceipt);
+        void AddSalesReceipt(SalesReceiptHeader salesReceipt);
         //void AddSalesReceiptNoInvoice(SalesReceiptHeader salesReceipt);
         //void AddSalesDelivery(SalesDeliveryHeader salesDelivery, bool toSave);
         IEnumerable<SalesInvoiceHeader> GetSalesInvoices();
@@ -23,14 +24,29 @@ namespace Services.Sales
         Customer GetCustomerById(int id);
         void UpdateCustomer(Customer customer);
         void AddCustomer(Customer customer);
+        void DeleteCustomer(Customer customer);
         ICollection<SalesReceiptHeader> GetCustomerReceiptsForAllocation(int customerId);
-        //void SaveCustomerAllocation(CustomerAllocation allocation);
+        void SaveCustomerAllocation(CustomerAllocation allocation);
         IEnumerable<SalesDeliveryHeader> GetSalesDeliveries();
         IEnumerable<SalesOrderHeader> GetSalesOrders();
         SalesOrderHeader GetSalesOrderById(int id);
         SalesDeliveryHeader GetSalesDeliveryById(int id);
         IEnumerable<Contact> GetContacts();
         int SaveContact(Contact contact);
+        void AddContact(Contact contact);
+        Contact GetContactById(int id);
+        void UpdateContact(Contact contact);
+        void DeleteContact(Contact contact);
+        void AddSalesTax(SalesTax salesTax);
+        void UpdateSalesTax(SalesTax salesTax);
+        void DeleteSalesTax(SalesTax salesTax);
+        SalesTax GetSalesTax(int id);
+        IEnumerable<SalesTax> ListSalesTax();
+        void AddTaxAgency(TaxAgency taxAgency);
+        void UpdateTaxAgency(TaxAgency taxAgency);
+        void DeleteTaxAgency(TaxAgency taxAgency);
+        TaxAgency GetTaxAgency(int id);
+        IEnumerable<TaxAgency> TaxAgency();
         ICollection<SalesInvoiceHeader> GetSalesInvoicesByCustomerId(int customerId, SalesInvoiceStatus status);
         ICollection<CustomerAllocation> GetCustomerAllocations(int customerId);
     }

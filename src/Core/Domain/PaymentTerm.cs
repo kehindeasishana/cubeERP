@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain
 {
-//    [Table("PaymentTerm")]
+
     public partial class PaymentTerm : BaseEntity
     {
         public string Description { get; set; }

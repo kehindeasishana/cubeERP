@@ -7,6 +7,7 @@ using Core.Domain.Sales;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
+using Core.Domain;
 
 namespace Web.Controllers
 {
@@ -49,6 +50,233 @@ namespace Web.Controllers
             return View(model);
         }
 
+        public ActionResult AddSalesTax()
+        {
+            return View();
+        }
+        [Audit]
+        [HttpPost]
+        public ActionResult AddSalesTax(SalesTax model)
+        {
+            _salesService.AddSalesTax(new SalesTax()
+            {
+                NoofAgency = model.NoofAgency,
+                SalesTaxId = model.SalesTaxId,
+                SalesTaxName = model.SalesTaxName,
+                TotalTaxRate = model.TotalTaxRate,
+                TaxOnFreight = model.TaxOnFreight
+            });
+            return RedirectToAction("ListSalesTax");
+        }
+
+        [Audit]
+        public ActionResult ListSalesTax(SalesTax model)
+        {
+            var salesTax = _salesService.ListSalesTax();
+            return View(salesTax);
+
+        }
+
+        public ActionResult EditSalesTax(int id)
+        {
+            return View(this._salesService.GetSalesTax(id));
+
+        }
+        [Audit]
+        [HttpPost]
+        public ActionResult EditSalesTax(SalesTax model)
+        {
+            var salesTax = _salesService.GetSalesTax(model.Id);
+            salesTax.NoofAgency = model.NoofAgency;
+            salesTax.SalesTaxId = model.SalesTaxId;
+            salesTax.SalesTaxName = model.SalesTaxName;
+            salesTax.TotalTaxRate = model.TotalTaxRate;
+            salesTax.TaxOnFreight = model.TaxOnFreight;
+            _salesService.UpdateSalesTax(salesTax);
+            return RedirectToAction("ListSalesTax");
+        }
+
+        [Audit]
+        public ViewResult GetSalesTax(int id)
+        {
+            SalesTax salesTax = _salesService.GetSalesTax(id);
+            return View(salesTax);
+
+        }
+        [Audit]
+        public ActionResult DeleteSalesTax(int id)
+        {
+            SalesTax salesTax = _salesService.GetSalesTax(id);
+            return View(salesTax);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteSalesTax(int id, SalesTax salesTax)
+        {
+            var Tax = _salesService.GetSalesTax(id);
+            _salesService.DeleteSalesTax(Tax);
+            return RedirectToAction("ListSalesTax");
+        }
+
+
+        public ActionResult AddTaxAgency()
+        {
+            return View();
+        }
+        [Audit]
+        [HttpPost]
+        public ActionResult AddTaxAgency(TaxAgency model)
+        {
+            _salesService.AddTaxAgency(new TaxAgency()
+            {
+                AccountId = model.AccountId,
+                CalculateTax = model.CalculateTax,
+                TaxAgencyId = model.TaxAgencyId,
+                TaxAgencyName = model.TaxAgencyName,
+                TaxRate = model.TaxRate,
+                VendorId = model.VendorId
+            });
+            return RedirectToAction("ListTaxAgency");
+        }
+
+        [Audit]
+        public ActionResult ListTaxAgency(TaxAgency model)
+        {
+            var taxAgency = _salesService.TaxAgency();
+            return View(taxAgency);
+        }
+
+        public ActionResult EditTaxAgency(int id)
+        {
+            return View(this._salesService.GetTaxAgency(id));
+
+        }
+        [Audit]
+        public ActionResult EditTaxAgency(TaxAgency model)
+        {
+            var taxAgency = _salesService.GetTaxAgency(model.Id);
+            taxAgency.TaxAgencyId = model.TaxAgencyId;
+            taxAgency.TaxAgencyName = model.TaxAgencyName;
+            taxAgency.TaxRate = model.TaxRate;
+            taxAgency.VendorId = model.VendorId;
+            taxAgency.AccountId = model.AccountId;
+            taxAgency.CalculateTax = model.CalculateTax;
+            _salesService.UpdateTaxAgency(taxAgency);
+            return RedirectToAction("ListTaxAgency");
+        }
+
+        [Audit]
+        public ViewResult GetTaxAgency(int id)
+        {
+            TaxAgency taxAgency = _salesService.GetTaxAgency(id);
+            return View(taxAgency);
+
+        }
+        [Audit]
+        public ActionResult DeleteTaxAgency(int id)
+        {
+            TaxAgency taxAgency = _salesService.GetTaxAgency(id);
+            return View(taxAgency);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteTaxAgency(int id, TaxAgency taxAgency)
+        {
+            var agency = _salesService.GetTaxAgency(id);
+            _salesService.DeleteTaxAgency(agency);
+            return RedirectToAction("ListTaxAgency");
+        }
+        public ActionResult AddContact()
+        {
+            return View();
+        }
+        [Audit]
+        [HttpPost, ActionName("AddContact")]
+        public ActionResult AddContact(Contact model)
+        {
+            _salesService.AddContact(new Contact()
+            {
+                Address = model.Address,
+                CompanyName = model.CompanyName,
+                Customer = model.Customer,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                MiddleName = model.MiddleName,
+                Mobile = model.Mobile,
+                Gender = model.Gender,
+                JobTitle = model.JobTitle,
+                CustomerId = model.CustomerId,
+                LastName = model.LastName,
+                PhoneNo = model.PhoneNo,
+                Notes = model.Notes
+                
+            });
+
+            return RedirectToAction("Contacts");
+        }
+
+        [Audit]
+        public ActionResult Contacts(Contact model)
+        {
+            var contacts = _salesService.GetContacts();
+            
+            return View(contacts);
+
+        }
+
+        public ActionResult EditContact(int id)
+        {
+            return View(this._salesService.GetContactById(id));
+           
+        }
+        [Audit]
+        [HttpPost, ActionName("EditContact")]
+
+        public ActionResult EditContact(Contact model)
+        {
+            var contact = _salesService.GetContactById(model.Id);
+            contact.FirstName = model.FirstName;
+            contact.Email = model.Email;
+            contact.CustomerId = model.CustomerId;
+            contact.CompanyName = model.CompanyName;
+            contact.Address = model.Address;
+            contact.Gender = model.Gender;
+            contact.MiddleName = model.MiddleName;
+            contact.JobTitle = model.JobTitle;
+            contact.Mobile = model.Mobile;
+            contact.PhoneNo = model.PhoneNo;
+            contact.Notes = model.Notes;
+            _salesService.UpdateContact(contact);
+           
+            return RedirectToAction("Contacts");
+        }
+
+        [Audit]
+        [Authorize]
+        public ViewResult GetContactById(int id)
+        {
+            Contact contact = _salesService.GetContactById(id);
+            return View(contact);
+
+        }
+        [Audit]
+        [Authorize]
+        public ActionResult DeleteContact(int id)
+        {
+            Contact contact = _salesService.GetContactById(id);
+            return View(contact);
+
+        }
+
+        [HttpPost, ActionName("DeleteContact")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteContact(int id, Contact contact)
+        {
+            var contacts = _salesService.GetContactById(id);
+            _salesService.DeleteContact(contacts);
+            return RedirectToAction("Contacts");
+        }
         public ActionResult AddSalesDelivery(bool direct = false)
         {
             if (direct)
@@ -73,8 +301,8 @@ namespace Web.Controllers
             {
                 salesDelivery.SalesDeliveryLines.Add(new SalesDeliveryLine()
                 {
-                    ItemId = line.ItemId,
-                    MeasurementId = line.MeasurementId,
+                    Item = line.Item,
+                    //MeasurementId = line.MeasurementId,
                     Quantity = line.Quantity,
                     Discount = line.Discount,
                     Price = line.Quantity * line.Price,
@@ -88,15 +316,15 @@ namespace Web.Controllers
         [FormValueRequiredAttribute("AddSalesDeliveryLineItem")]
         public ActionResult AddSalesDeliveryLineItem(Models.ViewModels.Sales.SalesDeliveryViewModel model)
         {
-            var item = _inventoryService.GetItemById(model.ItemId.Value);
+            //var item = _inventoryService.GetItemById(model.ItemId.Value);
             var line = new Models.ViewModels.Sales.SalesDeliveryLineViewModel()
             {
-                ItemId = model.ItemId,
-                MeasurementId = model.MeasurementId,
+                Item = model.Item,
+                //MeasurementId = model.MeasurementId,
                 Quantity = model.Quantity,
-                Price = item.Price.Value * model.Quantity,
+                Price = model.Price * model.Quantity,
                 Discount  = model.Discount,
-                LineTotalTaxAmount = item.ItemTaxAmountOutput * model.Quantity
+                //LineTotalTaxAmount = item.ItemTaxAmountOutput * model.Quantity
             };
 
             model.SalesDeliveryLines.Add(line);
@@ -109,7 +337,7 @@ namespace Web.Controllers
         {
             var request = HttpContext.Request;
             var deletedItem = request.Form["DeletedLineItem"];
-            model.SalesDeliveryLines.Remove(model.SalesDeliveryLines.Where(i => i.ItemId == int.Parse(deletedItem.ToString())).FirstOrDefault());
+            model.SalesDeliveryLines.Remove(model.SalesDeliveryLines.Where(i => i.Item == deletedItem.ToString()).FirstOrDefault());
             return View(model);
         }
         [Audit]
@@ -122,10 +350,10 @@ namespace Web.Controllers
                 model.SalesInvoiceListLines.Add(new Models.ViewModels.Sales.SalesInvoiceListLine()
                 {
                     Id = invoice.Id,
-                    No = invoice.No,
-                    Customer = invoice.Customer.No,
+                    No = invoice.InvoiceNo,
+                    Customer = invoice.Customer.CustNo,
                     CustomerId = invoice.CustomerId,
-                    Date = invoice.Date,
+                    Date = invoice.InvoiceDate,
                     Amount = invoice.ComputeTotalAmount(),
                     IsFullPaid = invoice.IsFullPaid()
                 });
@@ -159,19 +387,19 @@ namespace Web.Controllers
             var invoiceLines = new List<SalesInvoiceLine>();
             foreach (var item in model.AddSalesInvoiceLines)
             {
-                var Item = _inventoryService.GetItemById(item.ItemId);
+                //var Item = _inventoryService.GetItemById(item.ItemId);
                 var invoiceDetail = new SalesInvoiceLine();
-                invoiceDetail.TaxId = Item.ItemTaxGroupId;
-                invoiceDetail.ItemId = item.ItemId;
-                invoiceDetail.MeasurementId = item.MeasurementId;
+                //invoiceDetail.TaxId = Item.ItemTaxGroupId;
+                invoiceDetail.Item = item.Item;
+                //invoiceDetail.MeasurementId = item.MeasurementId;
                 invoiceDetail.Quantity = item.Quantity;
                 invoiceDetail.Discount = item.Discount;
-                invoiceDetail.Amount = Convert.ToDecimal(item.Quantity * Item.Price);
+                invoiceDetail.Amount = Convert.ToDecimal(item.Quantity * model.Price);
                 invoiceLines.Add(invoiceDetail);
             }
             invoiceHeader.SalesInvoiceLines = invoiceLines;
             invoiceHeader.CustomerId = model.CustomerId;
-            invoiceHeader.Date = model.Date;
+            invoiceHeader.InvoiceDate = model.Date;
             invoiceHeader.ShippingHandlingCharge = 4;// model.ShippingHandlingCharge;
 
             _salesService.AddSalesInvoice(invoiceHeader, model.SalesOrderId);
@@ -187,22 +415,22 @@ namespace Web.Controllers
             model.Measurements = Models.ModelViewHelper.Measurements();
             if (model.Quantity > 0)
             {
-                var item = _inventoryService.GetItemById(model.ItemId);
-                if (!item.Price.HasValue)
-                {
-                    ModelState.AddModelError("Amount", "Selling price is not set.");
-                    return View(model);
-                }
+                //var item = _inventoryService.GetItemById(model.ItemId);
+                //if (!item.Price.HasValue)
+                //{
+                //    ModelState.AddModelError("Amount", "Selling price is not set.");
+                //    return View(model);
+                //}
                 Models.ViewModels.Sales.AddSalesInvoiceLine itemModel = new Models.ViewModels.Sales.AddSalesInvoiceLine()
                 {
-                    ItemId = model.ItemId,
+                    Item = model.Item,
                     MeasurementId = model.MeasurementId,
                     Quantity = model.Quantity,
                     Discount = model.Discount,
-                    Amount = item.Price.Value * model.Quantity,
-                    Price = item.Price.Value,
+                    Amount = model.Price * model.Quantity,
+                    Price = model.Price,
                 };
-                if (model.AddSalesInvoiceLines.FirstOrDefault(i => i.ItemId == model.ItemId) == null)
+                if (model.AddSalesInvoiceLines.FirstOrDefault(i => i.Item == model.Item) == null)
                     model.AddSalesInvoiceLines.Add(itemModel);
             }
             return View(model);
@@ -218,7 +446,7 @@ namespace Web.Controllers
 
             var request = HttpContext.Request;
             var deletedItem = request.Form["DeletedLineItem"];
-            model.AddSalesInvoiceLines.Remove(model.AddSalesInvoiceLines.Where(i => i.ItemId == int.Parse(deletedItem.ToString())).FirstOrDefault());
+            model.AddSalesInvoiceLines.Remove(model.AddSalesInvoiceLines.Where(i => i.Item == deletedItem.ToString()).FirstOrDefault());
 
             return View(model);
         }
@@ -230,8 +458,8 @@ namespace Web.Controllers
             {
                 var salesInvoice = _salesService.GetSalesInvoiceById(salesInvoiceId.Value);
                 model.SalesInvoiceId = salesInvoice.Id;
-                model.SalesInvoiceNo = salesInvoice.No;
-                model.InvoiceDate = salesInvoice.Date;
+                model.SalesInvoiceNo = salesInvoice.InvoiceNo;
+                model.InvoiceDate = salesInvoice.InvoiceDate;
                 model.Date = DateTime.Now;
                 model.CustomerId = salesInvoice.CustomerId;
 
@@ -240,8 +468,8 @@ namespace Web.Controllers
                     model.AddSalesReceiptLines.Add(new Models.ViewModels.Sales.AddSalesReceiptLine()
                     {
                         SalesInvoiceLineId = line.Id,
-                        ItemId = line.ItemId,
-                        MeasurementId = line.MeasurementId,
+                        Item = line.Item,
+                        //MeasurementId = line.MeasurementId,
                         Quantity = line.Quantity,
                         Discount = line.Discount,
                         Amount = line.Amount
@@ -270,8 +498,8 @@ namespace Web.Controllers
                 receipt.SalesReceiptLines.Add(new SalesReceiptLine()
                 {
                     SalesInvoiceLineId = line.SalesInvoiceLineId,
-                    ItemId = line.ItemId,
-                    MeasurementId = line.MeasurementId,
+                    Item = line.Item,
+                   // MeasurementId = line.MeasurementId,
                     Quantity = line.Quantity,
                     Discount = line.Discount,
                     Amount = line.Amount,
@@ -291,7 +519,7 @@ namespace Web.Controllers
                 model.CustomerListLines.Add(new Models.ViewModels.Sales.CustomerListLine()
                 {
                     Id = customer.Id,
-                    Name = customer.Party.Name,
+                    Name = customer.Username,
                     Balance = customer.Balance
                 });
             }
@@ -310,7 +538,7 @@ namespace Web.Controllers
                 var customer = _salesService.GetCustomerById(id);
                 var allocations = _salesService.GetCustomerReceiptsForAllocation(id);
                 model.Id = customer.Id;
-                model.Name = customer.Party.Name;
+                model.Name = customer.Username;
                 model.Balance = customer.Balance;
                 foreach (var receipt in allocations)
                 {
@@ -326,8 +554,8 @@ namespace Web.Controllers
                     model.CustomerInvoices.Add(new Models.ViewModels.Sales.CustomerSalesInvoice()
                     {
                         Id = invoice.Id,
-                        InvoiceNo = invoice.No,
-                        Date = invoice.Date,
+                        InvoiceNo = invoice.InvoiceNo,
+                        Date = invoice.InvoiceDate,
                         Amount = invoice.SalesInvoiceLines.Sum(a => a.Amount),
                         Status = invoice.IsFullPaid() ? "Paid" : "Open"
                     });
@@ -338,20 +566,51 @@ namespace Web.Controllers
 
         public ActionResult AddCustomer()
         {
-            var model = new Models.ViewModels.Sales.AddCustomer();
-            return View(model);
+            return View();
         }
         [Audit]
         [HttpPost, ActionName("AddCustomer")]
         [FormValueRequiredAttribute("SaveCustomer")]
-        public ActionResult AddCustomer(Models.ViewModels.Sales.AddCustomer model)
+        public ActionResult AddCustomer(Customer model)
         {
-            var customer = new Customer()
+            _salesService.AddCustomer(new Customer()
             {
-                No = model.Name,
-            };
-            _salesService.AddCustomer(customer);
-            return RedirectToAction("EditCustomer", new { id = customer.Id });
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Website = model.Website,
+                Email = model.Email,
+                CustNo = model.CustNo,
+                Phone= model.Phone,
+                ResaleNo = model.ResaleNo,
+                Mobile = model .Mobile ,
+                AccountsReceivableAccountId = model.AccountsReceivableAccountId,
+                Address = model.Address,
+                CardHoldersName = model.CardHoldersName,
+                City= model.City,
+                Country = model.Country,
+                CreditCardNo = model.CreditCardNo,
+                ExpirationDate = model.ExpirationDate,
+                IsActive = model.IsActive,
+                OpenPONumber = model.OpenPONumber,
+                PriceLevel = model.PriceLevel,
+                Username = model.Username,
+                State = model.State,
+                Shipping = model.Shipping,
+                SalesRep = model.SalesRep,
+                SalesTax = model.SalesTax,
+                Zip = model.Zip
+            });
+            //var customer = new Customer()
+            //{
+            //    FirstName = model.FirstName,
+            //    LastName = model.LastName,
+            //    Website = model.Website,
+            //    Email = model.Email,
+            //    No = model.No
+
+            //};
+            //_salesService.AddCustomer(customer);
+            return RedirectToAction("Customers");
         }
 
         public ActionResult AddOrEditCustomer(int id = 0)
@@ -362,8 +621,10 @@ namespace Web.Controllers
             {
                 var customer = _salesService.GetCustomerById(id);
                 model.Id = customer.Id;
-                model.Name = customer.Party.Name;
-                model.PrimaryContactId = customer.PrimaryContactId.HasValue ? customer.PrimaryContactId.Value : -1;
+                //model.Name = customer.Party.Name;
+                model.Name = customer.Username;
+                //model.PrimaryContactId = customer.PrimaryContactId.HasValue ? customer.PrimaryContactId.Value : -1;
+                //model.PrimaryContactId = customer.PrimaryContactId.HasValue ? customer.SalesRep : -1;
                 model.AccountsReceivableAccountId = customer.AccountsReceivableAccountId.HasValue ? customer.AccountsReceivableAccountId : -1;
                 model.SalesAccountId = customer.SalesAccountId.HasValue ? customer.SalesAccountId : -1;
                 model.SalesDiscountAccountId = customer.SalesDiscountAccountId.HasValue ? customer.SalesDiscountAccountId : -1;
@@ -385,11 +646,12 @@ namespace Web.Controllers
             else
             {
                 customer = new Customer();
-                customer.Party = new Core.Domain.Party();
+                //customer.Party = new Core.Domain.Party();
             }
             
-            customer.Party.Name = model.Name;
-            if (model.PrimaryContactId != -1) customer.PrimaryContactId = model.PrimaryContactId;
+            //customer.Party.Name = model.Name;
+            customer.Username = model.Name;
+            //if (model.PrimaryContactId != -1) customer.PrimaryContactId = model.PrimaryContactId;
             customer.AccountsReceivableAccountId = model.AccountsReceivableAccountId.Value == -1 ? null : model.AccountsReceivableAccountId;
             customer.SalesAccountId = model.SalesAccountId.Value == -1 ? null : model.SalesAccountId;
             customer.SalesDiscountAccountId = model.SalesDiscountAccountId.Value == -1 ? null : model.SalesDiscountAccountId;
@@ -411,7 +673,7 @@ namespace Web.Controllers
             var model = new Models.ViewModels.Sales.CustomerDetail()
             {
                 Id = customer.Id,
-                Name = customer.Party.Name,
+                Name = customer.Username,
                 Balance = customer.Balance
             };
             foreach(var receipt in allocations)
@@ -427,8 +689,8 @@ namespace Web.Controllers
             {
                 model.ActualAllocations.Add(new Models.ViewModels.Sales.Allocations()
                 {
-                    InvoiceNo = allocation.SalesInvoiceHeader.No,
-                    ReceiptNo = allocation.SalesReceiptHeader.No,
+                    InvoiceNo = allocation.SalesInvoiceHeader.InvoiceNo,
+                    ReceiptNo = allocation.SalesReceiptHeader.ReceiptNo,
                     Date = allocation.Date,
                     Amount = allocation.Amount
                 });
@@ -438,8 +700,8 @@ namespace Web.Controllers
                 model.CustomerInvoices.Add(new Models.ViewModels.Sales.CustomerSalesInvoice()
                 {
                     Id = invoice.Id,
-                    InvoiceNo = invoice.No,
-                    Date = invoice.Date,
+                    InvoiceNo = invoice.InvoiceNo,
+                    Date = invoice.InvoiceDate,
                     Amount = invoice.ComputeTotalAmount(),
                     Status = invoice.Status.ToString()
                  });
@@ -462,7 +724,7 @@ namespace Web.Controllers
                 model.OpenInvoices.Add(new SelectListItem()
                 {
                     Value = invoice.Id.ToString(),
-                    Text = invoice.No + " - " + (invoice.ComputeTotalAmount() - invoice.SalesInvoiceLines.Sum(a => a.GetAmountPaid()))
+                    Text = invoice.InvoiceNo + " - " + (invoice.ComputeTotalAmount() - invoice.SalesInvoiceLines.Sum(a => a.GetAmountPaid()))
                 });
             }
             return PartialView(model);
@@ -552,30 +814,31 @@ namespace Web.Controllers
         public ActionResult AddReceiptItem(Models.ViewModels.Sales.AddSalesReceipt model)
         {
             var rowId = Guid.NewGuid();
-            if (model.ItemId.Value != -1 && model.Quantity > 0)
+            if ( model.Quantity > 0)
             {
-                var item = _inventoryService.GetItemById(model.ItemId.Value);
-                if (!item.Price.HasValue)
-                {
-                    ModelState.AddModelError("Amount", "Selling price is not set.");
-                    return View(model);
-                }
+                //var item = _inventoryService.GetItemById(model.ItemId.Value);
+                //if (!item.Price.HasValue)
+                //{
+                //    ModelState.AddModelError("Amount", "Selling price is not set.");
+                //    return View(model);
+                //}
                 Models.ViewModels.Sales.AddSalesReceiptLine itemModel = new Models.ViewModels.Sales.AddSalesReceiptLine()
                 {
                     RowId = rowId.ToString(),
-                    ItemId = model.ItemId.Value,
-                    MeasurementId = model.MeasurementId.Value,
+                    Item = model.Item,
+                    //MeasurementId = model.MeasurementId.Value,
                     Quantity = model.Quantity,
                     Discount = model.Discount,
-                    Amount = item.Price.Value * model.Quantity,
+                    Price  = model.Price,
+                    Amount = model.Price.Value * model.Quantity,
                     AmountToPay = model.AmountToPay
                 };
-                if (model.AddSalesReceiptLines.FirstOrDefault(i => i.ItemId == model.ItemId) == null)
+                if (model.AddSalesReceiptLines.FirstOrDefault(i => i.Item == model.Item) == null)
                     model.AddSalesReceiptLines.Add(itemModel);
             }
             else if(!string.IsNullOrEmpty(model.AccountCode) && model.Amount != 0)
             {
-                var account = _financialService.GetAccounts().Where(a => a.AccountCode == model.AccountCode).FirstOrDefault();
+                var account = _financialService.GetAccounts().Where(a => a.AccountCode.ToString() == model.AccountCode).FirstOrDefault();
                 if(account != null)
                 {
                     Models.ViewModels.Sales.AddSalesReceiptLine accountItemModel = new Models.ViewModels.Sales.AddSalesReceiptLine()
@@ -597,7 +860,7 @@ namespace Web.Controllers
         {
             var request = HttpContext.Request;
             var deletedItem = request.Form["DeletedLineItem"];
-            model.AddSalesReceiptLines.Remove(model.AddSalesReceiptLines.Where(i => i.ItemId.ToString() == deletedItem.ToString()).FirstOrDefault());
+            model.AddSalesReceiptLines.Remove(model.AddSalesReceiptLines.Where(i => i.Item == deletedItem.ToString()).FirstOrDefault());
             return View(model);
         }
         [Audit]
@@ -609,10 +872,10 @@ namespace Web.Controllers
             {
                 model.SalesReceiptListLines.Add(new Models.ViewModels.Sales.SalesReceiptListLine()
                 {
-                    No = receipt.No,
+                    No = receipt.ReceiptNo,
                     //InvoiceNo = receipt.SalesInvoiceHeader != null ? receipt.SalesInvoiceHeader.No : string.Empty,
                     CustomerId = receipt.CustomerId,
-                    CustomerName = receipt.Customer.No,
+                    CustomerName = receipt.Customer.CustNo,
                     Date = receipt.Date,
                     Amount = receipt.SalesReceiptLines.Sum(r => r.Amount),
                     AmountPaid = receipt.SalesReceiptLines.Sum(r => r.AmountPaid)
@@ -635,16 +898,16 @@ namespace Web.Controllers
                 var invoice = _salesService.GetSalesInvoiceById(id);
                 model.Id = invoice.Id;
                 model.CustomerId = invoice.CustomerId;
-                model.Date = invoice.Date;
-                model.No = invoice.No;
+                model.Date = invoice.InvoiceDate;
+                model.No = invoice.InvoiceNo;
                 foreach (var line in invoice.SalesInvoiceLines)
                 {
                     var lineItem = new Models.ViewModels.Sales.SalesLineItemViewModel(_financialService);
                     lineItem.Id = line.Id;
-                    lineItem.ItemId = line.ItemId;
-                    lineItem.ItemNo = line.Item.No;
-                    lineItem.ItemDescription = line.Item.Description;
-                    lineItem.Measurement = line.Measurement.Description;
+                    lineItem.Item = line.Item;
+                    //lineItem.ItemNo = line.Item.No;
+                    lineItem.ItemDescription = line.ItemDescription;
+                    //lineItem.Measurement = line.Measurement.Description;
                     lineItem.Quantity = line.Quantity;
                     lineItem.Discount = line.Discount;
                     lineItem.Price = line.Amount;
@@ -668,18 +931,18 @@ namespace Web.Controllers
                 var invoice = _salesService.GetSalesInvoiceById(id);
                 model.Id = invoice.Id;
                 model.CustomerId = invoice.CustomerId;
-                model.Date = invoice.Date;
-                model.No = invoice.No;
+                model.Date = invoice.InvoiceDate;
+                model.No = invoice.InvoiceNo;
                 foreach (var line in invoice.SalesInvoiceLines)
                 {
                     var lineItem = new Models.ViewModels.Sales.SalesLineItemViewModel(_financialService);
                     lineItem.SetServiceHelpers(_financialService);
                     lineItem.Id = line.Id;
                     lineItem.CustomerId = invoice.CustomerId;
-                    lineItem.ItemId = line.ItemId;
-                    lineItem.ItemNo = line.Item.No;
-                    lineItem.ItemDescription = line.Item.Description;
-                    lineItem.Measurement = line.Measurement.Description;
+                    lineItem.Item = line.Item;
+                    //lineItem.ItemNo = line.Item.No;
+                    lineItem.ItemDescription = line.ItemDescription;
+                    //lineItem.Measurement = line.Measurement.Description;
                     lineItem.Quantity = line.Quantity;
                     lineItem.Discount = line.Discount;
                     lineItem.Price = line.Amount;
@@ -703,7 +966,7 @@ namespace Web.Controllers
                 var order = _salesService.GetSalesOrderById(id);
                 model.Id = order.Id;
                 model.CustomerId = order.CustomerId;
-                model.PaymentTermId = order.PaymentTermId;
+                //model.PaymentTermId = order.PaymentTermId;
                 model.Date = order.Date;
                 model.Reference = order.ReferenceNo;
                 model.No = order.No;
@@ -712,10 +975,10 @@ namespace Web.Controllers
                 {
                     var lineItem = new Models.ViewModels.Sales.SalesLineItemViewModel(_financialService);
                     lineItem.Id = line.Id;
-                    lineItem.ItemId = line.ItemId;
-                    lineItem.ItemNo = line.Item.No;
-                    lineItem.ItemDescription = line.Item.Description;
-                    lineItem.Measurement = line.Measurement.Description;
+                    lineItem.Item = line.Item;
+                    //lineItem.ItemNo = line.Item.No;
+                    lineItem.ItemDescription = line.ItemDescription;
+                    //lineItem.Measurement = line.Measurement.Description;
                     lineItem.Quantity = line.Quantity;
                     lineItem.Discount = line.Discount;
                     lineItem.Price = line.Amount;
@@ -740,13 +1003,13 @@ namespace Web.Controllers
             }
             
             order.CustomerId = model.CustomerId.Value;
-            order.PaymentTermId = model.PaymentTermId;
+            //order.PaymentTermId = model.PaymentTermId;
             order.Date = model.Date;
-
+            
             foreach (var line in model.SalesLine.SalesLineItems)
             {
                 SalesOrderLine lineItem = null;
-                var item = _inventoryService.GetItemByNo(line.ItemNo);
+                //var item = _inventoryService.GetItemByNo(line.ItemNo);
                 if (!line.Id.HasValue)
                 {
                     lineItem = new SalesOrderLine();
@@ -757,8 +1020,8 @@ namespace Web.Controllers
                     lineItem = order.SalesOrderLines.Where(i => i.Id == line.Id).FirstOrDefault();
                 }
                 
-                lineItem.ItemId = line.ItemId;
-                lineItem.MeasurementId = item.SellMeasurementId.Value;
+                lineItem.Item = line.Item;
+                //lineItem.MeasurementId = item.SellMeasurementId.Value;
                 lineItem.Quantity = line.Quantity;
                 lineItem.Discount = line.Discount;
                 lineItem.Amount = line.Price;
@@ -787,13 +1050,13 @@ namespace Web.Controllers
             }
             
             delivery.CustomerId = model.CustomerId.Value;
-            delivery.PaymentTermId = model.PaymentTermId;
+            //delivery.PaymentTermId = model.PaymentTermId;
             delivery.Date = model.Date;
 
             foreach (var line in model.SalesLine.SalesLineItems)
             {
                 SalesDeliveryLine lineItem = null;
-                var item = _inventoryService.GetItemByNo(line.ItemNo);
+              //  var item = _inventoryService.GetItemByNo(line.ItemNo);
                 if (!line.Id.HasValue)
                 {
                     lineItem = new SalesDeliveryLine();
@@ -804,8 +1067,8 @@ namespace Web.Controllers
                     lineItem = delivery.SalesDeliveryLines.Where(i => i.Id == line.Id).FirstOrDefault();
                 }
                 
-                lineItem.ItemId = line.ItemId;
-                lineItem.MeasurementId = item.SellMeasurementId.Value;
+                lineItem.Item = line.Item;
+                //lineItem.MeasurementId = item.SellMeasurementId.Value;
                 lineItem.Quantity = line.Quantity;
                 lineItem.Discount = line.Discount;
                 lineItem.Price = line.Price;
@@ -839,13 +1102,13 @@ namespace Web.Controllers
             }
             
             invoice.CustomerId = model.CustomerId.Value;
-            invoice.Date = model.Date;
+            invoice.InvoiceDate = model.Date;
             invoice.ShippingHandlingCharge = model.ShippingHandlingCharges;
             
             foreach (var line in model.SalesLine.SalesLineItems)
             {
                 SalesInvoiceLine lineItem = null;
-                var item = _inventoryService.GetItemByNo(line.ItemNo);
+                //var item = _inventoryService.GetItemByNo(line.ItemNo);
                 if (!line.Id.HasValue)
                 {
                     lineItem = new SalesInvoiceLine();
@@ -856,8 +1119,8 @@ namespace Web.Controllers
                     lineItem = invoice.SalesInvoiceLines.Where(i => i.Id == line.Id).FirstOrDefault();
                 }
                 
-                lineItem.ItemId = line.ItemId;
-                lineItem.MeasurementId = item.SellMeasurementId.Value;
+                lineItem.Item = line.Item;
+                //lineItem.MeasurementId = item.SellMeasurementId.Value;
                 lineItem.Quantity = line.Quantity;
                 lineItem.Discount = line.Discount;
                 lineItem.Amount = line.Price;
@@ -920,16 +1183,16 @@ namespace Web.Controllers
 
         private void AddLineItem(Models.ViewModels.Sales.SalesHeaderViewModel model)
         {
-            if (!model.CustomerId.HasValue)
-                throw new Exception("Please enter customer.");
-
-            var item = _inventoryService.GetItemByNo(model.SalesLine.ItemNo);
+            //if (!model.CustomerId.HasValue)
+            //    throw new Exception("Please enter customer.");
+            //var item = _inventoryService.GetInventoryById(model.Id);
+            //var item = _inventoryService.GetItemByNo(model.SalesLine.ItemNo);
             var newLine = new Models.ViewModels.Sales.SalesLineItemViewModel(_financialService);
             newLine.CustomerId = model.CustomerId.HasValue ? model.CustomerId.Value : 0;
-            newLine.ItemId = item.Id;
-            newLine.ItemNo = item.No;
-            newLine.ItemDescription = item.Description;
-            newLine.Measurement = item.SellMeasurement.Description;
+            newLine.Item = model.SalesLine.Item;
+            //newLine.ItemNo = item.No;
+            newLine.ItemDescription = model.SalesLine.ItemDescription;
+            //newLine.Measurement = item.SellMeasurement.Description;
             newLine.Quantity = model.SalesLine.Quantity;
             newLine.Price = model.SalesLine.Price;
             newLine.Discount = model.SalesLine.Discount;            

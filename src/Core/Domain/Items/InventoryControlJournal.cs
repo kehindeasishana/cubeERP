@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Domain.Items
 {
-//    [Table("InventoryControlJournal")]
     public partial class InventoryControlJournal : BaseEntity
     {
-        public int ItemId { get; set; }
-        public int MeasurementId { get; set; }
+        public int InventoryCatalogId { get; set; }
+        public int? ItemId { get; set; }
+        public int? MeasurementId { get; set; }
         public DocumentTypes DocumentType { get; set; }
         public decimal? INQty { get; set; }
         public decimal? OUTQty { get; set; }
@@ -15,7 +15,7 @@ namespace Core.Domain.Items
         public decimal? TotalCost { get; set; }
         public decimal? TotalAmount { get; set; }
         public bool IsReverse { get; set; }
-
+        public virtual InventoryCatalog InventoryCatalog { get; set; }
         public virtual Item Item { get; set; }
         public virtual Measurement Measurement { get; set; }
     }

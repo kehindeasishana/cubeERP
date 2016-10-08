@@ -4,15 +4,15 @@ using System.Web.Mvc;
 
 namespace Web.Models.ViewModels.Purchases
 {
-    public class Vendors
-    {
-        public Vendors()
-        {
-            VendorsList = new HashSet<VendorsListLine>();
-        }
+    //public class Vendors
+    //{
+    //    public Vendors()
+    //    {
+    //        VendorsList = new HashSet<VendorsListLine>();
+    //    }
 
-        public virtual ICollection<VendorsListLine> VendorsList { get; set; }
-    }
+    //    public virtual ICollection<VendorsListLine> VendorsList { get; set; }
+    //}
 
     public class VendorsListLine
     {

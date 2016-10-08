@@ -28,18 +28,19 @@ namespace Web.Models.ViewModels.Purchases
             Id = po.Id;
             No = po.No;
             Date = po.Date;
-            Vendor = po.Vendor.Party.Name;
+            //Vendor = po.Vendor.Party.Name;
+            Vendor = po.Vendor.VendorName;
             Amount = po.PurchaseOrderLines.Sum(a => a.Amount);
             foreach(var line in po.PurchaseOrderLines)
             {
                 PurchaseInvoiceLines.Add(new AddPurchaseInvoiceLine()
                 {
                     Id = line.Id,
-                    ItemId = line.ItemId,
+                    Item = line.Item,
                     PurchaseOrderLineId = line.Id,
-                    UnitOfMeasurementId = line.MeasurementId,
+                    //UnitOfMeasurementId = line.MeasurementId,
                     Quantity = line.Quantity,
-                    Cost = line.Cost
+                    Cost = line.Amount
                 });
             }
         }
@@ -48,7 +49,7 @@ namespace Web.Models.ViewModels.Purchases
     public class AddPurchaseInvoiceLine
     {
         public int Id { get; set; }
-        public int ItemId { get; set; }
+        public string Item { get; set; }
         public int? PurchaseOrderLineId { get; set; }
         public int UnitOfMeasurementId { get; set; }
         public string Description { get; set; }

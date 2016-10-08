@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Core.Domain.Financials;
 
 namespace Core.Domain.Purchases
 {
-//    [Table("PurchaseOrderHeader")]
+
     public partial class PurchaseOrderHeader : BaseEntity
     {
         public PurchaseOrderHeader()
@@ -15,13 +16,30 @@ namespace Core.Domain.Purchases
         }
         public int? VendorId { get; set; }
         public int? PurchaseInvoiceHeaderId { get; set; }
-        public string No { get; set; }
+        public string PurchaseOrderNo { get; set; }
+        public string ShippingAddress { get; set; }
         public DateTime Date { get; set; }
+        public string No { get; set; }
+        //public DateTime Date { get; set; }
         public string Description { get; set; }
-
+        public decimal Discount { get; set; }
+        public string CustSalesOrder { get; set; }
+        public ShipVia ShipVia { get; set; }
+        public string AccountPayableCategory { get; set; }
+        public string CustInvoiceNo { get; set; }
+        public string QuantityReceived { get; set; }
+        public string Item { get; set; }
+        //public string Description { get; set; }
+        public int? GLAccountId { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal Amount { get; set; }
+        public string Job { get; set; }
+        public int? PayableAccountId { get; set; }
         public virtual Vendor Vendor { get; set; }
+        public virtual Account GlAccount { get; set; }
+        public virtual Account PayableAccount { get; set; }
         public virtual PurchaseInvoiceHeader PurchaseInvoiceHeader { get; set; }
-
+        public string Terms { get; set; }
         public virtual ICollection<PurchaseOrderLine> PurchaseOrderLines { get; set; }
         public virtual ICollection<PurchaseReceiptHeader> PurchaseReceipts { get; set; }
 

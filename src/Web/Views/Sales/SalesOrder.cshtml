@@ -1,7 +1,7 @@
 ﻿@model Web.Models.ViewModels.Sales.SalesHeaderViewModel
 @using Web.Models;
 @{
-    ViewBag.Title = "SalesOrder";
+    ViewBag.Title = "Sales Order";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var actionName = "SalesOrder";
 }
@@ -14,12 +14,13 @@
     <div>
         <div class="form-group">
             <label class="col-md-2 control-label">Customer</label>
-            @Html.DropDownListFor(m => m.CustomerId, ModelViewHelper.Customers())
+            @Html.DropDownListFor(m => m.CustomerId, Web.Models.ListHelper.GetCustomersList())
+            @Html.ActionLink("Add Customer", "AddCustomer")
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label class="col-md-2 control-label">Payment Term</label>
             @Html.DropDownListFor(m => m.PaymentTermId, ModelViewHelper.PaymentTerms())
-        </div>
+        </div>*@
         <div class="form-group">
             <label class="col-md-2 control-label">Date</label>
             @Html.EditorFor(m => m.Date)
@@ -27,11 +28,16 @@
     </div>
     
     Html.RenderPartial("~/Views/Sales/_SalesLineItems.cshtml");
-    
-    <div>
-        <input type="submit" name="Save" value="Save" />
+    <table>
+        <tr>
+            <td><input type="submit" name="Save" value="Save" /></td>
+            <td><input type="button" value="Print" onclick="PrintPdf('SalesOrder')" /></td>
+        </tr>
+    </table>
+    @*<div>
+        
     </div>
     <div>
-        <input type="button" value="Print" onclick="PrintPdf('SalesOrder')" />
-    </div>
+        
+    </div>*@
 }

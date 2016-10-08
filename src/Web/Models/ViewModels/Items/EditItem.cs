@@ -37,7 +37,7 @@ namespace Web.Models.ViewModels.Items
         public string SellDescription { get; set; }
         public decimal? Cost { get; set; }
         public decimal? Price { get; set; }
-
+        public string Name { get; set; }
         public ICollection<SelectListItem> UnitOfMeasurements { get; set; }
         public ICollection<SelectListItem> ItemCategories { get; set; }
         public ICollection<SelectListItem> Accounts { get; set; }

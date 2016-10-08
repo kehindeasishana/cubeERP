@@ -1,6 +1,7 @@
 using Core.Domain;
 //using Core.Domain.Administration;
 using Core.Domain.Auditing;
+using Core.Domain.Employees;
 using Core.Domain.Financials;
 using Core.Domain.Items;
 using Core.Domain.Purchases;
@@ -38,6 +39,7 @@ namespace Data
         public DbSet<Audit> Audit { get; set; }
         public DbSet<AccountClass> AccountClasses { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Branch> Branches { get; set; }
         public DbSet<AccountSubCategory> AccountSubCategory { get; set; }
         public DbSet<JournalEntryLine> JournalEntryLines { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -46,7 +48,11 @@ namespace Data
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<ItemCategory> ItemCategories { get; set; }        
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<InventoryCatalog> InventoryCatalog { get; set; }
+        public DbSet<ItemCategory> ItemCategories { get; set; }
+        public DbSet<ReoderingRule> ReorderingRules { get; set; }
         public DbSet<SalesQuoteHeader> SalesQuoteHeaders { get; set; }
         public DbSet<SalesQuoteLine> SalesQuoteLines { get; set; }
         public DbSet<SalesOrderHeader> SalesOrderHeaders { get; set; }
@@ -75,7 +81,23 @@ namespace Data
         //public DbSet<ItemTaxGroup> ItemTaxGroups { get; set; }
         //public DbSet<TaxGroupTax> TaxGroupTax { get; set; }
         //public DbSet<ItemTaxGroupTax> ItemTaxGroupTax { get; set; }
-        
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Files> Files { get; set; }
+        public DbSet<Exit> Exits { get; set; }
+        public DbSet<Resignation> Resignations { get; set; }
+        public DbSet<Contracts> Contracts { get; set; }
+        public DbSet<LeaveManagement> Leave { get; set; }
+        public DbSet<EmployeeType> EmployeeTypes { get; set; }
+        public DbSet<EmployeeStatus> EmployeeStatuses { get; set; }
+        public DbSet<EducationLevel> EducationLevel { get; set; }
+        public DbSet<PayGrade> PayGrades { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<JobTitle> JobTitles { get; set; }
+        public DbSet<OfficeHour> OfficeHours { get; set; }
+        public DbSet<LeaveBenefit> LeaveBenefits { get; set; }
+        public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<ExitType> ExitTypes { get; set; }
+        public DbSet<Termination> Terminations { get; set; }
         public DbSet<PaymentTerm> PaymentTerms { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
@@ -302,6 +324,14 @@ namespace Data
             }
         }
         #endregion
+
+        public System.Data.Entity.DbSet<Core.Domain.Items.Category> Categories { get; set; }
+
+        public System.Data.Entity.DbSet<Web.Models.ViewModels.EmployeeViewModel> EmployeeViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Core.Domain.SalesTax> SalesTaxes { get; set; }
+
+        public System.Data.Entity.DbSet<Core.Domain.TaxAgency> TaxAgencies { get; set; }
 
         //public System.Data.Entity.DbSet<Core.Domain.Administration.CompanySetUp> CompanySetUps { get; set; }
 

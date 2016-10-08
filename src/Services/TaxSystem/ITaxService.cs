@@ -7,10 +7,10 @@ namespace Services.TaxSystem
     public interface ITaxService
     {
         //IEnumerable<Core.Domain.TaxSystem.Tax> GetIntersectionTaxes(int itemId, int partyId, Core.Domain.PartyTypes partyType);
-        List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, IEnumerable<PurchaseInvoiceLine> purchaseInvoiceLines);
-        List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, int itemId, decimal quantity, decimal amount, decimal discount);
+        //List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, IEnumerable<PurchaseInvoiceLine> purchaseInvoiceLines);
+        //List<KeyValuePair<int, decimal>> GetPurchaseTaxes(int vendorId, string item, decimal quantity, decimal amount, decimal discount);
         List<KeyValuePair<int, decimal>> GetSalesTaxes(int customerId, IEnumerable<SalesInvoiceLine> salesInvoiceLines);
-        List<KeyValuePair<int, decimal>> GetSalesTaxes(int customerId, int itemId, decimal quantity, decimal amount, decimal discount);
+        List<KeyValuePair<int, decimal>> GetSalesTaxes(int customerId, string item, decimal quantity, decimal amount, decimal discount);
         decimal GetItemPrice(int itemId);
         decimal GetItemCost(int itemId);
         /// <summary>

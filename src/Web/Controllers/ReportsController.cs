@@ -36,7 +36,7 @@ namespace Web.Controllers
             var model = new Models.ViewModels.Sales.SalesHeaderViewModel(_inventoryService, null);
             model.Id = order.Id;
             model.CustomerId = order.CustomerId;
-            model.PaymentTermId = order.PaymentTermId;
+            //model.PaymentTermId = order.PaymentTermId;
             model.Date = order.Date;
             model.Reference = order.ReferenceNo;
             model.No = order.No;
@@ -45,10 +45,10 @@ namespace Web.Controllers
             {
                 var lineItem = new Models.ViewModels.Sales.SalesLineItemViewModel(null);
                 lineItem.Id = line.Id;
-                lineItem.ItemId = line.ItemId;
-                lineItem.ItemNo = line.Item.No;
-                lineItem.ItemDescription = line.Item.Description;
-                lineItem.Measurement = line.Measurement.Description;
+                lineItem.Item = line.Item;
+                //lineItem.ItemNo = line.Item.No;
+                lineItem.ItemDescription = line.ItemDescription;
+                //lineItem.Measurement = line.Measurement.Description;
                 lineItem.Quantity = line.Quantity;
                 lineItem.Discount = line.Discount;
                 lineItem.Price = line.Amount;
@@ -68,17 +68,17 @@ namespace Web.Controllers
             var model = new Models.ViewModels.Sales.SalesHeaderViewModel(_inventoryService, _financialService);
             model.Id = order.Id;
             model.CustomerId = order.CustomerId;
-            model.Date = order.Date;
-            model.No = order.No;
+            model.Date = order.InvoiceDate;
+            model.No = order.InvoiceNo;
 
             foreach (var line in order.SalesInvoiceLines)
             {
                 var lineItem = new Models.ViewModels.Sales.SalesLineItemViewModel(_financialService);
                 lineItem.Id = line.Id;
-                lineItem.ItemId = line.ItemId;
-                lineItem.ItemNo = line.Item.No;
-                lineItem.ItemDescription = line.Item.Description;
-                lineItem.Measurement = line.Measurement.Description;
+                lineItem.Item = line.Item;
+                //lineItem.ItemNo = line.Item.No;
+                lineItem.ItemDescription = line.ItemDescription;
+               // lineItem.Measurement = line.Measurement.Description;
                 lineItem.Quantity = line.Quantity;
                 lineItem.Discount = line.Discount;
                 lineItem.Price = line.Amount;
